@@ -11,13 +11,23 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     background: "#014E58",
+    padding: "0 50px"
   },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
+    fontFamily: "'Livvic', sans-serif"
   },
+  button: {
+      fontFamily: "'Livvic', sans-serif",
+      textTransform: "none",
+      borderRadius: "25px",
+      marginLeft: "25px",
+      padding: "5px 25px"
+
+  }
 }));
 
 export default function ButtonAppBar() {
@@ -30,8 +40,8 @@ export default function ButtonAppBar() {
           <Typography variant="h6" className={classes.title}>
             Sound Button
           </Typography>
-          <Button color="inherit">Buttons</Button>
-          <Button color="inherit">New</Button>
+          <Button color="inherit" variant="outlined" className={classes.button}>Buttons</Button>
+          <Button color="inherit"  variant="outlined" className={classes.button}>New</Button>
         </Toolbar>
       </AppBar>
     </div>
