@@ -1,13 +1,11 @@
 import React from 'react'
-
 import Navbar from '../../components/navbar/Navbar'
-import Hero from '../../components/hero/Hero'
 
-export default function Home() {
+export default function New() {
     return (
-        <div className="home">
+        <div>
             <Navbar />
-            <Hero />
+            <h1>This is placeholder title</h1>
         </div>
     )
 }

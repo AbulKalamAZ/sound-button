@@ -1,4 +1,6 @@
 import React from 'react';
+import {BrowserRouter as Router, Link} from 'react-router-dom'
+
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -20,16 +22,23 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     fontFamily: "'Livvic', sans-serif",
-    fontWeight: "500"
+    fontWeight: "500",
+    cursor: "pointer"
   },
   button: {
       fontFamily: "'Livvic', sans-serif",
       textTransform: "none",
       borderRadius: 25,
       marginLeft: "25px",
-      padding: "5px 25px"
+      padding: "5px 25px",
+      textDecoration: "none",
+      color: "#ffffff"
+  },
 
+  link: {
+    textDecoration: "none"
   }
+
 }));
 
 export default function ButtonAppBar() {
@@ -38,15 +47,22 @@ export default function ButtonAppBar() {
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.appBar}>
-        <Toolbar>
-          <MusicNoteIcon fontSize="large" />
-          <Typography variant="h5" className={classes.title}>
-            Sound Button
-          </Typography>
-          
-          <Button size="medium" color="inherit" className={classes.button}>Buttons</Button>
-          <Button size="medium" color="inherit" className={classes.button}>New</Button>
-        </Toolbar>
+        <Router>
+          <Toolbar>
+            <MusicNoteIcon fontSize="large" />
+            <Typography variant="h5" className={classes.title}>
+              Sound Button
+            </Typography>
+            
+            <Link className={classes.link} to="/buttons">
+              <Button size="medium" color="inherit" className={classes.button}>Buttons</Button>
+            </Link>
+            
+            <Link className={classes.link} to="/new-button">
+              <Button size="medium" color="inherit" className={classes.button}>New</Button>
+            </Link>
+          </Toolbar>
+        </Router>
       </AppBar>
     </div>
   );
