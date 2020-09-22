@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
       fontFamily: "'Livvic', sans-serif",
       textTransform: "none",
-      borderRadius: "25px",
+      borderRadius: 25,
       marginLeft: "25px",
       padding: "5px 25px"
 
@@ -37,11 +37,11 @@ export default function ButtonAppBar() {
     <div className={classes.root}>
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h5" className={classes.title}>
             Sound Button
           </Typography>
-          <Button color="inherit" variant="outlined" className={classes.button}>Buttons</Button>
-          <Button color="inherit"  variant="outlined" className={classes.button}>New</Button>
+          <Button size="medium" color="inherit" className={classes.button}>Buttons</Button>
+          <Button size="medium" color="inherit" className={classes.button}>New</Button>
         </Toolbar>
       </AppBar>
     </div>
