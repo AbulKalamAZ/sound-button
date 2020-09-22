@@ -34,6 +34,8 @@ export default function HeroImageSlider() {
                 autoplay={{delay: "1000"}}
                 speed={1200}
                 loop={true}
+                simulateTouch={false}
+                controller={{inverse: false}}
                 >
                     <SwiperSlide>
                         <img className={classes.image} src={SliderImageOne} alt="hero slider one" />

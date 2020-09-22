@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import MusicNoteIcon from '@material-ui/icons/MusicNote';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    fontFamily: "'Livvic', sans-serif"
+    fontFamily: "'Livvic', sans-serif",
+    fontWeight: "500"
   },
   button: {
       fontFamily: "'Livvic', sans-serif",
@@ -37,9 +39,11 @@ export default function ButtonAppBar() {
     <div className={classes.root}>
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
+          <MusicNoteIcon fontSize="large" />
           <Typography variant="h5" className={classes.title}>
             Sound Button
           </Typography>
+          
           <Button size="medium" color="inherit" className={classes.button}>Buttons</Button>
           <Button size="medium" color="inherit" className={classes.button}>New</Button>
         </Toolbar>
