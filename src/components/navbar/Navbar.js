@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     fontFamily: "'Livvic', sans-serif",
     fontWeight: "500",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   button: {
       fontFamily: "'Livvic', sans-serif",
@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
   },
 
   link: {
-    textDecoration: "none"
+    textDecoration: "none",
+    color: "#FEFEFC"
   }
 
 }));
@@ -47,11 +48,15 @@ export default function ButtonAppBar() {
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.appBar}>
-        <Router>
           <Toolbar>
-            <MusicNoteIcon fontSize="large" />
+            <Link className={classes.link} to="/">
+              <MusicNoteIcon fontSize="large" />
+            </Link>
+            
             <Typography variant="h5" className={classes.title}>
-              Sound Button
+              <Link className={classes.link} to="/">
+                Sound Button
+              </Link>
             </Typography>
             
             <Link className={classes.link} to="/buttons">
@@ -62,7 +67,6 @@ export default function ButtonAppBar() {
               <Button size="medium" color="inherit" className={classes.button}>New</Button>
             </Link>
           </Toolbar>
-        </Router>
       </AppBar>
     </div>
   );
