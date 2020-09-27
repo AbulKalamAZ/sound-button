@@ -5,7 +5,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import {Swiper, SwiperSlide} from 'swiper/react'
 import SwiperCore, {Autoplay} from 'swiper';
 import 'swiper/swiper.scss'
-import 'swiper/components/effect-fade/effect-fade.scss';
+
+
 import SliderImageOne from '../../assets/hero-image-slider-three.png'
 import SliderImageTwo from '../../assets/hero-image-slider-one.png'
 import SliderImageThree from '../../assets/hero-image-slider-two.png'

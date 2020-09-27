@@ -2,6 +2,7 @@ import React from 'react';
 import {BrowserRouter as Router, Link} from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -14,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     background: "#014E58",
-    padding: "0 50px"
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
   button: {
       fontFamily: "'Livvic', sans-serif",
       textTransform: "none",
-      borderRadius: 25,
       marginLeft: "25px",
       padding: "5px 25px",
       textDecoration: "none",
@@ -43,30 +42,43 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ButtonAppBar() {
+
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.appBar}>
-          <Toolbar>
-            <Link className={classes.link} to="/">
-              <MusicNoteIcon fontSize="large" />
-            </Link>
-            
-            <Typography variant="h5" className={classes.title}>
+          <Container fixed>
+            <Toolbar style={{padding: "0"}}>
               <Link className={classes.link} to="/">
-                Sound Button
+                <MusicNoteIcon fontSize="large" />
               </Link>
-            </Typography>
-            
-            <Link className={classes.link} to="/buttons">
-              <Button size="medium" color="inherit" className={classes.button}>Buttons</Button>
-            </Link>
-            
-            <Link className={classes.link} to="/new-button">
-              <Button size="medium" color="inherit" className={classes.button}>New</Button>
-            </Link>
-          </Toolbar>
+              
+              <Typography variant="h5" className={classes.title}>
+                <Link className={classes.link} to="/">
+                  Sound Button
+                </Link>
+              </Typography>
+              
+              <Link className={classes.link} to="/buttons">
+                <Button
+                  size="medium" 
+                  color="inherit"
+                  className={classes.button}>
+                    Buttons
+                </Button>
+              </Link>
+              
+              <Link className={classes.link} to="/new-button">
+                <Button
+                  size="medium"
+                  color="inherit"
+                  className={classes.button}>
+                    New
+                </Button>
+              </Link>
+            </Toolbar>
+          </Container>
       </AppBar>
     </div>
   );

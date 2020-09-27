@@ -9,7 +9,8 @@ const useStyle = makeStyles((theme) => ({
         width: "50%",
         height: "auto",
         fontSize: "3rem",
-        color: "#FEFEFC"
+        color: "#FEFEFC",
+        paddingBottom: "80px"
 
     },
     orangeText: {
