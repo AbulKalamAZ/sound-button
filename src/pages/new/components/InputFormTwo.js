@@ -1,69 +1,68 @@
-import React from 'react'
+import React from 'react';
 
-import {makeStyles, withStyles} from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
-import IconButton from '@material-ui/core/IconButton'
-import Switch from '@material-ui/core/Switch'
-import OutlinedInput from '@material-ui/core/OutlinedInput'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import { Typography } from '@material-ui/core'
-import { red } from '@material-ui/core/colors'
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import Switch from '@material-ui/core/Switch';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { Typography } from '@material-ui/core';
+import { red } from '@material-ui/core/colors';
 import LinkIcon from '@material-ui/icons/Link';
-
-
 
 const useStyle = makeStyles((theme) => ({
     root: {
-        flexGrow: 1
-    }, 
+        flexGrow: 1,
+    },
     paper: {
-        background: "#032E34",
+        background: '#032E34',
         color: '#FEFEFC',
-        padding: theme.spacing(5)
-
+        padding: theme.spacing(5),
     },
     button: {
-        color: "#ffffff",
+        color: '#ffffff',
         background: '#f44336',
         '&:hover': {
-            background: "#d32f2f"
-        }
+            background: '#d32f2f',
+        },
     },
     input: {
         borderRadius: 0,
-        borderWidth: "1px",
-        borderColor: "yellow !important"
-        
-    }
-}))
+        borderWidth: '1px',
+        borderColor: 'yellow !important',
+    },
+}));
 
 // Custom Orange Switch
 const OrangeSwitch = withStyles({
     switchBase: {
-      color: red[400],
-      '&$checked': {
-        color: red[500],
-      },
-      '&$checked + $track': {
-        backgroundColor: red[500],
-      },
+        color: red[400],
+        '&$checked': {
+            color: red[500],
+        },
+        '&$checked + $track': {
+            backgroundColor: red[500],
+        },
     },
     checked: {},
     track: {},
-  })(Switch);
+})(Switch);
 
 export default function InputFormTwo() {
     const classes = useStyle();
     // Defining state for switches
     const [switchState, setSwitchState] = React.useState({
         playGIFOnHover: false,
-        playGIFOnClick: false
+        playGIFOnClick: false,
     });
     const handleSwitchChange = (event) => {
-        setSwitchState({...switchState, [event.target.name]: event.target.checked})
-    } 
-    
+        setSwitchState({
+            ...switchState,
+            [event.target.name]: event.target.checked,
+        });
+    };
+
     return (
         <div className={classes.root}>
             <Grid container>
@@ -80,7 +79,13 @@ export default function InputFormTwo() {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid container spacing={1}>
-                                            <OrangeSwitch checked={switchState.playGIFOnHover} onChange={handleSwitchChange}  name="playGIFOnHover" />
+                                            <OrangeSwitch
+                                                checked={
+                                                    switchState.playGIFOnHover
+                                                }
+                                                onChange={handleSwitchChange}
+                                                name="playGIFOnHover"
+                                            />
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -94,7 +99,11 @@ export default function InputFormTwo() {
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <OrangeSwitch checked={switchState.playGIFOnClick}  onChange={handleSwitchChange} name="playGIFOnClick" />
+                                        <OrangeSwitch
+                                            checked={switchState.playGIFOnClick}
+                                            onChange={handleSwitchChange}
+                                            name="playGIFOnClick"
+                                        />
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -111,15 +120,20 @@ export default function InputFormTwo() {
                                             <Grid item xs={12} sm={9}>
                                                 <OutlinedInput
                                                     fullWidth
-                                                    type='text'
+                                                    type="text"
                                                     className={classes.input}
-                                                    style={{color: "#ffffff"}}
+                                                    style={{ color: '#ffffff' }}
                                                     startAdornment={
-                                                    <InputAdornment position="start">
-                                                        <IconButton>
-                                                            <LinkIcon style={{color: red[500]}} />
-                                                        </IconButton>
-                                                    </InputAdornment>
+                                                        <InputAdornment position="start">
+                                                            <IconButton>
+                                                                <LinkIcon
+                                                                    style={{
+                                                                        color:
+                                                                            red[500],
+                                                                    }}
+                                                                />
+                                                            </IconButton>
+                                                        </InputAdornment>
                                                     }
                                                 />
                                             </Grid>
@@ -140,13 +154,18 @@ export default function InputFormTwo() {
                                             <Grid item xs={12} sm={9}>
                                                 <OutlinedInput
                                                     fullWidth
-                                                    type='text'
+                                                    type="text"
                                                     className={classes.input}
-                                                    style={{color: "#ffffff"}}
+                                                    style={{ color: '#ffffff' }}
                                                     startAdornment={
                                                         <InputAdornment position="start">
                                                             <IconButton>
-                                                                <LinkIcon style={{color: red[500]}} />
+                                                                <LinkIcon
+                                                                    style={{
+                                                                        color:
+                                                                            red[500],
+                                                                    }}
+                                                                />
                                                             </IconButton>
                                                         </InputAdornment>
                                                     }
@@ -169,15 +188,20 @@ export default function InputFormTwo() {
                                             <Grid item xs={12} sm={9}>
                                                 <OutlinedInput
                                                     fullWidth
-                                                    type='text'
+                                                    type="text"
                                                     className={classes.input}
-                                                    style={{color: "#ffffff"}}
+                                                    style={{ color: '#ffffff' }}
                                                     startAdornment={
-                                                    <InputAdornment position="start">
-                                                        <IconButton>
-                                                            <LinkIcon style={{color: red[500]}} />
-                                                        </IconButton>
-                                                    </InputAdornment>
+                                                        <InputAdornment position="start">
+                                                            <IconButton>
+                                                                <LinkIcon
+                                                                    style={{
+                                                                        color:
+                                                                            red[500],
+                                                                    }}
+                                                                />
+                                                            </IconButton>
+                                                        </InputAdornment>
                                                     }
                                                 />
                                             </Grid>
@@ -198,13 +222,18 @@ export default function InputFormTwo() {
                                             <Grid item xs={12} sm={9}>
                                                 <OutlinedInput
                                                     fullWidth
-                                                    type='text'
+                                                    type="text"
                                                     className={classes.input}
-                                                    style={{color: "#ffffff"}}
+                                                    style={{ color: '#ffffff' }}
                                                     startAdornment={
                                                         <InputAdornment position="start">
                                                             <IconButton>
-                                                                <LinkIcon  style={{color: red[500]}} />
+                                                                <LinkIcon
+                                                                    style={{
+                                                                        color:
+                                                                            red[500],
+                                                                    }}
+                                                                />
                                                             </IconButton>
                                                         </InputAdornment>
                                                     }
@@ -219,5 +248,5 @@ export default function InputFormTwo() {
                 </Grid>
             </Grid>
         </div>
-    )
+    );
 }

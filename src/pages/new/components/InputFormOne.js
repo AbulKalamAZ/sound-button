@@ -1,37 +1,33 @@
-import React from 'react'
+import React from 'react';
 
-import {makeStyles} from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
-import Button from '@material-ui/core/Button'
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { Typography } from '@material-ui/core'
+import FileUploader from '../../../components/fileUploader/FileUploader';
 
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 const useStyle = makeStyles((theme) => ({
     root: {
-        flexGrow: 1
-    }, 
+        flexGrow: 1,
+    },
     paper: {
-        background: "#032E34",
+        background: '#032E34',
         color: '#FEFEFC',
-        padding: theme.spacing(5)
-
+        padding: theme.spacing(5),
     },
     button: {
-        color: "#ffffff",
+        color: '#ffffff',
         background: '#f44336',
         '&:hover': {
-            background: "#d32f2f"
-        }
+            background: '#d32f2f',
+        },
     },
     input: {
-        display: 'none'
-    }
-}))
+        display: 'none',
+    },
+}));
 
-export default function InputFormOne() {
-
+function InputFormOne(props) {
     const classes = useStyle();
     return (
         <div className={classes.root}>
@@ -41,100 +37,42 @@ export default function InputFormOne() {
                         <Grid container spacing={4}>
                             {/* First input */}
                             <Grid item xs={12} sm={6}>
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12}>
-                                        <Typography variant="h6">
-                                            Button 3D Model
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Grid container spacing={1}>
-                                            <Grid item xs={8}>
-                                                <Button
-                                                    variant="contained"
-                                                    className={classes.button}
-                                                    fullWidth={true}
-                                                >
-                                                    <CloudUploadIcon fontSize="large"/>
-                                                </Button>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
+                                <FileUploader
+                                    componentLabel="Upload 3D Model"
+                                    name="model3d"
+                                    fileType=".obj, .gltf, .glb"
+                                />
                             </Grid>
                             {/* Second input */}
                             <Grid item xs={12} sm={6}>
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12}>
-                                        <Typography variant="h6">
-                                            Button GIF
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Grid container spacing={1}>
-                                            <Grid item xs={8}>
-                                                <Button
-                                                    variant="contained"
-                                                    className={classes.button}
-                                                    fullWidth={true}
-                                                >
-                                                    <CloudUploadIcon fontSize="large"/>
-                                                </Button>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
+                                <FileUploader
+                                    componentLabel="Upload GIF"
+                                    name="gif"
+                                    fileType=".gif"
+                                />
                             </Grid>
                             {/* Third input */}
                             <Grid item xs={12} sm={6}>
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12}>
-                                        <Typography variant="h6">
-                                            Button Sound
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Grid container spacing={1}>
-                                            <Grid item xs={8}>
-                                                <Button
-                                                    variant="contained"
-                                                    className={classes.button}
-                                                    fullWidth={true}
-                                                >
-                                                    <CloudUploadIcon fontSize="large"/>
-                                                </Button>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
+                                <FileUploader
+                                    componentLabel="Upload Button Sound"
+                                    name="audio"
+                                    fileType="audio/*"
+                                />
                             </Grid>
                             {/* Fourt input */}
                             <Grid item xs={12} sm={6}>
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12}>
-                                        <Typography variant="h6">
-                                            Button Hover Sound
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Grid container spacing={1}>
-                                            <Grid item xs={8}>
-                                                <Button
-                                                    variant="contained"
-                                                    className={classes.button}
-                                                    fullWidth={true}
-                                                >
-                                                    <CloudUploadIcon fontSize="large"/>
-                                                </Button>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
+                                <FileUploader
+                                    componentLabel="Upload Button Hover Sound"
+                                    name="hoverAudio"
+                                    fileType="audio/*"
+                                />
                             </Grid>
                         </Grid>
                     </Paper>
                 </Grid>
             </Grid>
         </div>
-    )
+    );
 }
+
+export default InputFormOne;
