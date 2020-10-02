@@ -6,11 +6,11 @@ import * as serviceWorker from './serviceWorker';
 
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import reducer from './store/reducer';
+import rootReducer from './store/reducers/rootReducer';
 
 // Create store in order to provide through provider
 
-const store = createStore(reducer);
+const store = createStore(rootReducer);
 
 ReactDOM.render(
     <React.StrictMode>
