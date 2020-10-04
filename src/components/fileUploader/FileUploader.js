@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+import * as fileActionCreator from '../../store/actions/file_actions';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -25,15 +26,23 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 function FileUploader(props) {
-    // Defining component state
-    const [fileName, setFileName] = useState('No file choosen');
     // Creating classes object
     const classes = useStyle();
 
     //handling file input changes
     const handleFileChange = (e) => {
         if (e.target.files[0]) {
-            setFileName(e.target.files[0].name);
+            // setFileName(e.target.files[0].name);
+            props.changeFileName({
+                name: e.target.name,
+                value: e.target.files[0],
+                fileName: e.target.files[0].name,
+            });
+            props.loadFile({
+                name: e.target.name,
+                value: e.target.files[0],
+                fileName: e.target.files[0].name,
+            });
         }
     };
 
@@ -55,6 +64,7 @@ function FileUploader(props) {
                                 id={props.name}
                                 type="file"
                                 onChange={handleFileChange}
+                                disabled={!props.isDisabled}
                             />
                             <label htmlFor={props.name}>
                                 <Button
@@ -62,6 +72,7 @@ function FileUploader(props) {
                                     className={classes.button}
                                     fullWidth={true}
                                     component="span"
+                                    disabled={!props.isDisabled}
                                 >
                                     <CloudUploadIcon fontSize="large" />
                                 </Button>
@@ -74,7 +85,7 @@ function FileUploader(props) {
                                     marginTop: '10px',
                                 }}
                             >
-                                {fileName}
+                                {props.file[props.name].defaultFileName}
                             </Typography>
                         </Grid>
                     </Grid>
@@ -87,14 +98,16 @@ function FileUploader(props) {
 // mapping state to props
 const mapStateToProps = (state) => {
     return {
-        fileName: state.fileName,
+        file: state.file,
+        button: state.button,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateFileName: (payload) =>
-            dispatch({ type: 'UPDATE_FILE_NAME', payload: payload }),
+        loadFile: (data) => dispatch(fileActionCreator.loadFile(data)),
+        changeFileName: (data) =>
+            dispatch(fileActionCreator.changeFileName(data)),
     };
 };
 

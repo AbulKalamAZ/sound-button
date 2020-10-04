@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import FileUploader from '../../../components/fileUploader/FileUploader';
 
@@ -28,6 +29,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 function InputFormOne(props) {
+    const { models, gifs, audios, hoverAudios } = props.file;
     const classes = useStyle();
     return (
         <div className={classes.root}>
@@ -39,32 +41,36 @@ function InputFormOne(props) {
                             <Grid item xs={12} sm={6}>
                                 <FileUploader
                                     componentLabel="Upload 3D Model"
-                                    name="model3d"
+                                    name="models"
                                     fileType=".obj, .gltf, .glb"
+                                    isDisabled={!gifs.fileValue}
                                 />
                             </Grid>
                             {/* Second input */}
                             <Grid item xs={12} sm={6}>
                                 <FileUploader
                                     componentLabel="Upload GIF"
-                                    name="gif"
+                                    name="gifs"
                                     fileType=".gif"
+                                    isDisabled={!models.fileValue}
                                 />
                             </Grid>
                             {/* Third input */}
                             <Grid item xs={12} sm={6}>
                                 <FileUploader
                                     componentLabel="Upload Button Sound"
-                                    name="audio"
+                                    name="audios"
                                     fileType="audio/*"
+                                    isDisabled={audios.fileValue}
                                 />
                             </Grid>
                             {/* Fourt input */}
                             <Grid item xs={12} sm={6}>
                                 <FileUploader
                                     componentLabel="Upload Button Hover Sound"
-                                    name="hoverAudio"
+                                    name="hoverAudios"
                                     fileType="audio/*"
+                                    isDisabled={hoverAudios.fileValue}
                                 />
                             </Grid>
                         </Grid>
@@ -75,4 +81,12 @@ function InputFormOne(props) {
     );
 }
 
-export default InputFormOne;
+// mapping state to props
+
+const mapStateToProps = (state) => {
+    return {
+        file: state.file,
+    };
+};
+
+export default connect(mapStateToProps, null)(InputFormOne);

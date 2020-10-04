@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -49,7 +50,8 @@ const OrangeSwitch = withStyles({
     track: {},
 })(Switch);
 
-export default function InputFormTwo() {
+function InputFormTwo(props) {
+    const { models } = props.file;
     const classes = useStyle();
     // Defining state for switches
     const [switchState, setSwitchState] = React.useState({
@@ -85,6 +87,9 @@ export default function InputFormTwo() {
                                                 }
                                                 onChange={handleSwitchChange}
                                                 name="playGIFOnHover"
+                                                disabled={Boolean(
+                                                    models.fileValue
+                                                )}
                                             />
                                         </Grid>
                                     </Grid>
@@ -103,6 +108,7 @@ export default function InputFormTwo() {
                                             checked={switchState.playGIFOnClick}
                                             onChange={handleSwitchChange}
                                             name="playGIFOnClick"
+                                            disabled={Boolean(models.fileValue)}
                                         />
                                     </Grid>
                                 </Grid>
@@ -250,3 +256,13 @@ export default function InputFormTwo() {
         </div>
     );
 }
+
+//mapping state to props
+
+const mapStateToProps = (state) => {
+    return {
+        file: state.file,
+    };
+};
+
+export default connect(mapStateToProps, null)(InputFormTwo);
