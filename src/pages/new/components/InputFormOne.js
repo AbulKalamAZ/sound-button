@@ -29,7 +29,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 function InputFormOne(props) {
-    const { models, gifs, audios, hoverAudios } = props.file;
+    const { models, gifs, audios, images } = props.file;
     const classes = useStyle();
     return (
         <div className={classes.root}>
@@ -58,19 +58,19 @@ function InputFormOne(props) {
                             {/* Third input */}
                             <Grid item xs={12} sm={6}>
                                 <FileUploader
-                                    componentLabel="Upload Button Sound"
-                                    name="audios"
-                                    fileType="audio/*"
-                                    isDisabled={audios.fileValue}
+                                    componentLabel="Upload Background Image"
+                                    name="images"
+                                    fileType="image/*"
+                                    isDisabled={images.fileValue}
                                 />
                             </Grid>
                             {/* Fourt input */}
                             <Grid item xs={12} sm={6}>
                                 <FileUploader
-                                    componentLabel="Upload Button Hover Sound"
-                                    name="hoverAudios"
+                                    componentLabel="Upload Button Sound"
+                                    name="audios"
                                     fileType="audio/*"
-                                    isDisabled={hoverAudios.fileValue}
+                                    isDisabled={audios.fileValue}
                                 />
                             </Grid>
                         </Grid>

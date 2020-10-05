@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import InputFormOne from './InputFormOne';
 import InputFormTwo from './InputFormTwo';
@@ -31,8 +32,8 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 function FormContainer(props) {
-    const { uploadFile } = props;
-    const { models, gifs, audios, hoverAudios } = props.file;
+    const { uploadFile, control } = props;
+    const { models, gifs, audios, images } = props.file;
     const classes = useStyle();
 
     return (
@@ -54,16 +55,24 @@ function FormContainer(props) {
                             size="large"
                             className={classes.button}
                             fullWidth={true}
+                            disabled={control.isFileUploadStarted}
                             onClick={() =>
                                 uploadFile({
                                     model: models.fileValue,
                                     gif: gifs.fileValue,
                                     audio: audios.fileValue,
-                                    hoverAudio: hoverAudios.fileValue,
+                                    image: images.fileValue,
                                 })
                             }
                         >
-                            Create Button
+                            {control.isFileUploadStarted ? (
+                                <CircularProgress
+                                    size={30}
+                                    style={{ color: '#ffffff' }}
+                                />
+                            ) : (
+                                'Create Button'
+                            )}
                         </Button>
                     </Grid>
                 </Grid>
@@ -76,6 +85,7 @@ function FormContainer(props) {
 const mapStateToProps = (state) => {
     return {
         file: state.file,
+        control: state.control,
     };
 };
 

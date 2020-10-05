@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import fileReducer from './fileReducer';
 import buttonReducer from './buttonReducer';
-import createReducer from './createReducer';
+import controlReducer from './controlReducer';
 
 const rootReducer = combineReducers({
     file: fileReducer,
     button: buttonReducer,
-    create: createReducer,
+    control: controlReducer,
 });
 
 export default rootReducer;

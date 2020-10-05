@@ -1,6 +1,3 @@
-// import { fileUploadToStorage } from '../../firebase/utility';
-// import { updateButtonData } from '../actions/action';
-
 // Initial state of this reducer
 const initState = {
     models: {
@@ -15,7 +12,7 @@ const initState = {
         defaultFileName: 'No file choosen',
         fileValue: {},
     },
-    hoverAudios: {
+    images: {
         defaultFileName: 'No file choosen',
         fileValue: {},
     },
@@ -42,7 +39,22 @@ const fileReducer = (state = initState, action) => {
                 },
             };
 
-        case 'UPLOAD_FILE':
+        // case 'UNLOAD_FILE':
+        //     return Object.assign({}, payload);
+
+        case 'FILE_UPLOAD_START':
+            console.log('File upload started');
+
+            return { ...state };
+
+        case 'FILE_UPLOAD_SUCCESS':
+            console.log('File uploaded successfully');
+
+            return { ...state };
+
+        case 'FILE_UPLOAD_ERROR':
+            console.log('File upload failed');
+
             return { ...state };
 
         default:
