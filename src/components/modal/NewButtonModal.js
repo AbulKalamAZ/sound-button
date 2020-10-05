@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -22,6 +23,11 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.grey[500],
     },
 
+    button: {
+        textDecoration: 'none',
+        color: '#ffffff',
+    },
+
     paper: {
         background: indigo[50],
         color: indigo[900],
@@ -38,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 function NewButtonModal(props) {
     const classes = useStyles();
     const { isFileUploadStarted, openModal } = props.control;
+    const { closeModal } = props;
 
     return (
         <div>
@@ -56,7 +63,7 @@ function NewButtonModal(props) {
                         <IconButton
                             aria-label="close"
                             className={classes.closeButton}
-                            onClick={props.closeModal}
+                            onClick={closeModal}
                         >
                             <CloseIcon />
                         </IconButton>
@@ -91,13 +98,16 @@ function NewButtonModal(props) {
                     )}
                 </MuiDialogContent>
                 <MuiDialogActions>
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        disabled={isFileUploadStarted}
-                    >
-                        go to button
-                    </Button>
+                    <Link to="/" className={classes.button}>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            disabled={isFileUploadStarted}
+                            onClick={closeModal}
+                        >
+                            go to button
+                        </Button>
+                    </Link>
                 </MuiDialogActions>
             </Dialog>
         </div>
