@@ -4,8 +4,8 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Home from './pages/home/Home';
-import Buttons from './pages/buttons/Buttons';
-import New from './pages/new/New';
+import SoundButton from './pages/soundButton/SoundButton';
+import CreateButton from './pages/createButton/CreateButton';
 import NewButtonModal from './components/modal/NewButtonModal';
 
 function App() {
@@ -15,8 +15,8 @@ function App() {
                 <NewButtonModal />
                 <Switch>
                     <Route path="/" exact component={Home} />
-                    <Route path="/buttons" component={Buttons} />
-                    <Route path="/new-button" component={New} />
+                    <Route path="/button/:id" component={SoundButton} />
+                    <Route path="/create-button" component={CreateButton} />
                 </Switch>
             </div>
         </Router>

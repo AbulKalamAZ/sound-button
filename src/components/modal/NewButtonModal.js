@@ -7,8 +7,6 @@ import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -43,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
 
 function NewButtonModal(props) {
     const classes = useStyles();
-    const { isFileUploadStarted, openModal } = props.control;
+    const { isFileUploadStarted, isModalOpen } = props.control;
+    const { buttonId } = props.button;
     const { closeModal } = props;
 
     return (
@@ -51,7 +50,7 @@ function NewButtonModal(props) {
             <Dialog
                 className={classes.root}
                 aria-labelledby="customized-dialog-title"
-                open={openModal}
+                open={isModalOpen}
             >
                 <MuiDialogTitle disableTypography id="customized-dialog-title">
                     <Typography variant="h5">
@@ -59,7 +58,7 @@ function NewButtonModal(props) {
                             ? 'Button is being created . .'
                             : 'Button is created !!'}
                     </Typography>
-                    {!isFileUploadStarted && (
+                    {/* {!isFileUploadStarted && (
                         <IconButton
                             aria-label="close"
                             className={classes.closeButton}
@@ -67,7 +66,7 @@ function NewButtonModal(props) {
                         >
                             <CloseIcon />
                         </IconButton>
-                    )}
+                    )} */}
                 </MuiDialogTitle>
                 <MuiDialogContent dividers style={{ margin: '0 auto' }}>
                     {isFileUploadStarted ? (
@@ -98,7 +97,7 @@ function NewButtonModal(props) {
                     )}
                 </MuiDialogContent>
                 <MuiDialogActions>
-                    <Link to="/" className={classes.button}>
+                    <Link to={`/button/${buttonId}`} className={classes.button}>
                         <Button
                             color="primary"
                             variant="contained"

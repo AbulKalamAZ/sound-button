@@ -47,3 +47,29 @@ export const uploadButtonInfoToDatabase = (data) => {
             });
     });
 };
+
+// Fetching button data from firestore
+
+export const fetchButtonData = (id) => {
+    return new Promise((resolve, reject) => {
+        // Get id
+        const buttonId = id;
+
+        // Creating firestore refference
+        const firestore = firebase.firestore();
+
+        // Send fetch request
+        firestore
+            .collection('buttons')
+            .doc(buttonId)
+            .get()
+            .then((res) => {
+                if (res.exists) {
+                    resolve(res.data());
+                }
+            })
+            .catch((error) => {
+                reject(error.message);
+            });
+    });
+};

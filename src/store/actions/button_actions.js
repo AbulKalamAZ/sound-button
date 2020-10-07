@@ -1,3 +1,4 @@
+import { uploadButtonInfoToDatabase } from '../../firebase/utility';
 // creating update button data
 
 export const updateButtonData = (data) => {
@@ -9,7 +10,11 @@ export const updateButtonData = (data) => {
 
 // Uload button data to the storage
 export const uploadButtonData = () => {
-    return {
-        type: 'UPLOAD_BUTTON_DATA',
+    return (dispatch, getState) => {
+        const buttonInfo = getState().button.button;
+
+        uploadButtonInfoToDatabase(buttonInfo).then((res) => {
+            dispatch({ type: 'UPLOAD_BUTTON_DATA', payload: res.id });
+        });
     };
 };

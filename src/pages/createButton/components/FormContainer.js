@@ -8,6 +8,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import DoneIcon from '@material-ui/icons/Done';
 
 import InputFormOne from './InputFormOne';
 import InputFormTwo from './InputFormTwo';
@@ -34,7 +35,22 @@ const useStyle = makeStyles((theme) => ({
 function FormContainer(props) {
     const { uploadFile, control } = props;
     const { models, gifs, audios, images } = props.file;
+    const { isFileUploadStarted, isFileUploaded } = props.control;
     const classes = useStyle();
+
+    // handle create button
+
+    const handleCreateButton = () => {
+        if (models.fileValue || gifs.fileValue) {
+            // Calling upload file method
+            uploadFile({
+                model: models.fileValue,
+                gif: gifs.fileValue,
+                audio: audios.fileValue,
+                image: images.fileValue,
+            });
+        }
+    };
 
     return (
         <div className={classes.root}>
@@ -55,19 +71,17 @@ function FormContainer(props) {
                             size="large"
                             className={classes.button}
                             fullWidth={true}
-                            disabled={control.isFileUploadStarted}
-                            onClick={() =>
-                                uploadFile({
-                                    model: models.fileValue,
-                                    gif: gifs.fileValue,
-                                    audio: audios.fileValue,
-                                    image: images.fileValue,
-                                })
-                            }
+                            disabled={control.isCreateButtonDisabled}
+                            onClick={handleCreateButton}
                         >
-                            {control.isFileUploadStarted ? (
+                            {isFileUploadStarted ? (
                                 <CircularProgress
                                     size={30}
+                                    style={{ color: '#ffffff' }}
+                                />
+                            ) : isFileUploaded ? (
+                                <DoneIcon
+                                    size="medium"
                                     style={{ color: '#ffffff' }}
                                 />
                             ) : (

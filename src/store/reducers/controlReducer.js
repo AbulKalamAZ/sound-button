@@ -4,7 +4,8 @@ const initState = {
     isFileUploaded: false,
     isFileUploadStarted: false,
     isFileUploadError: false,
-    openModal: false,
+    isModalOpen: false,
+    isCreateButtonDisabled: false,
 };
 
 const createReducer = (state = initState, action) => {
@@ -15,6 +16,7 @@ const createReducer = (state = initState, action) => {
             return {
                 ...state,
                 isFileUploadStarted: true,
+                isCreateButtonDisabled: true,
             };
 
         case 'FILE_UPLOAD_SUCCESS':
@@ -34,14 +36,14 @@ const createReducer = (state = initState, action) => {
         case 'OPEN_MODAL':
             return {
                 ...state,
-                openModal: true,
+                isModalOpen: true,
             };
 
         case 'CLOSE_MODAL':
             console.log('modal closed');
             return {
                 ...state,
-                openModal: false,
+                isModalOpen: false,
             };
         default:
             return { ...state };

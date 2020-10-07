@@ -66,13 +66,13 @@ export default function ButtonAppBar() {
                             Buttons
                         </Button>
 
-                        <Link className={classes.link} to="/new-button">
+                        <Link className={classes.link} to="/create-button">
                             <Button
                                 size="medium"
                                 color="inherit"
                                 className={classes.button}
                             >
-                                New
+                                Create
                             </Button>
                         </Link>
                     </Toolbar>

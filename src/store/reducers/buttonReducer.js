@@ -1,7 +1,5 @@
-import { uploadButtonInfoToDatabase } from '../../firebase/utility';
-
 const initState = {
-    buttonId: null,
+    buttonId: '',
     button: {
         models: null,
         gifs: null,
@@ -28,14 +26,12 @@ const buttonReducer = (state = initState, action) => {
             }
 
         case 'UPLOAD_BUTTON_DATA':
-            uploadButtonInfoToDatabase({ ...state }).then((res) => {
-                console.log('button data uploaded', res.id);
-
+            if (payload) {
                 return {
                     ...state,
-                    buttonId: res.id,
+                    buttonId: payload,
                 };
-            });
+            }
 
             return { ...state };
         default:
