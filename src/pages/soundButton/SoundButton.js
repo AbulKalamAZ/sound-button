@@ -33,18 +33,22 @@ const useStyle = makeStyles((theme) => ({
 
 function SoundButton(props) {
     const classes = useStyle();
-    const { match } = props;
+    const { match, history } = props;
 
     // Defining state
-    const [id, setId] = useState(match.params.id);
+    const id = match.params.id;
     const [buttonInfo, setButtonInfo] = useState({});
     // Using effect
     useEffect(() => {
-        fetchButtonData(id).then((res) => {
-            console.log(res);
-            setButtonInfo({ ...res });
-        });
-    }, []);
+        fetchButtonData(id)
+            .then((res) => {
+                setButtonInfo({ ...res });
+            })
+            .catch((err) => {
+                console.log(err);
+                history.push('/create-button');
+            });
+    }, [id, history]);
 
     return (
         <DefaultLayout>
@@ -57,7 +61,7 @@ function SoundButton(props) {
                         alignItems="center"
                     >
                         <Grid item xs={12} sm={6}>
-                            <Button>
+                            <Button buttonInfo={buttonInfo}>
                                 {buttonInfo.gifs && (
                                     <img
                                         className={classes.buttonGIF}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -89,9 +89,8 @@ function NewButtonModal(props) {
                     ) : (
                         <Paper variant="outlined" className={classes.paper}>
                             <Typography>
-                                Please wait for a while, we'll get back to you
-                                when we are done with uploading all the assests
-                                into the server
+                                {`<iframe src="https://localhost:3000/button/${buttonId}" width="100%" height="300" style="border:1px solid black;">
+</iframe>`}
                             </Typography>
                         </Paper>
                     )}
@@ -130,4 +129,6 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewButtonModal);
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(NewButtonModal)
+);
