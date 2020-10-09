@@ -29,6 +29,9 @@ const useStyle = makeStyles((theme) => ({
         width: '100%',
         height: 'auto',
     },
+    audioPlayer: {
+        display: 'none'
+    }
 }));
 
 function SoundButton(props) {
@@ -72,6 +75,9 @@ function SoundButton(props) {
                             </Button>
                         </Grid>
                     </Grid>
+                    {buttonInfo.audios && (
+                        <audio className={classes.audioPlayer} src={buttonInfo.audios} autoPlay loop></audio>
+                    )}
                 </Container>
             </div>
         </DefaultLayout>
@@ -85,5 +91,7 @@ const mapStateToProps = (state) => {
         button: state.button,
     };
 };
+
+
 
 export default withRouter(connect(mapStateToProps, null)(SoundButton));

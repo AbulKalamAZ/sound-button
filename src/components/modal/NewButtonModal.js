@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -8,9 +8,10 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import indigo from '@material-ui/core/colors/indigo';
+import teal from '@material-ui/core/colors/teal';
 import * as controlActionCreator from '../../store/actions/control_actions';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,11 +25,15 @@ const useStyles = makeStyles((theme) => ({
     button: {
         textDecoration: 'none',
         color: '#ffffff',
+        background: '#00695c',
+        '&:hover': {
+            background: '#004d40',
+        },
     },
 
     paper: {
-        background: indigo[50],
-        color: indigo[900],
+        background: teal[50],
+        color: teal[900],
         padding: theme.spacing(2),
     },
     progress: {
@@ -44,6 +49,13 @@ function NewButtonModal(props) {
     const { isFileUploadStarted, isModalOpen } = props.control;
     const { buttonId } = props.button;
     const { closeModal } = props;
+
+    // Returns url
+    const getURL = () => {
+        return `${window.location.href.split('/')[0]}//${
+            window.location.href.split('/')[2]
+        }`;
+    };
 
     return (
         <div>
@@ -84,15 +96,21 @@ function NewButtonModal(props) {
 
                     {isFileUploadStarted ? (
                         <div className={classes.progress}>
-                            <CircularProgress size={80} />
+                            <CircularProgress size={80} style={{color: '#004d40'}} />
                         </div>
                     ) : (
-                        <Paper variant="outlined" className={classes.paper}>
-                            <Typography>
-                                {`<iframe src="https://localhost:3000/button/${buttonId}" width="100%" height="300" style="border:1px solid black;">
-</iframe>`}
-                            </Typography>
-                        </Paper>
+                        <Grid container spacing={1}>
+                            <Grid item xs={12}>
+                                <Paper
+                                    variant="outlined"
+                                    className={classes.paper}
+                                >
+                                    <Typography>
+                                        {`<iframe src="${getURL()}/button/${buttonId}" width="100%" height="300"></iframe>`}
+                                    </Typography>
+                                </Paper>
+                            </Grid>
+                        </Grid>
                     )}
                 </MuiDialogContent>
                 <MuiDialogActions>
@@ -100,7 +118,9 @@ function NewButtonModal(props) {
                         <Button
                             color="primary"
                             variant="contained"
+                            className={classes.button}
                             disabled={isFileUploadStarted}
+                            component= 'span'
                             onClick={closeModal}
                         >
                             go to button
@@ -129,6 +149,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(NewButtonModal)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(NewButtonModal);

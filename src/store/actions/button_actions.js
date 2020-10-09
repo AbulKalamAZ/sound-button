@@ -15,6 +15,7 @@ export const uploadButtonData = () => {
 
         uploadButtonInfoToDatabase(buttonInfo).then((res) => {
             dispatch({ type: 'UPLOAD_BUTTON_DATA', payload: res.id });
+            
         });
     };
 };

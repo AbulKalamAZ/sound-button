@@ -21,10 +21,10 @@ export const loadFile = (data) => {
 };
 
 //Unload file
-export const unloadFile = (data) => {
+export const unloadFile = () => {
+    console.log('file should be unloaded')
     return {
-        type: 'UNLOAD_FILE',
-        payload: data,
+        type: 'UNLOAD_FILE'
     };
 };
 

@@ -39,8 +39,30 @@ const fileReducer = (state = initState, action) => {
                 },
             };
 
-        // case 'UNLOAD_FILE':
-        //     return Object.assign({}, payload);
+        case 'UNLOAD_FILE':
+            return {
+                ...state,
+                models: {
+                    ...state.models,
+                    defaultFileName: 'No File Choosen',
+                    fileValue: null
+                },
+                gifs: {
+                    ...state.gifs,
+                    defaultFileName: 'No File Choosen',
+                    fileValue: null
+                },
+                audios: {
+                    ...state.audios,
+                    defaultFileName: 'No File Choosen',
+                    fileValue: {}
+                },
+                images: {
+                    ...state.images,
+                    defaultFileName: 'No File Choosen',
+                    fileValue: {}
+                }
+            }
 
         case 'FILE_UPLOAD_START':
             console.log('File upload started');
