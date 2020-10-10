@@ -5,8 +5,13 @@ export const openModal = () => {
 };
 
 export const closeModal = () => {
-    console.log('from control action');
     return {
         type: 'CLOSE_MODAL',
+    };
+};
+
+export const setButtonId = () => {
+    return {
+        type: 'SET_BUTTON_ID',
     };
 };

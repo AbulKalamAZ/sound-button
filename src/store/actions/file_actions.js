@@ -22,7 +22,6 @@ export const loadFile = (data) => {
 
 //Unload file
 export const unloadFile = () => {
-    console.log('file should be unloaded')
     return {
         type: 'UNLOAD_FILE'
     };
@@ -73,7 +72,6 @@ export const uploadFile = (data) => {
 
         Promise.all(fileUploadRequests)
             .then((res) => {
-                console.log(res);
 
                 // dispatching update button data
                 res.map((item) => {

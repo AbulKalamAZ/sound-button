@@ -1,4 +1,5 @@
 import React from 'react';
+import './Button.css'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
@@ -16,7 +17,7 @@ const useStyle = makeStyles((theme) => ({
         padding: theme.spacing(3),
         position: 'relative',
         cursor: 'pointer',
-        dispaly: 'flex',
+        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         background:
@@ -42,8 +43,8 @@ const useStyle = makeStyles((theme) => ({
         alignItems: 'center',
     },
     xModel: {
-        width: '50%',
-        height: '200px',
+        width: '100%',
+        height: '300px',
     },
 }));
 
@@ -59,7 +60,7 @@ export default function Button(props) {
                         src={Background}
                         alt="button background"
                     />
-                    <x-model class={classes.xModel} src={models}></x-model>
+                    {/* <x-model class="x-model" src={models}></x-model> */}
                 </Paper>
             ) : (
                 <Paper elevation={10} className={classes.paperOverGIF}>

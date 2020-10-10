@@ -65,17 +65,14 @@ const fileReducer = (state = initState, action) => {
             }
 
         case 'FILE_UPLOAD_START':
-            console.log('File upload started');
 
             return { ...state };
 
         case 'FILE_UPLOAD_SUCCESS':
-            console.log('File uploaded successfully');
 
             return { ...state };
 
         case 'FILE_UPLOAD_ERROR':
-            console.log('File upload failed');
 
             return { ...state };
 

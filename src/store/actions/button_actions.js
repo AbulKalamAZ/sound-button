@@ -1,4 +1,6 @@
 import { uploadButtonInfoToDatabase } from '../../firebase/utility';
+import * as controlActionCreator from '../actions/control_actions';
+import * as fileActionCreator from '../actions/file_actions';
 // creating update button data
 
 export const updateButtonData = (data) => {
@@ -16,6 +18,10 @@ export const uploadButtonData = () => {
         uploadButtonInfoToDatabase(buttonInfo).then((res) => {
             dispatch({ type: 'UPLOAD_BUTTON_DATA', payload: res.id });
             
+        }).then(() => {
+            dispatch(controlActionCreator.setButtonId())
+        }).then(() => {
+            dispatch(fileActionCreator.unloadFile())
         });
     };
 };
