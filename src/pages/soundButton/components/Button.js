@@ -3,6 +3,8 @@ import './Button.css'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
+import ButtonRenderer from './ButtonRenderer'
+
 import Background from '../../../assets/button_background.png';
 // import Spider from '../../../assets/Spider.obj';
 
@@ -60,7 +62,7 @@ export default function Button(props) {
                         src={Background}
                         alt="button background"
                     />
-                    {/* <x-model class="x-model" src={models}></x-model> */}
+                    <ButtonRenderer width={600} height={400} model={models} />
                 </Paper>
             ) : (
                 <Paper elevation={10} className={classes.paperOverGIF}>
