@@ -73,9 +73,6 @@ export default class ButtonRenderer extends Component {
         light.position.set(100, 100, 100);
         scene.add(light);
 
-        var light2 = new THREE.DirectionalLight(0xffffff, 1.0);
-        light.position.set(-100, 100, -100);
-        scene.add(light2);
 
         // Setting camera a bit out of it
         camera.position.z= 25;
