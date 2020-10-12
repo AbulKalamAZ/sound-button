@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import DefaultLayout from '../../layouts/DefaultLayout';
-import Button from './components/Button';
+import ModelRenderer from './components/ModelRenderer'
+import GIFRenderer from './components/GIFRenderer'
 
 import { fetchButtonData } from '../../firebase/utility';
 
@@ -16,22 +16,10 @@ const useStyle = makeStyles((theme) => ({
         width: '100%',
         minHeight: '90vh',
         background: '#014E58',
-        paddingTop: '100px',
-        paddingBottom: '100px',
-    },
-    container: {
         display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    buttonGIF: {
-        width: '100%',
-        height: 'auto',
-    },
-    audioPlayer: {
-        display: 'none'
-    }
 }));
 
 function SoundButton(props) {
@@ -52,33 +40,12 @@ function SoundButton(props) {
                 history.push('/create-button');
             });
     }, [id, history]);
+    console.log(Object.keys(buttonInfo))
 
     return (
         <DefaultLayout>
             <div className={classes.root}>
-                <Container fixed className={classes.container}>
-                    <Grid
-                        container
-                        direction="row"
-                        justify="center"
-                        alignItems="center"
-                    >
-                        <Grid item xs={12} sm={6}>
-                            <Button buttonInfo={buttonInfo}>
-                                {buttonInfo.gifs && (
-                                    <img
-                                        className={classes.buttonGIF}
-                                        src={buttonInfo.gifs}
-                                        alt="Button media"
-                                    />
-                                )}
-                            </Button>
-                        </Grid>
-                    </Grid>
-                    {buttonInfo.audios && (
-                        <audio className={classes.audioPlayer} src={buttonInfo.audios} autoPlay loop></audio>
-                    )}
-                </Container>
+                {Object.keys(buttonInfo).length === 0 ? <CircularProgress size={80} style={{color: '#ffffff'}} /> : buttonInfo.models ? (<ModelRenderer buttonInfo={buttonInfo} />) : (<GIFRenderer buttonInfo={buttonInfo} />) }
             </div>
         </DefaultLayout>
     );

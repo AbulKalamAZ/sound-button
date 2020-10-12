@@ -30,7 +30,10 @@ const useStyles = makeStyles((theme) => ({
             background: '#004d40',
         },
     },
-
+    link: {
+        textDecoration: 'none',
+        color: '#ffffff',
+    },
     paper: {
         background: teal[50],
         color: teal[900],
@@ -114,9 +117,8 @@ function NewButtonModal(props) {
                     )}
                 </MuiDialogContent>
                 <MuiDialogActions>
-                    <Link to={`/button/${buttonId}`} className={classes.button}>
+                    <Link to={`/button/${buttonId}`} className={classes.link}>
                         <Button
-                            color="primary"
                             variant="contained"
                             className={classes.button}
                             disabled={isFileUploadStarted}
