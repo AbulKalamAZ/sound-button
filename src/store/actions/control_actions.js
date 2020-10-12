@@ -15,3 +15,16 @@ export const setButtonId = () => {
         type: 'SET_BUTTON_ID',
     };
 };
+
+export const playAudio = () => {
+    return {
+        type: 'PLAY_AUDIO'
+    }
+}
+
+
+export const pauseAudio = () => {
+    return {
+        type: 'PAUSE_AUDIO'
+    }
+}

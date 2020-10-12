@@ -6,6 +6,7 @@ const initState = {
     isFileUploadError: false,
     isModalOpen: false,
     isCreateButtonDisabled: false,
+    playAudio: false
 };
 
 const createReducer = (state = initState, action) => {
@@ -51,6 +52,20 @@ const createReducer = (state = initState, action) => {
             return {
                 ...state,
                 isFileUploadStarted: false,
+            };
+
+        case 'PLAY_AUDIO':
+            
+            return {
+                ...state,
+                playAudio: true,
+            };
+
+        case 'PAUSE_AUDIO':
+            
+            return {
+                ...state,
+                playAudio: false,
             };
         default:
             return { ...state };

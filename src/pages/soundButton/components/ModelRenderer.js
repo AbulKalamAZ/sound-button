@@ -1,8 +1,8 @@
 import React, { Component, createRef } from 'react'
-
+import './ModelRenderer.css'
 
 import * as THREE from 'three'
-
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2.js'
 
 export default class ButtonRenderer extends Component {
@@ -43,36 +43,37 @@ export default class ButtonRenderer extends Component {
         }
         
 
-        let scene, camera, renderer, light, light2;
+        let scene, camera, renderer, light, light2, controls;
 
 
         // Creating a scene 
         scene = new THREE.Scene();
 
         // Creating camera
-        camera = new THREE.PerspectiveCamera(10, window.innerWidth / (window.innerHeight * 0.9), .5, 10000);
-        let cameraHelper = new THREE.CameraHelper(camera);
+        camera = new THREE.PerspectiveCamera(10, window.innerWidth / (window.innerHeight * 0.9), 1, 1500);
+        // let cameraHelper = new THREE.CameraHelper(camera);
 
-        camera.position.z = 3000;
-        camera.lookAt(0, 45, 0);
+        camera.position.set( 0, 0, 600 );
+        
 
-        scene.add(cameraHelper)
+        // scene.add(cameraHelper)
 
 
         // Creating light source
 
-        light = new THREE.DirectionalLight(0xffffff, 1.0);
-        light.position.set(100, -100, 100);
+        light = new THREE.DirectionalLight(0xffffff, 0.5);
+        light.position.set(100, 100, 100);
         scene.add(light);
         
-        light2 = new THREE.DirectionalLight(0x404040, 1.0);
-        light2.position.set(-100, 100,-100);
+        light2 = new THREE.DirectionalLight(0x404040, 0.8);
+        light2.position.set(-50, 0, 200);
         scene.add(light2);
 
         // Creating renderer
 
         renderer = new THREE.WebGLRenderer({
-            alpha: true
+            alpha: true,
+            antialias: true
         });
         renderer.setSize(window.innerWidth, (window.innerHeight * 0.9));
 
@@ -94,6 +95,15 @@ export default class ButtonRenderer extends Component {
             head = obj;
         }, onProgress, onError, null, false);
 
+        wrapper.position.set(0, -10, 0)
+        wrapper.rotation.x = (25/180 * Math.PI);
+
+
+        controls = new OrbitControls(camera, renderer.domElement, );
+        controls.enableRotate = false;
+        controls.minDistance = 1;
+        controls.maxDistance = 1000;
+        
         
 
         //anmate method
@@ -103,7 +113,9 @@ export default class ButtonRenderer extends Component {
             
             // camera.position.x = Math.sin(delta) * 2000;
             // camera.position.z = Math.cos(delta) * 2000;
+            wrapper.rotation.y += 0.05;
             renderer.render(scene, camera);
+            controls.update()
             
             requestAnimationFrame(animate);
         }
@@ -114,7 +126,6 @@ export default class ButtonRenderer extends Component {
     }
 
     render() {
-        console.log('from Model Renderer!')
         return (
             <div ref={this.renderNode} className="3d-button-renderer">
                 
