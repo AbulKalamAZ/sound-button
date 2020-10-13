@@ -1,6 +1,8 @@
 import React, { Component, createRef } from 'react'
 import './ModelRenderer.css'
 
+import modelBackground from '../../../assets/button_background.png'
+
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2.js'
@@ -61,11 +63,11 @@ export default class ButtonRenderer extends Component {
 
         // Creating light source
 
-        light = new THREE.DirectionalLight(0xffffff, 0.5);
+        light = new THREE.DirectionalLight(0xffffff, 0.6);
         light.position.set(100, 100, 100);
         scene.add(light);
         
-        light2 = new THREE.DirectionalLight(0x404040, 0.8);
+        light2 = new THREE.DirectionalLight(0x2b3c4e, 0.8);
         light2.position.set(-50, 0, 200);
         scene.add(light2);
 
@@ -113,7 +115,7 @@ export default class ButtonRenderer extends Component {
             
             // camera.position.x = Math.sin(delta) * 2000;
             // camera.position.z = Math.cos(delta) * 2000;
-            wrapper.rotation.y += 0.05;
+            wrapper.rotation.y += 0.03;
             renderer.render(scene, camera);
             controls.update()
             
@@ -127,8 +129,8 @@ export default class ButtonRenderer extends Component {
 
     render() {
         return (
-            <div ref={this.renderNode} className="3d-button-renderer">
-                
+            <div ref={this.renderNode} className="model-renderer">
+                <img src={modelBackground} alt="default background media" />
             </div>
             
 
