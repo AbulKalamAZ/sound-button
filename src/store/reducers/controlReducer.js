@@ -55,6 +55,7 @@ const createReducer = (state = initState, action) => {
             };
 
         case 'PLAY_AUDIO':
+
             
             return {
                 ...state,
@@ -62,7 +63,7 @@ const createReducer = (state = initState, action) => {
             };
 
         case 'PAUSE_AUDIO':
-            
+
             return {
                 ...state,
                 playAudio: false,

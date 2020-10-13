@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -20,15 +20,23 @@ const useStyle = makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    audioElement: {
+        display: 'none'
+    }
 }));
 
 function SoundButton(props) {
     const classes = useStyle();
     const { match, history } = props;
+    const { playAudio } = props.control;
+
+    const audioElement = useRef(null);
+    
 
     // Defining state
     const id = match.params.id;
     const [buttonInfo, setButtonInfo] = useState({});
+
     // Using effect
     useEffect(() => {
         fetchButtonData(id)
@@ -40,12 +48,36 @@ function SoundButton(props) {
                 history.push('/create-button');
             });
     }, [id, history]);
-    console.log(Object.keys(buttonInfo))
+    
+
+    // handle audio
+    useEffect(() => {
+        const player = audioElement.current;
+        
+
+        if(!playAudio) {
+
+            if(buttonInfo.audios) {
+                player.pause();
+            }
+
+        } else {
+
+            if(buttonInfo.audios) {
+                player.play();
+            }
+
+        }
+    }, [playAudio, buttonInfo.audios])
+
+    
+    
 
     return (
         <DefaultLayout>
             <div className={classes.root}>
                 {Object.keys(buttonInfo).length === 0 ? <CircularProgress size={80} style={{color: '#ffffff'}} /> : buttonInfo.models ? (<ModelRenderer buttonInfo={buttonInfo} />) : (<GIFRenderer buttonInfo={buttonInfo} />) }
+                <audio className={classes.audioElement} ref={audioElement} src={buttonInfo.audios ?? null} loop></audio>
             </div>
         </DefaultLayout>
     );
@@ -56,6 +88,7 @@ function SoundButton(props) {
 const mapStateToProps = (state) => {
     return {
         button: state.button,
+        control: state.control
     };
 };
 

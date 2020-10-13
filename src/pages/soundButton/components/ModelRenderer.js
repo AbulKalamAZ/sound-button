@@ -1,5 +1,8 @@
 import React, { Component, createRef } from 'react'
+import { connect } from 'react-redux';
 import './ModelRenderer.css'
+
+import * as controlActionCreator from '../../../store/actions/control_actions'
 
 import modelBackground from '../../../assets/button_background.png'
 
@@ -7,13 +10,14 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2.js'
 
-export default class ButtonRenderer extends Component {
+class ModelRenderer extends Component {
 
     constructor(props) {
 
         super(props);
         this.renderNode = createRef()
     }
+
 
     componentDidMount() {
 
@@ -115,7 +119,7 @@ export default class ButtonRenderer extends Component {
             
             // camera.position.x = Math.sin(delta) * 2000;
             // camera.position.z = Math.cos(delta) * 2000;
-            wrapper.rotation.y += 0.03;
+            wrapper.rotation.y += 0.01;
             renderer.render(scene, camera);
             controls.update()
             
@@ -127,10 +131,24 @@ export default class ButtonRenderer extends Component {
 
     }
 
+
+    // Handle audio player control
+    handlePlayerControl = () => {
+        const { playAudio, pauseAudio, control } = this.props;
+
+        if(control.playAudio) {
+            pauseAudio();
+        } else {
+            playAudio();
+        }
+    }
     render() {
+
+        const { images } = this.props.buttonInfo
+
         return (
-            <div ref={this.renderNode} className="model-renderer">
-                <img src={modelBackground} alt="default background media" />
+            <div ref={this.renderNode} className="model-renderer" onClick={this.handlePlayerControl}>
+                <img src={images ?? modelBackground} alt="default background media" />
             </div>
             
 
@@ -139,3 +157,19 @@ export default class ButtonRenderer extends Component {
         )
     }
 }
+
+
+const mapStateToProps = state => {
+    return {
+        control: state.control
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        playAudio: () => dispatch(controlActionCreator.playAudio()),
+        pauseAudio: () => dispatch(controlActionCreator.pauseAudio())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModelRenderer)
