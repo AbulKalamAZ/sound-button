@@ -5,6 +5,8 @@ const initState = {
         gifs: null,
         audios: null,
         images: null,
+        playAudioOnClick: null,
+        playAudioAutomatically: null
     },
 };
 
@@ -13,6 +15,8 @@ const buttonReducer = (state = initState, action) => {
 
     switch (type) {
         case 'UPDATE_BUTTON_DATA':
+
+        console.log(payload)
             if (payload.name && payload.value) {
                 return {
                     ...state,
@@ -26,6 +30,7 @@ const buttonReducer = (state = initState, action) => {
             }
 
         case 'UPLOAD_BUTTON_DATA':
+            
             if (payload) {
                 return {
                     ...state,

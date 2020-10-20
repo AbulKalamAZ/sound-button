@@ -1,6 +1,6 @@
 import React, { Component, createRef } from 'react'
 import { connect } from 'react-redux';
-import './ModelRenderer.css'
+import './OBJRenderer.css'
 
 import * as controlActionCreator from '../../../store/actions/control_actions'
 
@@ -10,7 +10,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2.js'
 
-class ModelRenderer extends Component {
+class OBJRenderer extends Component {
 
     constructor(props) {
 
@@ -115,10 +115,6 @@ class ModelRenderer extends Component {
         //anmate method
         // let delta = 0;
         function animate() {
-            // delta += 0.01
-            
-            // camera.position.x = Math.sin(delta) * 2000;
-            // camera.position.z = Math.cos(delta) * 2000;
             wrapper.rotation.y += 0.01;
             renderer.render(scene, camera);
             controls.update()
@@ -147,12 +143,9 @@ class ModelRenderer extends Component {
         const { images } = this.props.buttonInfo
 
         return (
-            <div ref={this.renderNode} className="model-renderer" onClick={this.handlePlayerControl}>
-                <img src={images ?? modelBackground} alt="default background media" />
+            <div ref={this.renderNode} className="model-renderer" >
+                <img src={images ?? modelBackground} className="model-bg-img" alt="default background media" />
             </div>
-            
-
-
             
         )
     }
@@ -172,4 +165,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModelRenderer)
+export default connect(mapStateToProps, mapDispatchToProps)(OBJRenderer)

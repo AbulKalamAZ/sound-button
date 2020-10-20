@@ -12,6 +12,8 @@ import { Typography } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import LinkIcon from '@material-ui/icons/Link';
 
+import * as fileActionCreator from '../../../store/actions/file_actions'
+
 const useStyle = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -51,18 +53,16 @@ const OrangeSwitch = withStyles({
 })(Switch);
 
 function InputFormTwo(props) {
-    const { models } = props.file;
+    const { audios, playAudioOnClick, playAudioAutomatically } = props.file;
+    const { setPlayAudioOnClick, setPlayAudioAutomatically } = props;
     const classes = useStyle();
-    // Defining state for switches
-    const [switchState, setSwitchState] = React.useState({
-        playGIFOnHover: false,
-        playGIFOnClick: false,
-    });
+    
     const handleSwitchChange = (event) => {
-        setSwitchState({
-            ...switchState,
-            [event.target.name]: event.target.checked,
-        });
+        if(event.target.name === 'playAudioOnClick') {
+            setPlayAudioOnClick(event.target.checked);
+        } else {
+            setPlayAudioAutomatically(event.target.checked);
+        }
     };
 
     return (
@@ -76,20 +76,18 @@ function InputFormTwo(props) {
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
                                         <Typography variant="h6">
-                                            Play GIF on Hover
+                                            Play audio on click
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid container spacing={1}>
                                             <OrangeSwitch
                                                 checked={
-                                                    switchState.playGIFOnHover
+                                                    playAudioOnClick.value
                                                 }
                                                 onChange={handleSwitchChange}
-                                                name="playGIFOnHover"
-                                                disabled={Boolean(
-                                                    models.fileValue
-                                                )}
+                                                name="playAudioOnClick"
+                                                disabled={Object.keys(audios.fileValue).length === 0}
                                             />
                                         </Grid>
                                     </Grid>
@@ -100,15 +98,15 @@ function InputFormTwo(props) {
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
                                         <Typography variant="h6">
-                                            Play GIF on Click
+                                            Play audio automatically
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <OrangeSwitch
-                                            checked={switchState.playGIFOnClick}
+                                            checked={playAudioAutomatically.value}
                                             onChange={handleSwitchChange}
-                                            name="playGIFOnClick"
-                                            disabled={Boolean(models.fileValue)}
+                                            name="playAudioAutomatically"
+                                            disabled={Object.keys(audios.fileValue).length === 0}
                                         />
                                     </Grid>
                                 </Grid>
@@ -118,7 +116,7 @@ function InputFormTwo(props) {
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
                                         <Typography variant="h6">
-                                            Scroll to Element ID on Click
+                                             Redirect to (website link)
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
@@ -152,7 +150,7 @@ function InputFormTwo(props) {
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
                                         <Typography variant="h6">
-                                            Button Hover Sound
+                                             Sound playing delay (in seconds)
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
@@ -163,18 +161,8 @@ function InputFormTwo(props) {
                                                     type="text"
                                                     className={classes.input}
                                                     style={{ color: '#ffffff' }}
-                                                    startAdornment={
-                                                        <InputAdornment position="start">
-                                                            <IconButton>
-                                                                <LinkIcon
-                                                                    style={{
-                                                                        color:
-                                                                            red[500],
-                                                                    }}
-                                                                />
-                                                            </IconButton>
-                                                        </InputAdornment>
-                                                    }
+                                                    disabled={!playAudioAutomatically.value}
+                                                    
                                                 />
                                             </Grid>
                                         </Grid>
@@ -182,7 +170,7 @@ function InputFormTwo(props) {
                                 </Grid>
                             </Grid>
                             {/* Fifth input */}
-                            <Grid item xs={12} sm={6}>
+                            {/* <Grid item xs={12} sm={6}>
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
                                         <Typography variant="h6">
@@ -197,6 +185,7 @@ function InputFormTwo(props) {
                                                     type="text"
                                                     className={classes.input}
                                                     style={{ color: '#ffffff' }}
+                                                    disabled={true}
                                                     startAdornment={
                                                         <InputAdornment position="start">
                                                             <IconButton>
@@ -214,9 +203,9 @@ function InputFormTwo(props) {
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid>
+                            </Grid> */}
                             {/* Sixth input */}
-                            <Grid item xs={12} sm={6}>
+                            {/* <Grid item xs={12} sm={6}>
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
                                         <Typography variant="h6">
@@ -231,6 +220,7 @@ function InputFormTwo(props) {
                                                     type="text"
                                                     className={classes.input}
                                                     style={{ color: '#ffffff' }}
+                                                    disabled={true}
                                                     startAdornment={
                                                         <InputAdornment position="start">
                                                             <IconButton>
@@ -248,7 +238,7 @@ function InputFormTwo(props) {
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                     </Paper>
                 </Grid>
@@ -265,4 +255,13 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, null)(InputFormTwo);
+
+// MAPPING ACTION TO PROPS
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPlayAudioAutomatically: (payload) => dispatch(fileActionCreator.setPlayAudioAutomatically(payload)),
+        setPlayAudioOnClick: (payload) => dispatch(fileActionCreator.setPlayAudioOnClick(payload)),
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(InputFormTwo);

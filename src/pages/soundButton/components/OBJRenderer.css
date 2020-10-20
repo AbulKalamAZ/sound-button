@@ -11,7 +11,7 @@ canvas {
     z-index: 999;
 }
 
-img {
+.model-bg-img {
     position: absolute;
     bottom: 0;
     width: 100%;

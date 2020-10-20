@@ -16,6 +16,12 @@ const initState = {
         defaultFileName: 'No file choosen',
         fileValue: {},
     },
+    playAudioOnClick: {
+        value: false
+    },
+    playAudioAutomatically: {
+        value: true
+    },
 };
 
 const fileReducer = (state = initState, action) => {
@@ -76,6 +82,31 @@ const fileReducer = (state = initState, action) => {
 
             return { ...state };
 
+        case 'SET_PLAY_AUDIO_ON_CLICK':
+            return {
+                ...state,
+                playAudioOnClick: {
+                    ...state.playAudioOnClick,
+                    value: payload 
+                },
+                playAudioAutomatically: {
+                    ...state.playAudioAutomatically,
+                    value: !payload
+                }
+            }
+
+        case 'SET_PLAY_AUDIO_AUTOMATICALLY':
+            return {
+                ...state,
+                playAudioOnClick: {
+                    ...state.playAudioOnClick,
+                    value: !payload 
+                },
+                playAudioAutomatically: {
+                    ...state.playAudioAutomatically,
+                    value: payload
+                }
+            }
         default:
             return { ...state };
     }

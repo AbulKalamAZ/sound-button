@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import DefaultLayout from '../../layouts/DefaultLayout';
-import ModelRenderer from './components/ModelRenderer'
+import OBJRenderer from './components/OBJRenderer'
 import GIFRenderer from './components/GIFRenderer'
 
 import { fetchButtonData } from '../../firebase/utility';
@@ -76,7 +76,7 @@ function SoundButton(props) {
     return (
         <DefaultLayout>
             <div className={classes.root}>
-                {Object.keys(buttonInfo).length === 0 ? <CircularProgress size={80} style={{color: '#ffffff'}} /> : buttonInfo.models ? (<ModelRenderer buttonInfo={buttonInfo} />) : (<GIFRenderer buttonInfo={buttonInfo} />) }
+                {Object.keys(buttonInfo).length === 0 ? <CircularProgress size={80} style={{color: '#ffffff'}} /> : buttonInfo.models ? (<OBJRenderer buttonInfo={buttonInfo} />) : (<GIFRenderer buttonInfo={buttonInfo} />) }
                 <audio className={classes.audioElement} ref={audioElement} src={buttonInfo.audios ?? null} loop></audio>
             </div>
         </DefaultLayout>

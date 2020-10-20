@@ -12,7 +12,7 @@ import DoneIcon from '@material-ui/icons/Done';
 
 import InputFormOne from './InputFormOne';
 import InputFormTwo from './InputFormTwo';
-import InputFormThree from './InputFormThree';
+// import InputFormThree from './InputFormThree';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -47,7 +47,7 @@ function FormContainer(props) {
                 model: models.fileValue,
                 gif: gifs.fileValue,
                 audio: audios.fileValue,
-                image: images.fileValue,
+                image: images.fileValue
             });
         }
     };
@@ -62,9 +62,9 @@ function FormContainer(props) {
                     <Grid item xs={12}>
                         <InputFormTwo />
                     </Grid>
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                         <InputFormThree />
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12}>
                         <Button
                             variant="contained"

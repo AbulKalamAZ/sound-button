@@ -12,9 +12,15 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import teal from '@material-ui/core/colors/teal';
+import IconButton from '@material-ui/core/IconButton'
+import BeenhereSharpIcon from '@material-ui/icons/BeenhereSharp';
 import * as controlActionCreator from '../../store/actions/control_actions';
 
 const useStyles = makeStyles((theme) => ({
+    dialogTitle: {
+        background: '#00695c',
+        color: "#ffffff"
+    },
     closeButton: {
         position: 'absolute',
         right: theme.spacing(1),
@@ -67,22 +73,26 @@ function NewButtonModal(props) {
                 aria-labelledby="customized-dialog-title"
                 open={isModalOpen}
             >
-                <MuiDialogTitle disableTypography id="customized-dialog-title">
-                    <Typography variant="h5">
-                        {isFileUploadStarted
-                            ? 'Button is being created . .'
-                            : 'Button is created !!'}
-                    </Typography>
-                    {/* {!isFileUploadStarted && (
+                {isFileUploadStarted ? (
+                    <MuiDialogTitle disableTypography id="customized-dialog-title">
+                        <Typography variant="h5">
+                            Uploading files . .
+                        </Typography>
+                    </MuiDialogTitle>
+                ) : (
+                    <MuiDialogTitle disableTypography id="customized-dialog-title" className={classes.dialogTitle}>
+                        <Typography variant="h5">
+                            Your button is ready!
+                        </Typography>
                         <IconButton
                             aria-label="close"
                             className={classes.closeButton}
                             onClick={closeModal}
                         >
-                            <CloseIcon />
+                            <BeenhereSharpIcon style={{color: '#ffffff', fontSize: 30}} />
                         </IconButton>
-                    )} */}
-                </MuiDialogTitle>
+                    </MuiDialogTitle>
+                )}
                 <MuiDialogContent dividers style={{ margin: '0 auto' }}>
                     {isFileUploadStarted ? (
                         <Typography gutterBottom>
@@ -92,7 +102,7 @@ function NewButtonModal(props) {
                         </Typography>
                     ) : (
                         <Typography gutterBottom>
-                            Your button is ready! You can copy the code below to
+                            You can copy the code below to
                             emmbed the button into your site
                         </Typography>
                     )}

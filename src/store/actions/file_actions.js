@@ -52,7 +52,7 @@ export const fileUploadError = () => {
 // Upload file to server
 
 export const uploadFile = (data) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         //set file uploading flag
         dispatch(fileUploadStarted());
         dispatch(controlActionCreator.openModal());
@@ -64,9 +64,9 @@ export const uploadFile = (data) => {
             const fileData = data[key];
 
             if (fileData !== null && fileData.value) {
+                
                 return fileUploadToStorage(fileData);
             }
-
             return {};
         });
 
@@ -75,7 +75,7 @@ export const uploadFile = (data) => {
 
                 // dispatching update button data
                 res.map((item) => {
-                    if (item !== {}) {
+                    if (Object.keys(item).length !== 0) {
                         dispatch(
                             buttonActionCreator.updateButtonData({
                                 name: item.name,
@@ -83,11 +83,31 @@ export const uploadFile = (data) => {
                             })
                         );
                     } else {
-                        console.log(item);
+                        console.log('from file action', item);
                     }
 
                     return 0;
                 });
+            })
+            .then(res => {
+                const { playAudioOnClick } = getState().file;
+
+                dispatch(
+                    buttonActionCreator.updateButtonData({
+                        name: 'playAudioOnClick',
+                        value: playAudioOnClick.value,
+                    })
+                )
+            })
+            .then(res => {
+                const { playAudioAutomatically } = getState().file;
+
+                dispatch(
+                    buttonActionCreator.updateButtonData({
+                        name: 'playAudioAutomatically',
+                        value: playAudioAutomatically.value,
+                    })
+                )
             })
             .then(() => {
                 // dispatching file uplaod successfull flag
@@ -103,3 +123,23 @@ export const uploadFile = (data) => {
             });
     };
 };
+
+
+// play audio on click
+
+export const setPlayAudioOnClick = (payload) => {
+    return {
+        type: 'SET_PLAY_AUDIO_ON_CLICK',
+        payload: payload
+    }
+}
+
+
+// play audio on automatically
+
+export const setPlayAudioAutomatically = (payload) => {
+    return {
+        type: 'SET_PLAY_AUDIO_AUTOMATICALLY',
+        payload: payload
+    }
+}

@@ -10,10 +10,11 @@ export const updateButtonData = (data) => {
     };
 };
 
-// Uload button data to the storage
+// Upload button data to the storage
 export const uploadButtonData = () => {
     return (dispatch, getState) => {
         const buttonInfo = getState().button.button;
+
 
         uploadButtonInfoToDatabase(buttonInfo).then((res) => {
             dispatch({ type: 'UPLOAD_BUTTON_DATA', payload: res.id });
