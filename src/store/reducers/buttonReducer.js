@@ -5,8 +5,10 @@ const initState = {
         gifs: null,
         audios: null,
         images: null,
-        playAudioOnClick: null,
-        playAudioAutomatically: null
+        playAudioOnClick: false,
+        playAudioAutomatically: true,
+        redirectTo: null,
+        audioPlayingDelay: null
     },
 };
 
@@ -16,7 +18,6 @@ const buttonReducer = (state = initState, action) => {
     switch (type) {
         case 'UPDATE_BUTTON_DATA':
 
-        console.log(payload)
             if (payload.name && payload.value) {
                 return {
                     ...state,
@@ -39,6 +40,46 @@ const buttonReducer = (state = initState, action) => {
             }
 
             return { ...state };
+        
+            case 'SET_PLAY_AUDIO_ON_CLICK':
+                
+                return {
+                    ...state,
+                    button: {
+                        ...state.button,
+                        playAudioOnClick: payload,
+                        playAudioAutomatically: !payload
+                    }
+                }
+    
+            case 'SET_PLAY_AUDIO_AUTOMATICALLY':
+                
+                return {
+                    ...state,
+                    button: {
+                        ...state.button,
+                        playAudioOnClick: !payload,
+                        playAudioAutomatically: payload
+                    }
+                }
+
+            case 'REDIRECT_TO':
+                return {
+                    ...state,
+                    button: {
+                        ...state.button,
+                        redirectTo: payload
+                    }
+                }
+
+            case 'AUDIO_PLAYING_DELAY':
+                return {
+                    ...state,
+                    button: {
+                        ...state.button,
+                        audioPlayingDelay: payload
+                    }
+                }
         default:
             return { ...state };
     }

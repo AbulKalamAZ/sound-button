@@ -6,7 +6,8 @@ const initState = {
     isFileUploadError: false,
     isModalOpen: false,
     isCreateButtonDisabled: false,
-    playAudio: false
+    playAudio: false,
+    showFrame: false
 };
 
 const createReducer = (state = initState, action) => {
@@ -68,6 +69,13 @@ const createReducer = (state = initState, action) => {
                 ...state,
                 playAudio: false,
             };
+
+        case 'SHOW_FRAME':
+            return {
+                ...state,
+                showFrame: true
+            }
+            
         default:
             return { ...state };
     }

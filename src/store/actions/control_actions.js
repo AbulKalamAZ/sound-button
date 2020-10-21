@@ -28,3 +28,10 @@ export const pauseAudio = () => {
         type: 'PAUSE_AUDIO'
     }
 }
+
+export const showFrame = () => {
+    return {
+        type: 'SHOW_FRAME'
+    }
+}
+

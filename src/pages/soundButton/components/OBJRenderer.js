@@ -130,20 +130,34 @@ class OBJRenderer extends Component {
 
     // Handle audio player control
     handlePlayerControl = () => {
-        const { playAudio, pauseAudio, control } = this.props;
+        const { showFrame, playAudio, pauseAudio, control } = this.props;
+        const { playAudioAutomatically } = this.props.buttonInfo;
 
-        if(control.playAudio) {
-            pauseAudio();
+
+        if(playAudioAutomatically) {
+            if(!control.showFrame) {
+                showFrame()
+            }
         } else {
-            playAudio();
+
+            if(control.playAudio) {
+
+                pauseAudio();
+
+            } else {
+
+                playAudio();
+
+            }
         }
+        
     }
     render() {
 
         const { images } = this.props.buttonInfo
 
         return (
-            <div ref={this.renderNode} className="model-renderer" >
+            <div ref={this.renderNode} className="model-renderer" onClick={this.handlePlayerControl} >
                 <img src={images ?? modelBackground} className="model-bg-img" alt="default background media" />
             </div>
             
@@ -161,7 +175,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         playAudio: () => dispatch(controlActionCreator.playAudio()),
-        pauseAudio: () => dispatch(controlActionCreator.pauseAudio())
+        pauseAudio: () => dispatch(controlActionCreator.pauseAudio()),
+        showFrame: () => dispatch(controlActionCreator.showFrame())
+
     }
 }
 

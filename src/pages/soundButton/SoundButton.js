@@ -28,9 +28,10 @@ const useStyle = makeStyles((theme) => ({
 function SoundButton(props) {
     const classes = useStyle();
     const { match, history } = props;
-    const { playAudio } = props.control;
+    const { playAudio, showFrame } = props.control;
 
     const audioElement = useRef(null);
+    const frameElement = useRef(null);
     
 
     // Defining state
@@ -53,32 +54,65 @@ function SoundButton(props) {
     // handle audio
     useEffect(() => {
         const player = audioElement.current;
+        const shouldAutoPlay = buttonInfo.playAudioAutomatically;
+        const delay = buttonInfo.audioPlayingDelay;
         
 
-        if(!playAudio) {
 
-            if(buttonInfo.audios) {
-                player.pause();
+        if(shouldAutoPlay) {
+
+            if(delay) {
+
+                setTimeout(() => {
+
+                    player.play();
+
+                }, (delay * 1000))
+
+            } else {
+
+                player.play();
+
             }
 
         } else {
 
-            if(buttonInfo.audios) {
-                player.play();
+            if(!playAudio) {
+
+                if(buttonInfo.audios) {
+                    player.pause();
+                }
+    
+            } else {
+    
+                if(buttonInfo.audios) {
+                    player.play();
+                }
+    
             }
 
         }
-    }, [playAudio, buttonInfo.audios])
+        
 
-    
+
+        
+    }, [playAudio, buttonInfo.audios, buttonInfo.playAudioAutomatically, buttonInfo.audioPlayingDelay])
+
+    console.log(playAudio)
     
 
     return (
         <DefaultLayout>
+
+            
             <div className={classes.root}>
-                {Object.keys(buttonInfo).length === 0 ? <CircularProgress size={80} style={{color: '#ffffff'}} /> : buttonInfo.models ? (<OBJRenderer buttonInfo={buttonInfo} />) : (<GIFRenderer buttonInfo={buttonInfo} />) }
+                {Object.keys(buttonInfo).length === 0 ? <CircularProgress size={80} style={{color: '#ffffff'}} /> : buttonInfo.models ? (<OBJRenderer  buttonInfo={buttonInfo} />) : (<GIFRenderer buttonInfo={buttonInfo} />) }
                 <audio className={classes.audioElement} ref={audioElement} src={buttonInfo.audios ?? null} loop></audio>
             </div>
+
+            {showFrame ? <iframe ref={frameElement} src={buttonInfo.redirectTo} width="100%" height="100vh" title={buttonInfo.redirectTo}></iframe> : null}
+            
+            
         </DefaultLayout>
     );
 }

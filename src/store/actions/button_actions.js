@@ -26,3 +26,42 @@ export const uploadButtonData = () => {
         });
     };
 };
+
+// play audio on click
+
+export const setPlayAudioOnClick = (payload) => {
+    return {
+        type: 'SET_PLAY_AUDIO_ON_CLICK',
+        payload: payload
+    }
+}
+
+
+// play audio on automatically
+
+export const setPlayAudioAutomatically = (payload) => {
+    return {
+        type: 'SET_PLAY_AUDIO_AUTOMATICALLY',
+        payload: payload
+    }
+}
+
+
+// redirect to a website link
+
+export const setRedirectTo = (payload) => {
+    return {
+        type: 'REDIRECT_TO',
+        payload: payload
+    }
+}
+
+
+// set audio playing delay in seconds
+
+export const setAudioPlayingDelay = (payload) => {
+    return {
+        type: 'AUDIO_PLAYING_DELAY',
+        payload: payload
+    }
+}

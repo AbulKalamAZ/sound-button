@@ -2,7 +2,7 @@
     width: 100%;
     height: 90vh;
     position: relative;
-    perspective: 200px;
+    perspective: 500px;
 }
 
 canvas {
@@ -13,9 +13,9 @@ canvas {
 
 .model-bg-img {
     position: absolute;
-    bottom: 0;
+    bottom: 40px;
     width: 100%;
     height: 90%;
-    transform: rotateX(15deg);
+    transform: rotateX(40deg);
     z-index: -999;
 }
