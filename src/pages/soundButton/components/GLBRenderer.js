@@ -8,18 +8,17 @@ import modelBackground from '../../../assets/button_background.png';
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-class OBJRenderer extends Component {
+class GLBRenderer extends Component {
     constructor(props) {
         super(props);
-        this.renderNode = createRef();
+        this.renderNodeGLB = createRef();
     }
 
     componentDidMount() {
         // Destructuring values from props
         const { models } = this.props.buttonInfo;
-
         // on progress methods
         const onProgress = (xhr) => {
             if (xhr.lengthComputable) {
@@ -102,7 +101,7 @@ class OBJRenderer extends Component {
 
         // Configuring renderer
 
-        this.renderNode.current.appendChild(renderer.domElement);
+        this.renderNodeGLB.current.appendChild(renderer.domElement);
 
         // Configuring loader
 
@@ -110,14 +109,14 @@ class OBJRenderer extends Component {
 
         let manager = new THREE.LoadingManager(loadModel);
 
-        let loader = new OBJLoader2(manager);
+        let loader = new GLTFLoader(manager);
 
         let wrapper = new THREE.Object3D();
 
         loader.load(
             models,
             function (obj) {
-                head = obj;
+                head = obj.scene;
             },
             onProgress,
             onError,
@@ -125,8 +124,8 @@ class OBJRenderer extends Component {
             false
         );
 
-        wrapper.position.set(0, -10, 0);
-        // wrapper.rotation.x = (25 / 180) * Math.PI;
+        wrapper.position.set(0, 0, 0);
+        // wrapper.rotation.x = (90 / 180) * Math.PI;
 
         controls = new OrbitControls(camera, renderer.domElement);
         controls.enableRotate = true;
@@ -136,7 +135,7 @@ class OBJRenderer extends Component {
         //anmate method
         // let delta = 0;
         function animate() {
-            // wrapper.rotation.y += 0.01;
+            // wrapper.rotation.y += 0.025;
             renderer.render(scene, camera);
             controls.update();
 
@@ -168,7 +167,7 @@ class OBJRenderer extends Component {
 
         return (
             <div
-                ref={this.renderNode}
+                ref={this.renderNodeGLB}
                 className="model-renderer"
                 onClick={this.handlePlayerControl}
             >
@@ -196,4 +195,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(OBJRenderer);
+export default connect(mapStateToProps, mapDispatchToProps)(GLBRenderer);

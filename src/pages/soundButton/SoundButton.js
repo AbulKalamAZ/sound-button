@@ -6,10 +6,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import DefaultLayout from '../../layouts/DefaultLayout';
-import OBJRenderer from './components/OBJRenderer'
-import GIFRenderer from './components/GIFRenderer'
+import GIFRenderer from './components/GIFRenderer';
 
 import { fetchButtonData } from '../../firebase/utility';
+import ModelRenderer from './components/ModelRenderer';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -18,21 +18,19 @@ const useStyle = makeStyles((theme) => ({
         background: '#014E58',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     audioElement: {
-        display: 'none'
-    }
+        display: 'none',
+    },
 }));
 
 function SoundButton(props) {
     const classes = useStyle();
     const { match, history } = props;
-    const { playAudio, showFrame } = props.control;
+    const { playAudio } = props.control;
 
     const audioElement = useRef(null);
-    const frameElement = useRef(null);
-    
 
     // Defining state
     const id = match.params.id;
@@ -49,70 +47,68 @@ function SoundButton(props) {
                 history.push('/create-button');
             });
     }, [id, history]);
-    
 
     // handle audio
     useEffect(() => {
-        const player = audioElement.current;
-        const shouldAutoPlay = buttonInfo.playAudioAutomatically;
-        const delay = buttonInfo.audioPlayingDelay;
-        
+        const {
+            audios,
+            playAudioOnClick,
+            playAudioAutomatically,
+            audioPlayingDelay,
+        } = buttonInfo;
 
+        if (audios) {
+            // Initiating audio olayer
+            const player = audioElement.current;
 
-        if(shouldAutoPlay) {
+            // Check auto play
 
-            if(delay) {
-
-                setTimeout(() => {
-
+            if (playAudioOnClick) {
+                if (playAudio) {
                     player.play();
-
-                }, (delay * 1000))
-
-            } else {
-
-                player.play();
-
-            }
-
-        } else {
-
-            if(!playAudio) {
-
-                if(buttonInfo.audios) {
+                } else {
                     player.pause();
                 }
-    
-            } else {
-    
-                if(buttonInfo.audios) {
+            } else if (playAudioAutomatically) {
+                // Check if delay
+                if (audioPlayingDelay) {
+                    setTimeout(() => {
+                        player.play();
+                    }, audioPlayingDelay * 1000);
+                } else {
                     player.play();
                 }
-    
             }
-
         }
-        
-
-
-        
-    }, [playAudio, buttonInfo.audios, buttonInfo.playAudioAutomatically, buttonInfo.audioPlayingDelay])
-
-    console.log(playAudio)
-    
+    }, [
+        playAudio,
+        buttonInfo,
+        buttonInfo.audios,
+        buttonInfo.playAudioOnClick,
+        buttonInfo.playAudioAutomatically,
+        buttonInfo.audioPlayingDelay,
+    ]);
 
     return (
         <DefaultLayout>
-
-            
             <div className={classes.root}>
-                {Object.keys(buttonInfo).length === 0 ? <CircularProgress size={80} style={{color: '#ffffff'}} /> : buttonInfo.models ? (<OBJRenderer  buttonInfo={buttonInfo} />) : (<GIFRenderer buttonInfo={buttonInfo} />) }
-                <audio className={classes.audioElement} ref={audioElement} src={buttonInfo.audios ?? null} loop></audio>
-            </div>
+                {Object.keys(buttonInfo).length === 0 ? (
+                    <CircularProgress size={80} style={{ color: '#ffffff' }} />
+                ) : buttonInfo.models ? (
+                    <ModelRenderer buttonDetails={buttonInfo} />
+                ) : (
+                    <GIFRenderer buttonInfo={buttonInfo} />
+                )}
 
-            {showFrame ? <iframe ref={frameElement} src={buttonInfo.redirectTo} width="100%" height="100vh" title={buttonInfo.redirectTo}></iframe> : null}
-            
-            
+                {buttonInfo.audios ? (
+                    <audio
+                        ref={audioElement}
+                        className={classes.audioElement}
+                        src={buttonInfo.audios}
+                        loop
+                    ></audio>
+                ) : null}
+            </div>
         </DefaultLayout>
     );
 }
@@ -122,10 +118,8 @@ function SoundButton(props) {
 const mapStateToProps = (state) => {
     return {
         button: state.button,
-        control: state.control
+        control: state.control,
     };
 };
-
-
 
 export default withRouter(connect(mapStateToProps, null)(SoundButton));

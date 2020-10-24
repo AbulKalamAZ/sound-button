@@ -52,7 +52,11 @@ export const fileUploadError = () => {
 // Upload file to server
 
 export const uploadFile = (data) => {
-    return (dispatch, getState) => {
+
+
+    return (dispatch) => {
+
+
         //set file uploading flag
         dispatch(fileUploadStarted());
         dispatch(controlActionCreator.openModal());
@@ -63,6 +67,21 @@ export const uploadFile = (data) => {
         const fileUploadRequests = keys.map((key) => {
             const fileData = data[key];
 
+            // if the key is equal to modal, then we are extracting the model file format
+            if(key === 'model') {
+                const model = data[key];
+                const modelFormat = model.fileName.split('.')[1]
+
+                //we are just passing model format value to updateButtonData method 
+                dispatch(
+                    buttonActionCreator.updateButtonData({
+                        name: 'modelFormat',
+                        value: modelFormat,
+                    })
+                );
+            }
+
+            // when we got valid data from user, we send it to fileUploadToStorage method
             if (fileData !== null && fileData.value) {
                 
                 return fileUploadToStorage(fileData);

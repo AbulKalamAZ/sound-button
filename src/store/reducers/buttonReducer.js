@@ -2,6 +2,7 @@ const initState = {
     buttonId: '',
     button: {
         models: null,
+        modelFormat: null,
         gifs: null,
         audios: null,
         images: null,

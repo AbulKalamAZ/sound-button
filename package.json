@@ -18,7 +18,8 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "swiper": "^6.2.0",
-    "three": "^0.121.1"
+    "three": "^0.121.1",
+    "threex.domevents": "^1.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
