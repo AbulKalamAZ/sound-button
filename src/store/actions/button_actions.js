@@ -15,15 +15,16 @@ export const uploadButtonData = () => {
     return (dispatch, getState) => {
         const buttonInfo = getState().button.button;
 
-
-        uploadButtonInfoToDatabase(buttonInfo).then((res) => {
-            dispatch({ type: 'UPLOAD_BUTTON_DATA', payload: res.id });
-            
-        }).then(() => {
-            dispatch(controlActionCreator.setButtonId())
-        }).then(() => {
-            dispatch(fileActionCreator.unloadFile())
-        });
+        uploadButtonInfoToDatabase(buttonInfo)
+            .then((res) => {
+                dispatch({ type: 'UPLOAD_BUTTON_DATA', payload: res.id });
+            })
+            .then(() => {
+                dispatch(controlActionCreator.setButtonId());
+            })
+            .then(() => {
+                dispatch(fileActionCreator.unloadFile());
+            });
     };
 };
 
@@ -32,36 +33,51 @@ export const uploadButtonData = () => {
 export const setPlayAudioOnClick = (payload) => {
     return {
         type: 'SET_PLAY_AUDIO_ON_CLICK',
-        payload: payload
-    }
-}
-
+        payload: payload,
+    };
+};
 
 // play audio on automatically
 
 export const setPlayAudioAutomatically = (payload) => {
     return {
         type: 'SET_PLAY_AUDIO_AUTOMATICALLY',
-        payload: payload
-    }
-}
+        payload: payload,
+    };
+};
 
+// rotate model by mouse
+
+export const setRotateModelByMouse = (payload) => {
+    return {
+        type: 'SET_ROTATE_MODEL_BY_MOSUE',
+        payload: payload,
+    };
+};
+
+// rotate model automatically
+
+export const setRotateModelAutomatically = (payload) => {
+    return {
+        type: 'SET_ROTATE_MODEL_AUTOMATICALLY',
+        payload: payload,
+    };
+};
 
 // redirect to a website link
 
 export const setRedirectTo = (payload) => {
     return {
         type: 'REDIRECT_TO',
-        payload: payload
-    }
-}
-
+        payload: payload,
+    };
+};
 
 // set audio playing delay in seconds
 
 export const setAudioPlayingDelay = (payload) => {
     return {
         type: 'AUDIO_PLAYING_DELAY',
-        payload: payload
-    }
-}
+        payload: payload,
+    };
+};

@@ -18,7 +18,7 @@ class OBJRenderer extends Component {
 
     componentDidMount() {
         // Destructuring values from props
-        const { models } = this.props.buttonInfo;
+        const { models, rotateModelByMouse } = this.props.buttonInfo;
 
         // on progress methods
         const onProgress = (xhr) => {
@@ -129,14 +129,15 @@ class OBJRenderer extends Component {
         // wrapper.rotation.x = (25 / 180) * Math.PI;
 
         controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableRotate = true;
+        controls.enableRotate = rotateModelByMouse;
         controls.minDistance = 1;
         controls.maxDistance = 1000;
 
         //anmate method
         // let delta = 0;
         function animate() {
-            // wrapper.rotation.y += 0.01;
+            if (!rotateModelByMouse) wrapper.rotation.y += 0.01;
+
             renderer.render(scene, camera);
             controls.update();
 
@@ -165,6 +166,7 @@ class OBJRenderer extends Component {
     };
     render() {
         const { images } = this.props.buttonInfo;
+        console.log(this.props.buttonInfo);
 
         return (
             <div
