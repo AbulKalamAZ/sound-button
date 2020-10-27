@@ -10,6 +10,20 @@ export const closeModal = () => {
     };
 };
 
+// frame modal actions
+
+export const openFrameModal = () => {
+    return {
+        type: 'OPEN_FRAME_MODAL',
+    };
+};
+
+export const closeFrameModal = () => {
+    return {
+        type: 'CLOSE_FRAME_MODAL',
+    };
+};
+
 export const setButtonId = () => {
     return {
         type: 'SET_BUTTON_ID',
@@ -18,20 +32,18 @@ export const setButtonId = () => {
 
 export const playAudio = () => {
     return {
-        type: 'PLAY_AUDIO'
-    }
-}
-
+        type: 'PLAY_AUDIO',
+    };
+};
 
 export const pauseAudio = () => {
     return {
-        type: 'PAUSE_AUDIO'
-    }
-}
+        type: 'PAUSE_AUDIO',
+    };
+};
 
 export const showFrame = () => {
     return {
-        type: 'SHOW_FRAME'
-    }
-}
-
+        type: 'SHOW_FRAME',
+    };
+};

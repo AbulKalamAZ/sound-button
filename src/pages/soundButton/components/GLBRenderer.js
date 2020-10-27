@@ -2,6 +2,8 @@ import React, { Component, createRef } from 'react';
 import { connect } from 'react-redux';
 import './OBJRenderer.css';
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import * as controlActionCreator from '../../../store/actions/control_actions';
 
 import modelBackground from '../../../assets/button_background.png';
@@ -14,6 +16,9 @@ class GLBRenderer extends Component {
     constructor(props) {
         super(props);
         this.renderNodeGLB = createRef();
+        this.state = {
+            isModelLoaded: false,
+        };
     }
 
     componentDidMount() {
@@ -24,6 +29,9 @@ class GLBRenderer extends Component {
             if (xhr.lengthComputable) {
                 if (xhr.loaded === xhr.total) {
                     console.log('Model 100% downloaded');
+                    this.setState({
+                        isModelLoaded: true,
+                    });
                 }
             }
         };
@@ -147,13 +155,10 @@ class GLBRenderer extends Component {
 
     // Handle audio player control
     handlePlayerControl = () => {
-        const { showFrame, playAudio, pauseAudio, control } = this.props;
+        const { playAudio, pauseAudio, control } = this.props;
         const { playAudioAutomatically } = this.props.buttonInfo;
 
         if (playAudioAutomatically) {
-            if (!control.showFrame) {
-                showFrame();
-            }
         } else {
             if (control.playAudio) {
                 pauseAudio();
@@ -162,15 +167,31 @@ class GLBRenderer extends Component {
             }
         }
     };
+
+    // handle open modal method
+
+    handleOpenModal = () => {
+        if (this.props.buttonInfo.redirectTo) {
+            this.props.openFrameModal();
+        }
+    };
     render() {
         const { images } = this.props.buttonInfo;
-
+        const { isModelLoaded } = this.state;
         return (
             <div
                 ref={this.renderNodeGLB}
                 className="model-renderer"
                 onClick={this.handlePlayerControl}
+                onDoubleClick={this.handleOpenModal}
             >
+                {!isModelLoaded ? (
+                    <CircularProgress
+                        size={80}
+                        className="model-loader-indicator"
+                        color="primary"
+                    />
+                ) : null}
                 <img
                     src={images ?? modelBackground}
                     className="model-bg-img"
@@ -191,7 +212,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         playAudio: () => dispatch(controlActionCreator.playAudio()),
         pauseAudio: () => dispatch(controlActionCreator.pauseAudio()),
-        showFrame: () => dispatch(controlActionCreator.showFrame()),
+        openFrameModal: () => dispatch(controlActionCreator.openFrameModal()),
     };
 };
 

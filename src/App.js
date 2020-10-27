@@ -6,17 +6,22 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './pages/home/Home';
 import SoundButton from './pages/soundButton/SoundButton';
 import CreateButton from './pages/createButton/CreateButton';
+import Frame from './pages/frame/Frame';
 import NewButtonModal from './components/modal/NewButtonModal';
+import OpeniFrameModal from './components/modal/OpeniFrameModal';
 
 function App() {
     return (
         <Router>
             <div className="app">
                 <NewButtonModal />
+                <OpeniFrameModal />
+
                 <Switch>
                     <Route path="/" exact component={Home} />
-                    <Route path="/button/:id" component={SoundButton} />
                     <Route path="/create-button" component={CreateButton} />
+                    <Route path="/button/:id" component={SoundButton} />
+                    <Route path="/frame/:id" component={Frame} />
                 </Switch>
             </div>
         </Router>

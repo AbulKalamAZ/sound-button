@@ -7,7 +7,7 @@ const initState = {
     isModalOpen: false,
     isCreateButtonDisabled: false,
     playAudio: false,
-    showFrame: false
+    showFrameModal: false,
 };
 
 const createReducer = (state = initState, action) => {
@@ -48,23 +48,31 @@ const createReducer = (state = initState, action) => {
                 isFileUploaded: false,
             };
 
+        case 'OPEN_FRAME_MODAL':
+            return {
+                ...state,
+                showFrameModal: true,
+            };
+
+        case 'CLOSE_FRAME_MODAL':
+            return {
+                ...state,
+                showFrameModal: false,
+            };
+
         case 'SET_BUTTON_ID':
-            
             return {
                 ...state,
                 isFileUploadStarted: false,
             };
 
         case 'PLAY_AUDIO':
-
-            
             return {
                 ...state,
                 playAudio: true,
             };
 
         case 'PAUSE_AUDIO':
-
             return {
                 ...state,
                 playAudio: false,
@@ -73,9 +81,9 @@ const createReducer = (state = initState, action) => {
         case 'SHOW_FRAME':
             return {
                 ...state,
-                showFrame: true
-            }
-            
+                showFrame: true,
+            };
+
         default:
             return { ...state };
     }

@@ -3,6 +3,9 @@
     height: 90vh;
     position: relative;
     perspective: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 canvas {
@@ -17,4 +20,10 @@ canvas {
     height: 90%;
     transform: rotateX(15deg);
     z-index: -999;
+}
+
+.model-loader-indicator {
+    position: absolute;
+    top: 50%;
+    margin: 0 auto;
 }
