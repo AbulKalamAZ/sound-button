@@ -53,7 +53,9 @@ const OrangeSwitch = withStyles({
 })(Switch);
 
 function InputFormTwo(props) {
+    console.log(props.control);
     const { audios, models } = props.file;
+    const { redirectTo } = props.button;
     const {
         playAudioOnClick,
         playAudioAutomatically,
@@ -67,6 +69,10 @@ function InputFormTwo(props) {
         setAudioPlayingDelay,
         setRotateModelByMouse,
         setRotateModelAutomatically,
+        setFrameWidth,
+        setFrameHeight,
+        setFramePositionLeft,
+        setFramePositionTop,
     } = props;
     const classes = useStyle();
 
@@ -90,6 +96,22 @@ function InputFormTwo(props) {
 
             case 'redirectTo':
                 setRedirectTo(event.target.value);
+                break;
+
+            case 'frameWidth':
+                setFrameWidth(event.target.value);
+                break;
+
+            case 'frameHeight':
+                setFrameHeight(event.target.value);
+                break;
+
+            case 'framePositionFromLeft':
+                setFramePositionLeft(event.target.value);
+                break;
+
+            case 'framePositionFromTop':
+                setFramePositionTop(event.target.value);
                 break;
 
             default:
@@ -268,12 +290,13 @@ function InputFormTwo(props) {
                                     </Grid>
                                 </Grid>
                             </Grid>
-                            {/* Fifth input */}
-                            {/* <Grid item xs={12} sm={6}>
+
+                            {/* Seventh input */}
+                            <Grid item xs={12} sm={6}>
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
                                         <Typography variant="h6">
-                                            Sound Playing Delay (in seconds)
+                                            iFrame's width
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
@@ -282,33 +305,25 @@ function InputFormTwo(props) {
                                                 <OutlinedInput
                                                     fullWidth
                                                     type="text"
+                                                    name="frameWidth"
+                                                    onChange={
+                                                        handleSwitchChange
+                                                    }
                                                     className={classes.input}
                                                     style={{ color: '#ffffff' }}
-                                                    disabled={true}
-                                                    startAdornment={
-                                                        <InputAdornment position="start">
-                                                            <IconButton>
-                                                                <LinkIcon
-                                                                    style={{
-                                                                        color:
-                                                                            red[500],
-                                                                    }}
-                                                                />
-                                                            </IconButton>
-                                                        </InputAdornment>
-                                                    }
+                                                    disabled={!redirectTo}
                                                 />
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid> */}
-                            {/* Sixth input */}
-                            {/* <Grid item xs={12} sm={6}>
+                            </Grid>
+                            {/* Eighth input */}
+                            <Grid item xs={12} sm={6}>
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
                                         <Typography variant="h6">
-                                            Redirect to (website link)
+                                            iFrame's height
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
@@ -317,27 +332,73 @@ function InputFormTwo(props) {
                                                 <OutlinedInput
                                                     fullWidth
                                                     type="text"
+                                                    name="frameHeight"
+                                                    onChange={
+                                                        handleSwitchChange
+                                                    }
                                                     className={classes.input}
                                                     style={{ color: '#ffffff' }}
-                                                    disabled={true}
-                                                    startAdornment={
-                                                        <InputAdornment position="start">
-                                                            <IconButton>
-                                                                <LinkIcon
-                                                                    style={{
-                                                                        color:
-                                                                            red[500],
-                                                                    }}
-                                                                />
-                                                            </IconButton>
-                                                        </InputAdornment>
-                                                    }
+                                                    disabled={!redirectTo}
                                                 />
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid> */}
+                            </Grid>
+                            {/* Nineth input */}
+                            <Grid item xs={12} sm={6}>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12}>
+                                        <Typography variant="h6">
+                                            iFrame's position (form left)
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Grid container spacing={1}>
+                                            <Grid item xs={12} sm={9}>
+                                                <OutlinedInput
+                                                    fullWidth
+                                                    type="text"
+                                                    name="framePositionFromLeft"
+                                                    onChange={
+                                                        handleSwitchChange
+                                                    }
+                                                    className={classes.input}
+                                                    style={{ color: '#ffffff' }}
+                                                    disabled={!redirectTo}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            {/* Tenth input */}
+                            <Grid item xs={12} sm={6}>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12}>
+                                        <Typography variant="h6">
+                                            iFrame's psoition (form top)
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Grid container spacing={1}>
+                                            <Grid item xs={12} sm={9}>
+                                                <OutlinedInput
+                                                    fullWidth
+                                                    type="text"
+                                                    name="framePositionFromTop"
+                                                    onChange={
+                                                        handleSwitchChange
+                                                    }
+                                                    className={classes.input}
+                                                    style={{ color: '#ffffff' }}
+                                                    disabled={!redirectTo}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Paper>
                 </Grid>
@@ -352,6 +413,7 @@ const mapStateToProps = (state) => {
     return {
         file: state.file,
         button: state.button.button,
+        control: state.control,
     };
 };
 
@@ -371,6 +433,14 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(buttonActionCreator.setRedirectTo(payload)),
         setAudioPlayingDelay: (payload) =>
             dispatch(buttonActionCreator.setAudioPlayingDelay(payload)),
+        setFrameWidth: (payload) =>
+            dispatch(buttonActionCreator.setFrameWidth(payload)),
+        setFrameHeight: (payload) =>
+            dispatch(buttonActionCreator.setFrameHeight(payload)),
+        setFramePositionLeft: (payload) =>
+            dispatch(buttonActionCreator.setFramePositionLeft(payload)),
+        setFramePositionTop: (payload) =>
+            dispatch(buttonActionCreator.setFramePositionTop(payload)),
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(InputFormTwo);

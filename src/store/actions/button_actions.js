@@ -73,6 +73,34 @@ export const setRedirectTo = (payload) => {
     };
 };
 
+export const setFrameWidth = (payload) => {
+    return {
+        type: 'SET_FRAME_WIDTH',
+        payload: +payload,
+    };
+};
+
+export const setFrameHeight = (payload) => {
+    return {
+        type: 'SET_FRAME_HEIGHT',
+        payload: +payload,
+    };
+};
+
+export const setFramePositionLeft = (payload) => {
+    return {
+        type: 'SET_FRAME_POSITION_LEFT',
+        payload: +payload,
+    };
+};
+
+export const setFramePositionTop = (payload) => {
+    return {
+        type: 'SET_FRAME_POSITION_TOP',
+        payload: +payload,
+    };
+};
+
 // set audio playing delay in seconds
 
 export const setAudioPlayingDelay = (payload) => {

@@ -8,12 +8,10 @@ const initState = {
     isCreateButtonDisabled: false,
     playAudio: false,
     showFrameModal: false,
-    frameWidth: 0,
-    frameHeight: 0,
 };
 
 const createReducer = (state = initState, action) => {
-    const { type, payload } = action;
+    const { type } = action;
 
     switch (type) {
         case 'FILE_UPLOAD_START':
@@ -60,18 +58,6 @@ const createReducer = (state = initState, action) => {
             return {
                 ...state,
                 showFrameModal: false,
-            };
-
-        case 'SET_FRAME_WIDTH':
-            return {
-                ...state,
-                frameWidth: payload,
-            };
-
-        case 'SET_FRAME_HEIGHT':
-            return {
-                ...state,
-                frameHeight: payload,
             };
 
         case 'SET_BUTTON_ID':

@@ -38,8 +38,10 @@ function SoundButton(props) {
 
     // Using effect
     useEffect(() => {
+        console.log(id);
         fetchButtonData(id)
             .then((res) => {
+                console.log(res);
                 setButtonInfo({ ...res });
             })
             .catch((err) => {

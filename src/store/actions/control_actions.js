@@ -24,20 +24,6 @@ export const closeFrameModal = () => {
     };
 };
 
-export const setFrameWidth = (payload) => {
-    return {
-        type: 'SET_FRAME_WIDTH',
-        payload: +payload,
-    };
-};
-
-export const setFrameHeight = (payload) => {
-    return {
-        type: 'SET_FRAME_HEIGHT',
-        payload: +payload,
-    };
-};
-
 export const setButtonId = () => {
     return {
         type: 'SET_BUTTON_ID',

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -8,8 +7,6 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import teal from '@material-ui/core/colors/teal';
 import IconButton from '@material-ui/core/IconButton';
 import LaunchIcon from '@material-ui/icons/Launch';
@@ -57,16 +54,13 @@ function OpeniFrameModal(props) {
 
     // Destructuring props
 
-    const { showFrameModal, frameWidth, frameHeight } = props.control;
-    const { buttonId } = props.button;
-    const { closeFrameModal, setFrameWidth, setFrameHeight } = props;
+    const { showFrameModal } = props.control;
+    const { closeFrameModal } = props;
 
-    const handleInputChange = (e) => {
-        if (e.target.id === 'frame-width') {
-            setFrameWidth(e.target.value);
-        } else {
-            setFrameHeight(e.target.value);
-        }
+    // open iFrame method
+
+    const openIframe = () => {
+        closeFrameModal();
     };
 
     return (
@@ -82,7 +76,9 @@ function OpeniFrameModal(props) {
                     id="customized-dialog-title"
                     className={classes.dialogTitle}
                 >
-                    <Typography variant="h6">Do you want to leave ?</Typography>
+                    <Typography variant="h6">
+                        Do you want to open an iframe ?
+                    </Typography>
                     <IconButton
                         aria-label="close"
                         className={classes.closeButton}
@@ -95,41 +91,21 @@ function OpeniFrameModal(props) {
 
                 <MuiDialogContent dividers style={{ margin: '0 auto' }}>
                     <Typography gutterBottom>
-                        Please enter the value of following properties of your
-                        iframe
+                        Please click on the redirect button to open the iframe
                     </Typography>
-
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                id="frame-width"
-                                label="Width"
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                id="frame-height"
-                                label="Height"
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                    </Grid>
                 </MuiDialogContent>
                 <MuiDialogActions>
-                    <Link to={`/frame/${buttonId}`} className={classes.link}>
-                        <Button
-                            variant="contained"
-                            className={classes.button}
-                            disabled={!frameWidth && !frameHeight}
-                            component="span"
-                            onClick={closeFrameModal}
-                        >
-                            Redirect
-                        </Button>
-                    </Link>
+                    <Button variant="contained" onClick={closeFrameModal}>
+                        cancel
+                    </Button>
+                    <Button
+                        variant="contained"
+                        className={classes.button}
+                        component="span"
+                        onClick={openIframe}
+                    >
+                        Redirect
+                    </Button>
                 </MuiDialogActions>
             </Dialog>
         </div>
@@ -141,7 +117,6 @@ function OpeniFrameModal(props) {
 const mapStateToProps = (state) => {
     return {
         control: state.control,
-        button: state.button,
     };
 };
 
@@ -150,10 +125,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         closeFrameModal: () => dispatch(controlActionCreator.closeFrameModal()),
-        setFrameWidth: (data) =>
-            dispatch(controlActionCreator.setFrameWidth(data)),
-        setFrameHeight: (data) =>
-            dispatch(controlActionCreator.setFrameHeight(data)),
     };
 };
 

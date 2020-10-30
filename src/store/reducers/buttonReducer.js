@@ -11,6 +11,10 @@ const initState = {
         rotateModelByMouse: false,
         rotateModelAutomatically: true,
         redirectTo: null,
+        frameWidth: 0,
+        frameHeight: 0,
+        framePositionFromLeft: 0,
+        framePositionFromTop: 0,
         audioPlayingDelay: null,
     },
 };
@@ -88,6 +92,42 @@ const buttonReducer = (state = initState, action) => {
                 button: {
                     ...state.button,
                     redirectTo: payload,
+                },
+            };
+
+        case 'SET_FRAME_WIDTH':
+            return {
+                ...state,
+                button: {
+                    ...state.button,
+                    frameWidth: payload,
+                },
+            };
+
+        case 'SET_FRAME_HEIGHT':
+            return {
+                ...state,
+                button: {
+                    ...state.button,
+                    frameHeight: payload,
+                },
+            };
+
+        case 'SET_FRAME_POSITION_LEFT':
+            return {
+                ...state,
+                button: {
+                    ...state.button,
+                    framePositionFromLeft: payload,
+                },
+            };
+
+        case 'SET_FRAME_POSITION_TOP':
+            return {
+                ...state,
+                button: {
+                    ...state.button,
+                    framePositionFromTop: payload,
                 },
             };
 
