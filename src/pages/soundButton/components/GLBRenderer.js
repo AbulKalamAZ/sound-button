@@ -49,16 +49,7 @@ class GLBRenderer extends Component {
             }, 10);
         };
 
-        let scene,
-            camera,
-            renderer,
-            light,
-            light2,
-            light3,
-            light4,
-            light5,
-            light6,
-            controls;
+        let scene, camera, renderer, light, light2, light3, controls;
 
         // Creating a scene
         scene = new THREE.Scene();
@@ -75,29 +66,18 @@ class GLBRenderer extends Component {
 
         // Creating light source
 
-        light = new THREE.DirectionalLight(0xffffff, 0.3);
-        light.position.set(200, 0, 0);
+        light = new THREE.AmbientLight(0x666666);
         scene.add(light);
 
-        light2 = new THREE.DirectionalLight(0xffffff, 0.3);
-        light2.position.set(-200, 0, 0);
+        light2 = new THREE.DirectionalLight(0xdfebff, 1);
+        light2.position.set(50, 200, 100);
+        light2.position.multiplyScalar(1.3);
         scene.add(light2);
 
-        light3 = new THREE.DirectionalLight(0xffffff, 0.3);
-        light3.position.set(0, 200, 0);
+        light3 = new THREE.DirectionalLight(0xdfebff, 1);
+        light3.position.set(-50, 200, -100);
+        light3.position.multiplyScalar(1.3);
         scene.add(light3);
-
-        light4 = new THREE.DirectionalLight(0xffffff, 0.3);
-        light4.position.set(0, -200, 0);
-        scene.add(light4);
-
-        light5 = new THREE.DirectionalLight(0xffffff, 0.3);
-        light5.position.set(0, 200, 0);
-        scene.add(light5);
-
-        light6 = new THREE.DirectionalLight(0xffffff, 0.3);
-        light6.position.set(0, -200, 0);
-        scene.add(light6);
 
         // Creating renderer
 

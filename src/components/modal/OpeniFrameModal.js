@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -57,19 +57,15 @@ function OpeniFrameModal(props) {
 
     // Destructuring props
 
-    const { showFrameModal } = props.control;
+    const { showFrameModal, frameWidth, frameHeight } = props.control;
     const { buttonId } = props.button;
-    const { closeFrameModal } = props;
-
-    // Defining state
-    const [width, setWidth] = useState(null);
-    const [height, setHeight] = useState(null);
+    const { closeFrameModal, setFrameWidth, setFrameHeight } = props;
 
     const handleInputChange = (e) => {
         if (e.target.id === 'frame-width') {
-            setWidth(e.target.value);
+            setFrameWidth(e.target.value);
         } else {
-            setHeight(e.target.value);
+            setFrameHeight(e.target.value);
         }
     };
 
@@ -127,7 +123,7 @@ function OpeniFrameModal(props) {
                         <Button
                             variant="contained"
                             className={classes.button}
-                            disabled={!width && !height}
+                            disabled={!frameWidth && !frameHeight}
                             component="span"
                             onClick={closeFrameModal}
                         >
@@ -154,6 +150,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         closeFrameModal: () => dispatch(controlActionCreator.closeFrameModal()),
+        setFrameWidth: (data) =>
+            dispatch(controlActionCreator.setFrameWidth(data)),
+        setFrameHeight: (data) =>
+            dispatch(controlActionCreator.setFrameHeight(data)),
     };
 };
 

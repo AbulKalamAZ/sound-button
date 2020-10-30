@@ -213,11 +213,8 @@ function InputFormTwo(props) {
                                                         handleSwitchChange
                                                     }
                                                     disabled={
-                                                        Object.keys(
-                                                            audios.fileValue
-                                                        ).length === 0
-                                                            ? true
-                                                            : playAudioOnClick
+                                                        models.fileValue ===
+                                                        null
                                                     }
                                                     startAdornment={
                                                         <InputAdornment position="start">
