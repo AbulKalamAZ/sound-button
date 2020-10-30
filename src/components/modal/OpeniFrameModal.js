@@ -55,12 +55,13 @@ function OpeniFrameModal(props) {
     // Destructuring props
 
     const { showFrameModal } = props.control;
-    const { closeFrameModal } = props;
+    const { closeFrameModal, showFrame } = props;
 
     // open iFrame method
 
     const openIframe = () => {
         closeFrameModal();
+        showFrame();
     };
 
     return (
@@ -125,6 +126,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         closeFrameModal: () => dispatch(controlActionCreator.closeFrameModal()),
+        showFrame: () => dispatch(controlActionCreator.showFrame()),
     };
 };
 

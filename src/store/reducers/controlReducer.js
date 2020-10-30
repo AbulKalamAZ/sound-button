@@ -8,6 +8,7 @@ const initState = {
     isCreateButtonDisabled: false,
     playAudio: false,
     showFrameModal: false,
+    showIFrame: false,
 };
 
 const createReducer = (state = initState, action) => {
@@ -81,7 +82,7 @@ const createReducer = (state = initState, action) => {
         case 'SHOW_FRAME':
             return {
                 ...state,
-                showFrame: true,
+                showIFrame: true,
             };
 
         default:

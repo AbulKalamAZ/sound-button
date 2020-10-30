@@ -20,6 +20,11 @@ const useStyle = makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    iframeContainer: {
+        width: '100%',
+        height: '100vh',
+        position: 'relative',
+    },
     audioElement: {
         display: 'none',
     },
@@ -28,9 +33,10 @@ const useStyle = makeStyles((theme) => ({
 function SoundButton(props) {
     const classes = useStyle();
     const { match, history } = props;
-    const { playAudio } = props.control;
+    const { playAudio, showIFrame } = props.control;
 
     const audioElement = useRef(null);
+    const frameContainer = useRef(null);
 
     // Defining state
     const id = match.params.id;
@@ -38,14 +44,12 @@ function SoundButton(props) {
 
     // Using effect
     useEffect(() => {
-        console.log(id);
         fetchButtonData(id)
             .then((res) => {
-                console.log(res);
                 setButtonInfo({ ...res });
             })
             .catch((err) => {
-                console.log(err);
+                console.log('Error form SoundButton.js ', err);
                 history.push('/create-button');
             });
     }, [id, history]);
@@ -91,6 +95,10 @@ function SoundButton(props) {
         buttonInfo.audioPlayingDelay,
     ]);
 
+    // handle generating iframe
+
+    useEffect(() => {}, []);
+
     return (
         <DefaultLayout>
             <div className={classes.root}>
@@ -101,6 +109,10 @@ function SoundButton(props) {
                 ) : (
                     <GIFRenderer buttonInfo={buttonInfo} />
                 )}
+
+                {/* Container for iframe */}
+
+                <div ref={frameContainer} className="iframeContainer"></div>
 
                 {buttonInfo.audios ? (
                     <audio
