@@ -92,7 +92,7 @@ function OpeniFrameModal(props) {
 
                 <MuiDialogContent dividers style={{ margin: '0 auto' }}>
                     <Typography gutterBottom>
-                        Please click on the redirect button to open the iframe
+                        Please click on the open button to open the iframe
                     </Typography>
                 </MuiDialogContent>
                 <MuiDialogActions>
@@ -105,7 +105,7 @@ function OpeniFrameModal(props) {
                         component="span"
                         onClick={openIframe}
                     >
-                        Redirect
+                        Open
                     </Button>
                 </MuiDialogActions>
             </Dialog>

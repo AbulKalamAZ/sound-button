@@ -53,7 +53,6 @@ const OrangeSwitch = withStyles({
 })(Switch);
 
 function InputFormTwo(props) {
-    console.log(props.control);
     const { audios, models } = props.file;
     const { redirectTo } = props.button;
     const {
