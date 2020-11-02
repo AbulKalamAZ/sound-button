@@ -109,26 +109,33 @@ function SoundButton(props) {
     // handle generating iframe
 
     useEffect(() => {
+        const generateIframe = () => {
+            let frame;
+            frame = document.createElement('iframe');
+            frame.src = buttonInfo.redirectTo;
+            frame.width = buttonInfo.frameWidth;
+            frame.height = buttonInfo.frameHeight;
+            frame.frameBorder = 0;
+            frame.style.position = 'absolute';
+            frame.style.top = `${buttonInfo.framePositionFromTop}px`;
+            frame.style.left = `${buttonInfo.framePositionFromLeft}px`;
+            frameContainer.current.appendChild(frame);
+            if (showIFrame) {
+                window.scrollTo(0, window.innerHeight);
+            }
+        };
         if (showIFrame) generateIframe();
-    }, [showIFrame]);
+    }, [
+        showIFrame,
+        buttonInfo.redirectTo,
+        buttonInfo.frameWidth,
+        buttonInfo.frameHeight,
+        buttonInfo.framePositionFromTop,
+        buttonInfo.framePositionFromLeft,
+    ]);
 
     // generate an iframe
 
-    const generateIframe = () => {
-        let frame;
-        frame = document.createElement('iframe');
-        frame.src = buttonInfo.redirectTo;
-        frame.width = buttonInfo.frameWidth;
-        frame.height = buttonInfo.frameHeight;
-        frame.frameBorder = 0;
-        frame.style.position = 'absolute';
-        frame.style.top = `${buttonInfo.framePositionFromTop}px`;
-        frame.style.left = `${buttonInfo.framePositionFromLeft}px`;
-        frameContainer.current.appendChild(frame);
-        if (showIFrame) {
-            window.scrollTo(0, window.innerHeight);
-        }
-    };
     return (
         <DefaultLayout>
             <div className={classes.root}>
