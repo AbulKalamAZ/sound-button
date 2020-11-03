@@ -10,20 +10,6 @@ export const closeModal = () => {
     };
 };
 
-// frame modal actions
-
-export const openFrameModal = () => {
-    return {
-        type: 'OPEN_FRAME_MODAL',
-    };
-};
-
-export const closeFrameModal = () => {
-    return {
-        type: 'CLOSE_FRAME_MODAL',
-    };
-};
-
 export const setButtonId = () => {
     return {
         type: 'SET_BUTTON_ID',
@@ -42,7 +28,7 @@ export const pauseAudio = () => {
     };
 };
 
-export const showFrame = () => {
+export const showIframe = () => {
     return {
         type: 'SHOW_FRAME',
     };

@@ -154,7 +154,7 @@ class OBJRenderer extends Component {
 
     handleOpenModal = () => {
         if (this.props.buttonInfo.redirectTo) {
-            this.props.openFrameModal();
+            this.props.showIframe();
         }
     };
     render() {
@@ -195,7 +195,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         playAudio: () => dispatch(controlActionCreator.playAudio()),
         pauseAudio: () => dispatch(controlActionCreator.pauseAudio()),
-        openFrameModal: () => dispatch(controlActionCreator.openFrameModal()),
+        showIframe: () => dispatch(controlActionCreator.showIframe()),
     };
 };
 

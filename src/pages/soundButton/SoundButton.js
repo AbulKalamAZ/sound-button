@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -12,6 +12,9 @@ import GIFRenderer from './components/GIFRenderer';
 
 import { fetchButtonData } from '../../firebase/utility';
 import ModelRenderer from './components/ModelRenderer';
+
+import frameShell from '../../firebase/frameShell.js';
+import { saveAs } from 'file-saver';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -33,7 +36,7 @@ const useStyle = makeStyles((theme) => ({
     },
     downloadButton: {
         position: 'absolute',
-        bottom: '120px',
+        bottom: '60px',
         right: '60px',
     },
     audioElement: {
@@ -44,7 +47,7 @@ const useStyle = makeStyles((theme) => ({
 function SoundButton(props) {
     const classes = useStyle();
     const { match, history } = props;
-    const { playAudio, showIFrame } = props.control;
+    const { playAudio, showIframe } = props.control;
 
     const audioElement = useRef(null);
     const frameContainer = useRef(null);
@@ -115,18 +118,17 @@ function SoundButton(props) {
             frame.src = buttonInfo.redirectTo;
             frame.width = buttonInfo.frameWidth;
             frame.height = buttonInfo.frameHeight;
-            frame.frameBorder = 0;
             frame.style.position = 'absolute';
             frame.style.top = `${buttonInfo.framePositionFromTop}px`;
             frame.style.left = `${buttonInfo.framePositionFromLeft}px`;
             frameContainer.current.appendChild(frame);
-            if (showIFrame) {
+            if (showIframe) {
                 window.scrollTo(0, window.innerHeight);
             }
         };
-        if (showIFrame) generateIframe();
+        if (showIframe) generateIframe();
     }, [
-        showIFrame,
+        showIframe,
         buttonInfo.redirectTo,
         buttonInfo.frameWidth,
         buttonInfo.frameHeight,
@@ -134,7 +136,16 @@ function SoundButton(props) {
         buttonInfo.framePositionFromLeft,
     ]);
 
-    // generate an iframe
+    const downloadFrame = () => {
+        let frameSTR = frameShell.replace(
+            'src',
+            `src="${buttonInfo.redirectTo}"`
+        );
+
+        let blob = new Blob([frameSTR], { type: 'text/html;charset=utf-8' });
+
+        saveAs(blob, 'downloaded-frame.html');
+    };
 
     return (
         <DefaultLayout>
@@ -156,21 +167,19 @@ function SoundButton(props) {
 
                 <div
                     ref={frameContainer}
-                    className={showIFrame ? classes.iframeContainer : {}}
+                    className={showIframe ? classes.iframeContainer : {}}
                 >
-                    {showIFrame ? (
-                        <Link to="/frame.html" target="_blank" download>
-                            <IconButton
-                                className={classes.downloadButton}
-                                aria-label="download iframe"
-                                onClick={() => console.log('download it!!')}
-                            >
-                                <GetAppIcon
-                                    fontSize="large"
-                                    style={{ color: '#ffffff' }}
-                                />
-                            </IconButton>
-                        </Link>
+                    {showIframe ? (
+                        <IconButton
+                            className={classes.downloadButton}
+                            aria-label="download iframe"
+                            onClick={downloadFrame}
+                        >
+                            <GetAppIcon
+                                fontSize="large"
+                                style={{ color: '#ffffff' }}
+                            />
+                        </IconButton>
                     ) : null}
                 </div>
 
