@@ -58,12 +58,16 @@ function InputFormTwo(props) {
     const {
         playAudioOnClick,
         playAudioAutomatically,
+        playAudioOnce,
+        playAudioInLoop,
         rotateModelByMouse,
         rotateModelAutomatically,
     } = props.button;
     const {
         setPlayAudioOnClick,
         setPlayAudioAutomatically,
+        setPlayAudioOnce,
+        setPlayAudioInLoop,
         setRedirectTo,
         setAudioPlayingDelay,
         setRotateModelByMouse,
@@ -83,6 +87,14 @@ function InputFormTwo(props) {
 
             case 'playAudioAutomatically':
                 setPlayAudioAutomatically(event.target.checked);
+                break;
+
+            case 'playAudioOnce':
+                setPlayAudioOnce(event.target.checked);
+                break;
+
+            case 'playAudioInLoop':
+                setPlayAudioInLoop(event.target.checked);
                 break;
 
             case 'rotateModelByMouse':
@@ -190,6 +202,7 @@ function InputFormTwo(props) {
                                     </Grid>
                                 </Grid>
                             </Grid>
+
                             {/* Fourth input */}
                             <Grid item xs={12} sm={6}>
                                 <Grid container spacing={1}>
@@ -213,6 +226,50 @@ function InputFormTwo(props) {
                             </Grid>
 
                             {/* Fifth input */}
+                            <Grid item xs={12} sm={6}>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12}>
+                                        <Typography variant="h6">
+                                            Play audio once
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <OrangeSwitch
+                                            checked={playAudioOnce}
+                                            onChange={handleSwitchChange}
+                                            name="playAudioOnce"
+                                            disabled={
+                                                Object.keys(audios.fileValue)
+                                                    .length === 0
+                                            }
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+
+                            {/* Sixth input */}
+                            <Grid item xs={12} sm={6}>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12}>
+                                        <Typography variant="h6">
+                                            Play audio in loop
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <OrangeSwitch
+                                            checked={playAudioInLoop}
+                                            onChange={handleSwitchChange}
+                                            name="playAudioInLoop"
+                                            disabled={
+                                                Object.keys(audios.fileValue)
+                                                    .length === 0
+                                            }
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+
+                            {/* Seventh input */}
                             <Grid item xs={12} sm={6}>
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
@@ -255,7 +312,8 @@ function InputFormTwo(props) {
                                     </Grid>
                                 </Grid>
                             </Grid>
-                            {/* Sixth input */}
+
+                            {/* Eighth input */}
                             <Grid item xs={12} sm={6}>
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
@@ -290,7 +348,7 @@ function InputFormTwo(props) {
                                 </Grid>
                             </Grid>
 
-                            {/* Seventh input */}
+                            {/* Nineth input */}
                             <Grid item xs={12} sm={6}>
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
@@ -318,7 +376,8 @@ function InputFormTwo(props) {
                                     </Grid>
                                 </Grid>
                             </Grid>
-                            {/* Eighth input */}
+
+                            {/* Ten input */}
                             <Grid item xs={12} sm={6}>
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
@@ -346,7 +405,8 @@ function InputFormTwo(props) {
                                     </Grid>
                                 </Grid>
                             </Grid>
-                            {/* Nineth input */}
+
+                            {/* Eleventh input */}
                             <Grid item xs={12} sm={6}>
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
@@ -374,7 +434,8 @@ function InputFormTwo(props) {
                                     </Grid>
                                 </Grid>
                             </Grid>
-                            {/* Tenth input */}
+
+                            {/* Twelveth input */}
                             <Grid item xs={12} sm={6}>
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
@@ -424,10 +485,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setPlayAudioAutomatically: (payload) =>
-            dispatch(buttonActionCreator.setPlayAudioAutomatically(payload)),
         setPlayAudioOnClick: (payload) =>
             dispatch(buttonActionCreator.setPlayAudioOnClick(payload)),
+        setPlayAudioAutomatically: (payload) =>
+            dispatch(buttonActionCreator.setPlayAudioAutomatically(payload)),
+        setPlayAudioOnce: (payload) =>
+            dispatch(buttonActionCreator.setPlayAudioOnce(payload)),
+        setPlayAudioInLoop: (payload) =>
+            dispatch(buttonActionCreator.setPlayAudioInLoop(payload)),
         setRotateModelByMouse: (payload) =>
             dispatch(buttonActionCreator.setRotateModelByMouse(payload)),
         setRotateModelAutomatically: (payload) =>

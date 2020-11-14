@@ -46,6 +46,23 @@ export const setPlayAudioAutomatically = (payload) => {
     };
 };
 
+// play audio once
+
+export const setPlayAudioOnce = (payload) => {
+    return {
+        type: 'SET_PLAY_AUDIO_ONCE',
+        payload: payload,
+    };
+};
+
+// play audio in loop
+
+export const setPlayAudioInLoop = (payload) => {
+    return {
+        type: 'SET_PLAY_AUDIO_IN_LOOP',
+        payload: payload,
+    };
+};
 // rotate model by mouse
 
 export const setRotateModelByMouse = (payload) => {

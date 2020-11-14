@@ -188,7 +188,7 @@ function SoundButton(props) {
                         ref={audioElement}
                         className={classes.audioElement}
                         src={buttonInfo.audios}
-                        loop
+                        loop={buttonInfo.playAudioInLoop}
                     ></audio>
                 ) : null}
             </div>

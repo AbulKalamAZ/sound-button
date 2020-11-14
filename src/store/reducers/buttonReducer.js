@@ -8,6 +8,8 @@ const initState = {
         images: null,
         playAudioOnClick: false,
         playAudioAutomatically: true,
+        playAudioOnce: true,
+        playAudioInLoop: false,
         rotateModelByMouse: false,
         rotateModelAutomatically: true,
         redirectTo: null,
@@ -83,6 +85,26 @@ const buttonReducer = (state = initState, action) => {
                     ...state.button,
                     rotateModelByMouse: !payload,
                     rotateModelAutomatically: payload,
+                },
+            };
+
+        case 'SET_PLAY_AUDIO_ONCE':
+            return {
+                ...state,
+                button: {
+                    ...state.button,
+                    playAudioOnce: payload,
+                    playAudioInLoop: !payload,
+                },
+            };
+
+        case 'SET_PLAY_AUDIO_IN_LOOP':
+            return {
+                ...state,
+                button: {
+                    ...state.button,
+                    playAudioOnce: !payload,
+                    playAudioInLoop: payload,
                 },
             };
 
