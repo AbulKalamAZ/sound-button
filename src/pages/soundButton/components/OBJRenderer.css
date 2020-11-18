@@ -1,6 +1,6 @@
 .model-renderer {
     width: 100%;
-    height: 90vh;
+    height: 100vh;
     position: relative;
     perspective: 200px;
     display: flex;

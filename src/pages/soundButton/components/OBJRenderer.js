@@ -6,7 +6,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import * as controlActionCreator from '../../../store/actions/control_actions';
 
-import modelBackground from '../../../assets/button_background.png';
+import posX from '../../../assets/posx.jpg';
+import negX from '../../../assets/negx.jpg';
+import posY from '../../../assets/posy.jpg';
+import negY from '../../../assets/negy.jpg';
+import posZ from '../../../assets/posz.jpg';
+import negZ from '../../../assets/negz.jpg';
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -50,46 +55,66 @@ class OBJRenderer extends Component {
             }, 10);
         };
 
-        let scene, camera, renderer, light, light2, light3, controls;
+        // on window resize
+        const onWindowResize = () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        };
+
+        let scene,
+            camera,
+            renderer,
+            light,
+            light2,
+            controls,
+            backgroundLoader,
+            texture,
+            plane;
+
+        // Creating renderer
+
+        renderer = new THREE.WebGLRenderer({
+            antialias: true,
+        });
+        // Configuring renderer
+
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        this.renderNode.current.appendChild(renderer.domElement);
 
         // Creating a scene
         scene = new THREE.Scene();
 
         // Creating camera
-        camera = new THREE.PerspectiveCamera(
-            10,
-            window.innerWidth / (window.innerHeight * 0.9),
-            1,
-            1500
-        );
+        camera = new THREE.PerspectiveCamera(60, 1920 / 1080, 1.0, 1000.0);
 
-        camera.position.set(0, 250, 500);
+        camera.position.set(0, 50, 150);
 
         // Creating light source
 
-        light = new THREE.AmbientLight(0x666666);
+        light = new THREE.DirectionalLight(0xffffff, 1.0);
+        light.position.set(20, 100, 10);
+        light.target.position.set(0, 0, 0);
+        light.castShadow = true;
+        light.shadow.bias = -0.001;
+        light.shadow.mapSize.width = 2048;
+        light.shadow.mapSize.height = 2048;
+        light.shadow.camera.near = 0.1;
+        light.shadow.camera.far = 500.0;
+        light.shadow.camera.near = 0.5;
+        light.shadow.camera.far = 500.0;
+        light.shadow.camera.left = 100;
+        light.shadow.camera.right = -100;
+        light.shadow.camera.top = 100;
+        light.shadow.camera.bottom = -100;
         scene.add(light);
 
-        light2 = new THREE.DirectionalLight(0xdfebff, 1);
-        light2.position.set(50, 200, 100);
-        light2.position.multiplyScalar(1.3);
+        light = new THREE.AmbientLight(0xffffff, 4.0);
         scene.add(light2);
-
-        light3 = new THREE.DirectionalLight(0xdfebff, 1);
-        light3.position.set(-50, 200, -100);
-        light3.position.multiplyScalar(1.3);
-        scene.add(light3);
-        // Creating renderer
-
-        renderer = new THREE.WebGLRenderer({
-            alpha: true,
-            antialias: true,
-        });
-        renderer.setSize(window.innerWidth, window.innerHeight * 0.9);
-
-        // Configuring renderer
-
-        this.renderNode.current.appendChild(renderer.domElement);
 
         // Configuring loader
 
@@ -104,6 +129,9 @@ class OBJRenderer extends Component {
         loader.load(
             models,
             function (obj) {
+                obj.traverse((node) => {
+                    if (node.isMesh) node.castShadow = true;
+                });
                 head = obj;
             },
             onProgress,
@@ -112,14 +140,33 @@ class OBJRenderer extends Component {
             false
         );
 
-        wrapper.position.set(0, -10, 0);
+        wrapper.position.set(0, 0, 0);
         // wrapper.rotation.x = (25 / 180) * Math.PI;
 
         controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableRotate = rotateModelByMouse;
-        controls.enableDamping = rotateModelByMouse;
-        controls.minDistance = 1;
-        controls.maxDistance = 1000;
+        controls.target.set(0, 20, 0);
+        controls.update();
+
+        // Background loader
+        backgroundLoader = new THREE.CubeTextureLoader();
+        texture = backgroundLoader.load([posX, negX, posY, negY, posZ, negZ]);
+
+        scene.background = texture;
+
+        // Creating plane
+
+        plane = new THREE.Mesh(
+            new THREE.PlaneGeometry(500, 500, 10, 10),
+            new THREE.MeshStandardMaterial({
+                color: 0x202020,
+            })
+        );
+
+        plane.castShadow = false;
+        plane.receiveShadow = true;
+        plane.rotation.x = -Math.PI / 2;
+        plane.position.set(0, 0, 0);
+        scene.add(plane);
 
         //anmate method
         // let delta = 0;
@@ -133,6 +180,15 @@ class OBJRenderer extends Component {
         }
 
         animate();
+
+        // On window resize
+        window.addEventListener(
+            'resize',
+            () => {
+                onWindowResize();
+            },
+            false
+        );
     }
 
     // Handle audio player control
@@ -158,7 +214,7 @@ class OBJRenderer extends Component {
         }
     };
     render() {
-        const { images } = this.props.buttonInfo;
+        // const { images } = this.props.buttonInfo;
         const { isModelLoaded } = this.state;
 
         return (
@@ -175,11 +231,11 @@ class OBJRenderer extends Component {
                         color="primary"
                     />
                 ) : null}
-                <img
+                {/* <img
                     src={images ?? modelBackground}
                     className="model-bg-img"
                     alt="default background media"
-                />
+                /> */}
             </div>
         );
     }

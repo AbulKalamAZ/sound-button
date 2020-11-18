@@ -6,8 +6,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { IconButton } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-import DefaultLayout from '../../layouts/DefaultLayout';
+// import DefaultLayout from '../../layouts/DefaultLayout';
 import GIFRenderer from './components/GIFRenderer';
 
 import { fetchButtonData } from '../../firebase/utility';
@@ -19,7 +20,7 @@ import { saveAs } from 'file-saver';
 const useStyle = makeStyles((theme) => ({
     root: {
         width: '100%',
-        minHeight: '90vh',
+        minHeight: '100vh',
         background: '#014E58',
     },
     modelContainer: {
@@ -33,6 +34,13 @@ const useStyle = makeStyles((theme) => ({
         width: '100%',
         height: '100vh',
         position: 'relative',
+    },
+    backButton: {
+        position: 'absolute',
+        top: '30px',
+        left: '30px',
+        transform: 'rotateY(180deg)',
+        zIndex: '9999',
     },
     downloadButton: {
         position: 'absolute',
@@ -136,6 +144,10 @@ function SoundButton(props) {
         buttonInfo.framePositionFromLeft,
     ]);
 
+    const gotToCreateButtonPage = () => {
+        history.push('/create-button');
+    };
+
     const downloadFrame = () => {
         let frameSTR = frameShell.replace(
             'src',
@@ -148,51 +160,54 @@ function SoundButton(props) {
     };
 
     return (
-        <DefaultLayout>
-            <div className={classes.root}>
-                <div className={classes.modelContainer}>
-                    {Object.keys(buttonInfo).length === 0 ? (
-                        <CircularProgress
-                            size={80}
+        <div className={classes.root}>
+            {/* Back button for navigation */}
+            <IconButton
+                className={classes.backButton}
+                aria-label="navigate to previous page"
+                onClick={gotToCreateButtonPage}
+            >
+                <ExitToAppIcon fontSize="large" style={{ color: '#ffffff' }} />
+            </IconButton>
+            <div className={classes.modelContainer}>
+                {Object.keys(buttonInfo).length === 0 ? (
+                    <CircularProgress size={80} style={{ color: '#ffffff' }} />
+                ) : buttonInfo.models ? (
+                    <ModelRenderer buttonDetails={buttonInfo} />
+                ) : (
+                    <GIFRenderer buttonInfo={buttonInfo} />
+                )}
+            </div>
+
+            {/* Container for iframe */}
+
+            <div
+                ref={frameContainer}
+                className={showIframe ? classes.iframeContainer : {}}
+            >
+                {showIframe ? (
+                    <IconButton
+                        className={classes.downloadButton}
+                        aria-label="download iframe"
+                        onClick={downloadFrame}
+                    >
+                        <GetAppIcon
+                            fontSize="large"
                             style={{ color: '#ffffff' }}
                         />
-                    ) : buttonInfo.models ? (
-                        <ModelRenderer buttonDetails={buttonInfo} />
-                    ) : (
-                        <GIFRenderer buttonInfo={buttonInfo} />
-                    )}
-                </div>
-
-                {/* Container for iframe */}
-
-                <div
-                    ref={frameContainer}
-                    className={showIframe ? classes.iframeContainer : {}}
-                >
-                    {showIframe ? (
-                        <IconButton
-                            className={classes.downloadButton}
-                            aria-label="download iframe"
-                            onClick={downloadFrame}
-                        >
-                            <GetAppIcon
-                                fontSize="large"
-                                style={{ color: '#ffffff' }}
-                            />
-                        </IconButton>
-                    ) : null}
-                </div>
-
-                {buttonInfo.audios ? (
-                    <audio
-                        ref={audioElement}
-                        className={classes.audioElement}
-                        src={buttonInfo.audios}
-                        loop={buttonInfo.playAudioInLoop}
-                    ></audio>
+                    </IconButton>
                 ) : null}
             </div>
-        </DefaultLayout>
+
+            {buttonInfo.audios ? (
+                <audio
+                    ref={audioElement}
+                    className={classes.audioElement}
+                    src={buttonInfo.audios}
+                    loop={buttonInfo.playAudioInLoop}
+                ></audio>
+            ) : null}
+        </div>
     );
 }
 
