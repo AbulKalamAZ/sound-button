@@ -1,21 +1,45 @@
 // Initial state of this reducer
 const initState = {
     models: {
-        defaultFileName: 'No file choosen',
+        defaultFileName: 'No 3D model choosen',
         fileValue: null,
     },
     gifs: {
-        defaultFileName: 'No file choosen',
+        defaultFileName: 'No gif choosen',
         fileValue: null,
     },
     audios: {
-        defaultFileName: 'No file choosen',
+        defaultFileName: 'No audio choosen',
         fileValue: {},
     },
     images: {
-        defaultFileName: 'No file choosen',
+        defaultFileName: 'No image choosen',
         fileValue: {},
-    }
+    },
+    posX: {
+        defaultFileName: 'No image choosen',
+        fileValue: {},
+    },
+    negX: {
+        defaultFileName: 'No image choosen',
+        fileValue: {},
+    },
+    posY: {
+        defaultFileName: 'No image choosen',
+        fileValue: {},
+    },
+    negY: {
+        defaultFileName: 'No image choosen',
+        fileValue: {},
+    },
+    posZ: {
+        defaultFileName: 'No image choosen',
+        fileValue: {},
+    },
+    negZ: {
+        defaultFileName: 'No image choosen',
+        fileValue: {},
+    },
 };
 
 const fileReducer = (state = initState, action) => {
@@ -45,35 +69,32 @@ const fileReducer = (state = initState, action) => {
                 models: {
                     ...state.models,
                     defaultFileName: 'No File Choosen',
-                    fileValue: null
+                    fileValue: null,
                 },
                 gifs: {
                     ...state.gifs,
                     defaultFileName: 'No File Choosen',
-                    fileValue: null
+                    fileValue: null,
                 },
                 audios: {
                     ...state.audios,
                     defaultFileName: 'No File Choosen',
-                    fileValue: {}
+                    fileValue: {},
                 },
                 images: {
                     ...state.images,
                     defaultFileName: 'No File Choosen',
-                    fileValue: {}
-                }
-            }
+                    fileValue: {},
+                },
+            };
 
         case 'FILE_UPLOAD_START':
-
             return { ...state };
 
         case 'FILE_UPLOAD_SUCCESS':
-
             return { ...state };
 
         case 'FILE_UPLOAD_ERROR':
-
             return { ...state };
 
         default:

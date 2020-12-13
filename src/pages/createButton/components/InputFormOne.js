@@ -56,14 +56,14 @@ function InputFormOne(props) {
                                 />
                             </Grid>
                             {/* Third input */}
-                            <Grid item xs={12} sm={6}>
+                            {/* <Grid item xs={12} sm={6}>
                                 <FileUploader
                                     componentLabel="Upload Background Image"
                                     name="images"
                                     fileType="image/*"
                                     isDisabled={images.fileValue}
                                 />
-                            </Grid>
+                            </Grid> */}
                             {/* Fourt input */}
                             <Grid item xs={12} sm={6}>
                                 <FileUploader

@@ -12,6 +12,7 @@ import DoneIcon from '@material-ui/icons/Done';
 
 import InputFormOne from './InputFormOne';
 import InputFormTwo from './InputFormTwo';
+import InputFormFour from './InputFormFour';
 // import InputFormThree from './InputFormThree';
 
 const useStyle = makeStyles((theme) => ({
@@ -34,7 +35,18 @@ const useStyle = makeStyles((theme) => ({
 
 function FormContainer(props) {
     const { uploadFile, control } = props;
-    const { models, gifs, audios, images } = props.file;
+    const {
+        models,
+        gifs,
+        audios,
+        images,
+        posX,
+        negX,
+        posY,
+        negY,
+        posZ,
+        negZ,
+    } = props.file;
     const { isFileUploadStarted, isFileUploaded } = props.control;
     const classes = useStyle();
 
@@ -47,7 +59,13 @@ function FormContainer(props) {
                 model: models.fileValue,
                 gif: gifs.fileValue,
                 audio: audios.fileValue,
-                image: images.fileValue
+                image: images.fileValue,
+                posX: posX.fileValue,
+                negX: negX.fileValue,
+                posY: posY.fileValue,
+                negY: negY.fileValue,
+                posZ: posZ.fileValue,
+                negZ: negZ.fileValue,
             });
         }
     };
@@ -58,6 +76,9 @@ function FormContainer(props) {
                 <Grid container spacing={10}>
                     <Grid item xs={12}>
                         <InputFormOne />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <InputFormFour />
                     </Grid>
                     <Grid item xs={12}>
                         <InputFormTwo />

@@ -18,6 +18,12 @@ const initState = {
         framePositionFromLeft: 0,
         framePositionFromTop: 0,
         audioPlayingDelay: null,
+        posX: null,
+        posY: null,
+        posZ: null,
+        negX: null,
+        negY: null,
+        negZ: null,
     },
 };
 

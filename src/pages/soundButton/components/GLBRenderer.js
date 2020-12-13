@@ -6,12 +6,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import * as controlActionCreator from '../../../store/actions/control_actions';
 
-import posX from '../../../assets/posx.jpg';
-import negX from '../../../assets/negx.jpg';
-import posY from '../../../assets/posy.jpg';
-import negY from '../../../assets/negy.jpg';
-import posZ from '../../../assets/posz.jpg';
-import negZ from '../../../assets/negz.jpg';
+import imgPosX from '../../../assets/posx.jpg';
+import imgNegX from '../../../assets/negx.jpg';
+import imgPosY from '../../../assets/posy.jpg';
+import imgNegY from '../../../assets/negy.jpg';
+import imgPosZ from '../../../assets/posz.jpg';
+import imgNegZ from '../../../assets/negz.jpg';
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -28,7 +28,16 @@ class GLBRenderer extends Component {
 
     componentDidMount() {
         // Destructuring values from props
-        const { models, rotateModelByMouse } = this.props.buttonInfo;
+        const {
+            models,
+            rotateModelByMouse,
+            posX,
+            posY,
+            posZ,
+            negX,
+            negY,
+            negZ,
+        } = this.props.buttonInfo;
         // on progress methods
         const onProgress = (xhr) => {
             if (xhr.lengthComputable) {
@@ -140,7 +149,6 @@ class GLBRenderer extends Component {
         );
 
         wrapper.position.set(0, 0, 0);
-        console.log(wrapper.scale);
         // wrapper.rotation.x = (90 / 180) * Math.PI;
 
         controls = new OrbitControls(camera, renderer.domElement);
@@ -150,7 +158,26 @@ class GLBRenderer extends Component {
 
         // Background loader
         backgroundLoader = new THREE.CubeTextureLoader();
-        texture = backgroundLoader.load([posX, negX, posY, negY, posZ, negZ]);
+        // Checking whether user sent background image or not
+        if (posX && posY && posZ && negX && negY && negZ) {
+            texture = backgroundLoader.load([
+                posX,
+                negX,
+                posY,
+                negY,
+                posZ,
+                negZ,
+            ]);
+        } else {
+            texture = backgroundLoader.load([
+                imgPosX,
+                imgNegX,
+                imgPosY,
+                imgNegY,
+                imgPosZ,
+                imgNegZ,
+            ]);
+        }
 
         scene.background = texture;
 
