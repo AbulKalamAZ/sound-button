@@ -12,8 +12,8 @@ import DoneIcon from '@material-ui/icons/Done';
 
 import InputFormOne from './InputFormOne';
 import InputFormTwo from './InputFormTwo';
+import InputFormThree from './InputFormThree';
 import InputFormFour from './InputFormFour';
-// import InputFormThree from './InputFormThree';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -78,14 +78,14 @@ function FormContainer(props) {
                         <InputFormOne />
                     </Grid>
                     <Grid item xs={12}>
-                        <InputFormFour />
-                    </Grid>
-                    <Grid item xs={12}>
                         <InputFormTwo />
                     </Grid>
-                    {/* <Grid item xs={12}>
+                    <Grid item xs={12}>
                         <InputFormThree />
-                    </Grid> */}
+                    </Grid>
+                    <Grid item xs={12}>
+                        <InputFormFour />
+                    </Grid>
                     <Grid item xs={12}>
                         <Button
                             variant="contained"

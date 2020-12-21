@@ -29,7 +29,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 function InputFormOne(props) {
-    const { models, gifs, audios, images } = props.file;
+    const { models, gifs, audios } = props.file;
     const classes = useStyle();
     return (
         <div className={classes.root}>
