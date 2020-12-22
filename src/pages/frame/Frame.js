@@ -24,7 +24,7 @@ function Frame(props) {
                 <iframe
                     className={classes.frame}
                     src={buttonInfo.redirectTo}
-                    title="User customized frame"
+                    title="User's given link"
                 ></iframe>
             ) : null}
         </div>

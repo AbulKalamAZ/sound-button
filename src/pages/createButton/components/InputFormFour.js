@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import FileUploader from '../../../components/fileUploader/FileUploader';
@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import * as buttonActionCreator from '../../../store/actions/button_actions';
 
 const OrangeCheckbox = withStyles({
     root: {
@@ -43,15 +44,19 @@ const useStyle = makeStyles((theme) => ({
 
 function InputFormFour(props) {
     const { models } = props.file;
+    const { changeBackground } = props.button;
+    const { setChangeBackground } = props;
     const classes = useStyle();
-    const [showBackgroundImageFields, setShowBackgroundImageFields] = useState(
-        false
-    );
 
-    // Handle show background image fields
-    const handleShowBackgroundImageField = (e) => {
-        setShowBackgroundImageFields(e.target.checked);
+    // defining input change method
+
+    const handleInputChange = (e) => {
+        const { target } = e;
+        if (target.name === 'changeBackground') {
+            setChangeBackground(target.checked);
+        }
     };
+
     return (
         <div className={classes.root}>
             <Grid container>
@@ -63,13 +68,10 @@ function InputFormFour(props) {
                                     <FormControlLabel
                                         control={
                                             <OrangeCheckbox
-                                                checked={
-                                                    showBackgroundImageFields
-                                                }
+                                                name="changeBackground"
+                                                checked={changeBackground}
                                                 disabled={!models.fileValue}
-                                                onChange={
-                                                    handleShowBackgroundImageField
-                                                }
+                                                onChange={handleInputChange}
                                                 inputProps={{
                                                     'aria-label':
                                                         'Input fields for background cubemap',
@@ -82,7 +84,7 @@ function InputFormFour(props) {
                             </Grid>
 
                             {/* Conditionally rendering input fields for background images */}
-                            {showBackgroundImageFields ? (
+                            {changeBackground ? (
                                 <Grid container item spacing={4}>
                                     {/* First input */}
                                     <Grid item xs={12} sm={6}>
@@ -153,7 +155,18 @@ function InputFormFour(props) {
 const mapStateToProps = (state) => {
     return {
         file: state.file,
+        button: state.button.button,
     };
 };
 
-export default connect(mapStateToProps, null)(InputFormFour);
+// mapping dispatch to props
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setChangeBackground: (payload) => {
+            dispatch(buttonActionCreator.setChangeBackground(payload));
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(InputFormFour);

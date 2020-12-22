@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -50,6 +50,7 @@ const OrangeCheckbox = withStyles({
 function InputFormThree(props) {
     // Extrackting required data from props
     const {
+        setOpenLinkInAniFrame,
         setRedirectTo,
         setAudioPlayingDelay,
         setFrameWidth,
@@ -58,19 +59,11 @@ function InputFormThree(props) {
         setFramePositionTop,
     } = props;
     const { audios, models } = props.file;
-    const { redirectTo } = props.button;
+    const { openLinkInAniFrame, redirectTo } = props.button;
     const { playAudioOnClick } = props.button;
 
     // Creating style
     const classes = useStyle();
-
-    // Definign state
-    const [openWebpageInAnIFrame, setOpenWebpageInAnIFrame] = useState(false);
-
-    // Handle input field for iframe
-    const handleOpenWebpageInAnIFrame = (e) => {
-        setOpenWebpageInAnIFrame(e.target.checked);
-    };
 
     const handleInputChange = (event) => {
         switch (event.target.name) {
@@ -94,6 +87,10 @@ function InputFormThree(props) {
                 setFramePositionTop(event.target.value);
                 break;
 
+            case 'openLinkInAniFrame':
+                setOpenLinkInAniFrame(event.target.checked);
+                break;
+
             default:
                 setAudioPlayingDelay(event.target.value);
                 break;
@@ -105,13 +102,13 @@ function InputFormThree(props) {
             <Grid container>
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                        <Grid container spacing={4}>
+                        <Grid container spacing={2}>
                             {/* First input */}
                             <Grid item xs={12} sm={6}>
                                 <Grid container spacing={1}>
                                     <Grid item xs={12}>
                                         <Typography variant="h6">
-                                            Redirect to (website link)
+                                            Redirect to (webpage link)
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
@@ -185,11 +182,10 @@ function InputFormThree(props) {
                                 <FormControlLabel
                                     control={
                                         <OrangeCheckbox
-                                            checked={openWebpageInAnIFrame}
+                                            checked={openLinkInAniFrame}
+                                            name="openLinkInAniFrame"
                                             disabled={models.fileValue === null}
-                                            onChange={
-                                                handleOpenWebpageInAnIFrame
-                                            }
+                                            onChange={handleInputChange}
                                             inputProps={{
                                                 'aria-label':
                                                     'Input fields whether webpage open in an iframe or not ',
@@ -201,8 +197,8 @@ function InputFormThree(props) {
                             </Grid>
 
                             {/* Third input */}
-                            {openWebpageInAnIFrame ? (
-                                <Grid container item>
+                            {openLinkInAniFrame ? (
+                                <Grid container item spacing={2}>
                                     <Grid item xs={12} sm={6}>
                                         <Grid container spacing={1}>
                                             <Grid item xs={12}>
@@ -367,18 +363,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setPlayAudioOnClick: (payload) =>
-            dispatch(buttonActionCreator.setPlayAudioOnClick(payload)),
-        setPlayAudioAutomatically: (payload) =>
-            dispatch(buttonActionCreator.setPlayAudioAutomatically(payload)),
-        setPlayAudioOnce: (payload) =>
-            dispatch(buttonActionCreator.setPlayAudioOnce(payload)),
-        setPlayAudioInLoop: (payload) =>
-            dispatch(buttonActionCreator.setPlayAudioInLoop(payload)),
-        setRotateModelByMouse: (payload) =>
-            dispatch(buttonActionCreator.setRotateModelByMouse(payload)),
-        setRotateModelAutomatically: (payload) =>
-            dispatch(buttonActionCreator.setRotateModelAutomatically(payload)),
+        setOpenLinkInAniFrame: (payload) =>
+            dispatch(buttonActionCreator.setOpenLinkInAniFrame(payload)),
         setRedirectTo: (payload) =>
             dispatch(buttonActionCreator.setRedirectTo(payload)),
         setAudioPlayingDelay: (payload) =>

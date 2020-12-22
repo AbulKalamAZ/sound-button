@@ -31,6 +31,7 @@ class GLBRenderer extends Component {
         const {
             models,
             rotateModelByMouse,
+            changeBackground,
             posX,
             posY,
             posZ,
@@ -158,16 +159,28 @@ class GLBRenderer extends Component {
 
         // Background loader
         backgroundLoader = new THREE.CubeTextureLoader();
+
         // Checking whether user sent background image or not
-        if (posX && posY && posZ && negX && negY && negZ) {
-            texture = backgroundLoader.load([
-                posX,
-                negX,
-                posY,
-                negY,
-                posZ,
-                negZ,
-            ]);
+        if (changeBackground) {
+            if (posX && posY && posZ && negX && negY && negZ) {
+                texture = backgroundLoader.load([
+                    posX,
+                    negX,
+                    posY,
+                    negY,
+                    posZ,
+                    negZ,
+                ]);
+            } else {
+                texture = backgroundLoader.load([
+                    imgPosX,
+                    imgNegX,
+                    imgPosY,
+                    imgNegY,
+                    imgPosZ,
+                    imgNegZ,
+                ]);
+            }
         } else {
             texture = backgroundLoader.load([
                 imgPosX,
@@ -237,7 +250,11 @@ class GLBRenderer extends Component {
 
     handleOpenModal = () => {
         if (this.props.buttonInfo.redirectTo) {
-            this.props.showIframe();
+            if (this.props.buttonInfo.openLinkInAniFrame) {
+                this.props.showIframe();
+            } else {
+                window.open(this.props.buttonInfo.redirectTo);
+            }
         }
     };
     render() {

@@ -12,12 +12,14 @@ const initState = {
         playAudioInLoop: false,
         rotateModelByMouse: false,
         rotateModelAutomatically: true,
+        openLinkInAniFrame: false,
         redirectTo: null,
-        frameWidth: 0,
-        frameHeight: 0,
+        frameWidth: 768,
+        frameHeight: 1024,
         framePositionFromLeft: 0,
         framePositionFromTop: 0,
         audioPlayingDelay: null,
+        changeBackground: false,
         posX: null,
         posY: null,
         posZ: null,
@@ -123,6 +125,15 @@ const buttonReducer = (state = initState, action) => {
                 },
             };
 
+        case 'OPEN_LINK_IN_AN_IFRAME':
+            return {
+                ...state,
+                button: {
+                    ...state.button,
+                    openLinkInAniFrame: payload,
+                },
+            };
+
         case 'SET_FRAME_WIDTH':
             return {
                 ...state,
@@ -167,6 +178,16 @@ const buttonReducer = (state = initState, action) => {
                     audioPlayingDelay: payload,
                 },
             };
+
+        case 'SET_CHANGE_BACKGROUND':
+            return {
+                ...state,
+                button: {
+                    ...state.button,
+                    changeBackground: payload,
+                },
+            };
+
         default:
             return { ...state };
     }

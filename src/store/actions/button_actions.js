@@ -90,12 +90,26 @@ export const setRedirectTo = (payload) => {
     };
 };
 
+// open link in an iframe
+
+export const setOpenLinkInAniFrame = (payload) => {
+    console.log('from button action creator');
+    return {
+        type: 'OPEN_LINK_IN_AN_IFRAME',
+        payload: payload,
+    };
+};
+
+// set frame width
+
 export const setFrameWidth = (payload) => {
     return {
         type: 'SET_FRAME_WIDTH',
         payload: +payload,
     };
 };
+
+// set frame height
 
 export const setFrameHeight = (payload) => {
     return {
@@ -104,6 +118,8 @@ export const setFrameHeight = (payload) => {
     };
 };
 
+// set frame position from left
+
 export const setFramePositionLeft = (payload) => {
     return {
         type: 'SET_FRAME_POSITION_LEFT',
@@ -111,6 +127,7 @@ export const setFramePositionLeft = (payload) => {
     };
 };
 
+// set frame position from right
 export const setFramePositionTop = (payload) => {
     return {
         type: 'SET_FRAME_POSITION_TOP',
@@ -123,6 +140,15 @@ export const setFramePositionTop = (payload) => {
 export const setAudioPlayingDelay = (payload) => {
     return {
         type: 'AUDIO_PLAYING_DELAY',
+        payload: payload,
+    };
+};
+
+// set whether change background or not
+
+export const setChangeBackground = (payload) => {
+    return {
+        type: 'SET_CHANGE_BACKGROUND',
         payload: payload,
     };
 };
