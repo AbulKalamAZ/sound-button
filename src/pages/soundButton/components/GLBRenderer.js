@@ -18,284 +18,278 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 class GLBRenderer extends Component {
-    constructor(props) {
-        super(props);
-        this.renderNodeGLB = createRef();
-        this.state = {
-            isModelLoaded: false,
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.renderNodeGLB = createRef();
+    this.state = {
+      isModelLoaded: false,
+    };
+  }
 
-    componentDidMount() {
-        // Destructuring values from props
-        const {
-            models,
-            rotateModelByMouse,
-            changeBackground,
-            posX,
-            posY,
-            posZ,
-            negX,
-            negY,
-            negZ,
-        } = this.props.buttonInfo;
-        // on progress methods
-        const onProgress = (xhr) => {
-            if (xhr.lengthComputable) {
-                if (xhr.loaded === xhr.total) {
-                    console.log('Model 100% downloaded');
-                    this.setState({
-                        isModelLoaded: true,
-                    });
-                }
-            }
-        };
+  componentDidMount() {
+    // Destructuring values from props
+    console.log(this.props.buttonInfo.noBackground);
+    const {
+      models,
+      rotateModelByMouse,
+      changeBackground,
+      posX,
+      posY,
+      posZ,
+      negX,
+      negY,
+      negZ,
+    } = this.props.buttonInfo;
+    // on progress methods
+    const onProgress = (xhr) => {
+      if (xhr.lengthComputable) {
+        if (xhr.loaded === xhr.total) {
+          console.log('Model 100% downloaded');
+          this.setState({
+            isModelLoaded: true,
+          });
+        }
+      }
+    };
 
-        // on error methods
-        const onError = (error) => {
-            console.log(error);
-        };
+    // on error methods
+    const onError = (error) => {
+      console.log(error);
+    };
 
-        //load method
-        const loadModel = () => {
-            setTimeout(function () {
-                wrapper.add(head);
-                scene.add(wrapper);
-            }, 10);
-        };
+    //load method
+    const loadModel = () => {
+      setTimeout(function () {
+        wrapper.add(head);
+        scene.add(wrapper);
+      }, 10);
+    };
 
-        // on window resize
-        const onWindowResize = () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        };
+    // on window resize
+    const onWindowResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
 
-        let scene,
-            camera,
-            renderer,
-            light,
-            light2,
-            controls,
-            backgroundLoader,
-            texture,
-            plane;
+    let scene,
+      camera,
+      renderer,
+      light,
+      light2,
+      controls,
+      backgroundLoader,
+      texture,
+      plane;
 
-        // Creating renderer
+    // Creating renderer
 
-        renderer = new THREE.WebGLRenderer({
-            antialias: true,
+    renderer = new THREE.WebGLRenderer({
+      antialias: true,
+    });
+    // Configuring renderer
+
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    this.renderNodeGLB.current.appendChild(renderer.domElement);
+
+    // Creating a scene
+    scene = new THREE.Scene();
+
+    // Creating camera
+    camera = new THREE.PerspectiveCamera(60, 1920 / 1080, 1.0, 1000.0);
+
+    camera.position.set(0, 50, 150);
+
+    // Creating light source
+
+    light = new THREE.DirectionalLight(0xffffff, 1.0);
+    light.position.set(20, 100, 10);
+    light.target.position.set(0, 0, 0);
+    light.castShadow = true;
+    light.shadow.bias = -0.001;
+    light.shadow.mapSize.width = 2048;
+    light.shadow.mapSize.height = 2048;
+    light.shadow.camera.near = 0.1;
+    light.shadow.camera.far = 500.0;
+    light.shadow.camera.near = 0.5;
+    light.shadow.camera.far = 500.0;
+    light.shadow.camera.left = 100;
+    light.shadow.camera.right = -100;
+    light.shadow.camera.top = 100;
+    light.shadow.camera.bottom = -100;
+    scene.add(light);
+
+    light2 = new THREE.AmbientLight(0xffffff, 4.0);
+    scene.add(light2);
+
+    // Configuring loader
+
+    let head;
+
+    let manager = new THREE.LoadingManager(loadModel);
+
+    let loader = new GLTFLoader(manager);
+
+    let wrapper = new THREE.Object3D();
+
+    loader.load(
+      models,
+      function (gltf) {
+        gltf.scene.traverse((node) => {
+          if (node.isMesh) node.castShadow = true;
         });
-        // Configuring renderer
+        head = gltf.scene;
+      },
+      onProgress,
+      onError,
+      null,
+      false
+    );
 
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setSize(window.innerWidth, window.innerHeight);
+    wrapper.position.set(0, 0, 0);
+    // wrapper.rotation.x = (90 / 180) * Math.PI;
 
-        this.renderNodeGLB.current.appendChild(renderer.domElement);
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, 20, 0);
 
-        // Creating a scene
-        scene = new THREE.Scene();
+    controls.update();
 
-        // Creating camera
-        camera = new THREE.PerspectiveCamera(60, 1920 / 1080, 1.0, 1000.0);
+    // Background loader
+    backgroundLoader = new THREE.CubeTextureLoader();
 
-        camera.position.set(0, 50, 150);
-
-        // Creating light source
-
-        light = new THREE.DirectionalLight(0xffffff, 1.0);
-        light.position.set(20, 100, 10);
-        light.target.position.set(0, 0, 0);
-        light.castShadow = true;
-        light.shadow.bias = -0.001;
-        light.shadow.mapSize.width = 2048;
-        light.shadow.mapSize.height = 2048;
-        light.shadow.camera.near = 0.1;
-        light.shadow.camera.far = 500.0;
-        light.shadow.camera.near = 0.5;
-        light.shadow.camera.far = 500.0;
-        light.shadow.camera.left = 100;
-        light.shadow.camera.right = -100;
-        light.shadow.camera.top = 100;
-        light.shadow.camera.bottom = -100;
-        scene.add(light);
-
-        light = new THREE.AmbientLight(0xffffff, 4.0);
-        scene.add(light2);
-
-        // Configuring loader
-
-        let head;
-
-        let manager = new THREE.LoadingManager(loadModel);
-
-        let loader = new GLTFLoader(manager);
-
-        let wrapper = new THREE.Object3D();
-
-        loader.load(
-            models,
-            function (gltf) {
-                gltf.scene.traverse((node) => {
-                    if (node.isMesh) node.castShadow = true;
-                });
-                head = gltf.scene;
-            },
-            onProgress,
-            onError,
-            null,
-            false
-        );
-
-        wrapper.position.set(0, 0, 0);
-        // wrapper.rotation.x = (90 / 180) * Math.PI;
-
-        controls = new OrbitControls(camera, renderer.domElement);
-        controls.target.set(0, 20, 0);
-
-        controls.update();
-
-        // Background loader
-        backgroundLoader = new THREE.CubeTextureLoader();
-
-        // Checking whether user sent background image or not
-        if (changeBackground) {
-            if (posX && posY && posZ && negX && negY && negZ) {
-                texture = backgroundLoader.load([
-                    posX,
-                    negX,
-                    posY,
-                    negY,
-                    posZ,
-                    negZ,
-                ]);
-            } else {
-                texture = backgroundLoader.load([
-                    imgPosX,
-                    imgNegX,
-                    imgPosY,
-                    imgNegY,
-                    imgPosZ,
-                    imgNegZ,
-                ]);
-            }
-        } else {
-            texture = backgroundLoader.load([
-                imgPosX,
-                imgNegX,
-                imgPosY,
-                imgNegY,
-                imgPosZ,
-                imgNegZ,
-            ]);
-        }
-
-        scene.background = texture;
-
-        // Creating plane
-
-        plane = new THREE.Mesh(
-            new THREE.PlaneGeometry(500, 500, 10, 10),
-            new THREE.MeshStandardMaterial({
-                color: 0x202020,
-            })
-        );
-
-        plane.castShadow = true;
-        plane.receiveShadow = true;
-        plane.rotation.x = -Math.PI / 2;
-        plane.position.set(0, 0, 0);
-        scene.add(plane);
-
-        //anmate method
-        // let delta = 0;
-        function animate() {
-            if (!rotateModelByMouse) wrapper.rotation.y += 0.01;
-            renderer.render(scene, camera);
-            controls.update();
-
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-
-        // On window resize
-        window.addEventListener(
-            'resize',
-            () => {
-                onWindowResize();
-            },
-            false
-        );
+    // Checking whether user sent background image or not
+    if (changeBackground) {
+      if (posX && posY && posZ && negX && negY && negZ) {
+        texture = backgroundLoader.load([posX, negX, posY, negY, posZ, negZ]);
+      } else {
+        texture = backgroundLoader.load([
+          imgPosX,
+          imgNegX,
+          imgPosY,
+          imgNegY,
+          imgPosZ,
+          imgNegZ,
+        ]);
+      }
+    } else {
+      texture = backgroundLoader.load([
+        imgPosX,
+        imgNegX,
+        imgPosY,
+        imgNegY,
+        imgPosZ,
+        imgNegZ,
+      ]);
     }
 
-    // Handle audio player control
-    handlePlayerControl = () => {
-        const { playAudio, pauseAudio, control } = this.props;
-        const { playAudioAutomatically } = this.props.buttonInfo;
+    scene.background = texture;
 
-        if (playAudioAutomatically) {
-        } else {
-            if (control.playAudio) {
-                pauseAudio();
-            } else {
-                playAudio();
-            }
-        }
-    };
+    // Creating plane
 
-    // handle open modal method
+    plane = new THREE.Mesh(
+      new THREE.PlaneGeometry(500, 500, 10, 10),
+      new THREE.MeshStandardMaterial({
+        color: 0x202020,
+      })
+    );
 
-    handleOpenModal = () => {
-        if (this.props.buttonInfo.redirectTo) {
-            if (this.props.buttonInfo.openLinkInAniFrame) {
-                this.props.showIframe();
-            } else {
-                window.open(this.props.buttonInfo.redirectTo);
-            }
-        }
-    };
-    render() {
-        // const { images } = this.props.buttonInfo;
-        const { isModelLoaded } = this.state;
-        return (
-            <div
-                ref={this.renderNodeGLB}
-                className="model-renderer"
-                onClick={this.handlePlayerControl}
-                onDoubleClick={this.handleOpenModal}
-            >
-                {!isModelLoaded ? (
-                    <CircularProgress
-                        size={80}
-                        className="model-loader-indicator"
-                        color="primary"
-                    />
-                ) : null}
-                {/* <img
+    plane.castShadow = true;
+    plane.receiveShadow = true;
+    plane.rotation.x = -Math.PI / 2;
+    plane.position.set(0, 0, 0);
+    scene.add(plane);
+
+    //anmate method
+    // let delta = 0;
+    function animate() {
+      if (!rotateModelByMouse) wrapper.rotation.y += 0.01;
+      renderer.render(scene, camera);
+      controls.update();
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // On window resize
+    window.addEventListener(
+      'resize',
+      () => {
+        onWindowResize();
+      },
+      false
+    );
+  }
+
+  // Handle audio player control
+  handlePlayerControl = () => {
+    const { playAudio, pauseAudio, control } = this.props;
+    const { playAudioAutomatically } = this.props.buttonInfo;
+
+    if (playAudioAutomatically) {
+    } else {
+      if (control.playAudio) {
+        pauseAudio();
+      } else {
+        playAudio();
+      }
+    }
+  };
+
+  // handle open modal method
+
+  handleOpenModal = () => {
+    if (this.props.buttonInfo.redirectTo) {
+      if (this.props.buttonInfo.openLinkInAniFrame) {
+        this.props.showIframe();
+      } else {
+        window.open(this.props.buttonInfo.redirectTo);
+      }
+    }
+  };
+  render() {
+    // const { images } = this.props.buttonInfo;
+    const { isModelLoaded } = this.state;
+    return (
+      <div
+        ref={this.renderNodeGLB}
+        className='model-renderer'
+        onClick={this.handlePlayerControl}
+        onDoubleClick={this.handleOpenModal}
+      >
+        {!isModelLoaded ? (
+          <CircularProgress
+            size={80}
+            className='model-loader-indicator'
+            color='primary'
+          />
+        ) : null}
+        {/* <img
                     src={images ?? modelBackground}
                     className="model-bg-img"
                     alt="default background media"
                 /> */}
-            </div>
-        );
-    }
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => {
-    return {
-        control: state.control,
-    };
+  return {
+    control: state.control,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        playAudio: () => dispatch(controlActionCreator.playAudio()),
-        pauseAudio: () => dispatch(controlActionCreator.pauseAudio()),
-        showIframe: () => dispatch(controlActionCreator.showIframe()),
-    };
+  return {
+    playAudio: () => dispatch(controlActionCreator.playAudio()),
+    pauseAudio: () => dispatch(controlActionCreator.pauseAudio()),
+    showIframe: () => dispatch(controlActionCreator.showIframe()),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GLBRenderer);

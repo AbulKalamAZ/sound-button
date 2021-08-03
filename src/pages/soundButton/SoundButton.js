@@ -55,9 +55,9 @@ const useStyle = makeStyles((theme) => ({
 function SoundButton(props) {
     const classes = useStyle();
     const { match, history } = props;
-    const { playAudio, showIframe } = props.control;
+    const { showIframe } = props.control;
 
-    const audioElement = useRef(null);
+    // const audioElement = useRef(null);
     const frameContainer = useRef(null);
 
     // Defining state
@@ -77,45 +77,45 @@ function SoundButton(props) {
     }, [id, history]);
 
     // handle audio
-    useEffect(() => {
-        const {
-            audios,
-            playAudioOnClick,
-            playAudioAutomatically,
-            audioPlayingDelay,
-        } = buttonInfo;
+    // useEffect(() => {
+    //     const {
+    //         audios,
+    //         playAudioOnClick,
+    //         playAudioAutomatically,
+    //         audioPlayingDelay,
+    //     } = buttonInfo;
 
-        if (audios) {
-            // Initiating audio olayer
-            const player = audioElement.current;
+    //     if (audios) {
+    //         // Initiating audio olayer
+    //         const player = audioElement.current;
 
-            // Check auto play
+    //         // Check auto play
 
-            if (playAudioOnClick) {
-                if (playAudio) {
-                    player.play();
-                } else {
-                    player.pause();
-                }
-            } else if (playAudioAutomatically) {
-                // Check if delay
-                if (audioPlayingDelay) {
-                    setTimeout(() => {
-                        player.play();
-                    }, audioPlayingDelay * 1000);
-                } else {
-                    player.play();
-                }
-            }
-        }
-    }, [
-        playAudio,
-        buttonInfo,
-        buttonInfo.audios,
-        buttonInfo.playAudioOnClick,
-        buttonInfo.playAudioAutomatically,
-        buttonInfo.audioPlayingDelay,
-    ]);
+    //         if (playAudioOnClick) {
+    //             if (playAudio) {
+    //                 player.play();
+    //             } else {
+    //                 player.pause();
+    //             }
+    //         } else if (playAudioAutomatically) {
+    //             // Check if delay
+    //             if (audioPlayingDelay) {
+    //                 setTimeout(() => {
+    //                     player.play();
+    //                 }, audioPlayingDelay * 1000);
+    //             } else {
+    //                 player.play();
+    //             }
+    //         }
+    //     }
+    // }, [
+    //     playAudio,
+    //     buttonInfo,
+    //     buttonInfo.audios,
+    //     buttonInfo.playAudioOnClick,
+    //     buttonInfo.playAudioAutomatically,
+    //     buttonInfo.audioPlayingDelay,
+    // ]);
 
     // handle generating iframe
 
@@ -144,7 +144,7 @@ function SoundButton(props) {
         buttonInfo.framePositionFromLeft,
     ]);
 
-    const gotToCreateButtonPage = () => {
+    const goToCreateButtonpage = () => {
         history.push('/create-button');
     };
 
@@ -165,7 +165,7 @@ function SoundButton(props) {
             <IconButton
                 className={classes.backButton}
                 aria-label="navigate to previous page"
-                onClick={gotToCreateButtonPage}
+                onClick={goToCreateButtonpage}
             >
                 <ExitToAppIcon fontSize="large" style={{ color: '#ffffff' }} />
             </IconButton>
@@ -199,14 +199,14 @@ function SoundButton(props) {
                 ) : null}
             </div>
 
-            {buttonInfo.audios ? (
+            {/* {buttonInfo.audios ? (
                 <audio
                     ref={audioElement}
                     className={classes.audioElement}
                     src={buttonInfo.audios}
                     loop={buttonInfo.playAudioInLoop}
                 ></audio>
-            ) : null}
+            ) : null} */}
         </div>
     );
 }

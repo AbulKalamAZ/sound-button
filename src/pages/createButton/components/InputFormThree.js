@@ -47,6 +47,18 @@ const OrangeCheckbox = withStyles({
     checked: {},
 })((props) => <Checkbox color="default" {...props} />);
 
+const OrangeTextField = withStyles({
+    root: {
+        '& fieldset': {
+            borderColor: red[500],
+            borderRadius: 5,
+            '&:hover': {
+                borderColor: red[500],
+            },
+        },
+    },
+})((props) => <OutlinedInput {...props} />);
+
 function InputFormThree(props) {
     // Extrackting required data from props
     const {
@@ -114,7 +126,7 @@ function InputFormThree(props) {
                                     <Grid item xs={12}>
                                         <Grid container spacing={1}>
                                             <Grid item xs={12} sm={9}>
-                                                <OutlinedInput
+                                                <OrangeTextField
                                                     fullWidth
                                                     type="text"
                                                     className={classes.input}
@@ -156,7 +168,7 @@ function InputFormThree(props) {
                                     <Grid item xs={12}>
                                         <Grid container spacing={1}>
                                             <Grid item xs={12} sm={9}>
-                                                <OutlinedInput
+                                                <OrangeTextField
                                                     fullWidth
                                                     type="text"
                                                     className={classes.input}
@@ -209,7 +221,7 @@ function InputFormThree(props) {
                                             <Grid item xs={12}>
                                                 <Grid container spacing={1}>
                                                     <Grid item xs={12} sm={9}>
-                                                        <OutlinedInput
+                                                        <OrangeTextField
                                                             fullWidth
                                                             type="text"
                                                             name="frameWidth"
@@ -244,7 +256,7 @@ function InputFormThree(props) {
                                             <Grid item xs={12}>
                                                 <Grid container spacing={1}>
                                                     <Grid item xs={12} sm={9}>
-                                                        <OutlinedInput
+                                                        <OrangeTextField
                                                             fullWidth
                                                             type="text"
                                                             name="frameHeight"
@@ -280,7 +292,7 @@ function InputFormThree(props) {
                                             <Grid item xs={12}>
                                                 <Grid container spacing={1}>
                                                     <Grid item xs={12} sm={9}>
-                                                        <OutlinedInput
+                                                        <OrangeTextField
                                                             fullWidth
                                                             type="text"
                                                             name="framePositionFromLeft"
@@ -315,7 +327,7 @@ function InputFormThree(props) {
                                             <Grid item xs={12}>
                                                 <Grid container spacing={1}>
                                                     <Grid item xs={12} sm={9}>
-                                                        <OutlinedInput
+                                                        <OrangeTextField
                                                             fullWidth
                                                             type="text"
                                                             name="framePositionFromTop"

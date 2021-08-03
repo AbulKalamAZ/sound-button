@@ -73,3 +73,17 @@ export const fetchButtonData = (id) => {
             });
     });
 };
+
+// Method that return file format name
+
+export const getFileFormatName = (fileName) => {
+    let formatName = '';
+
+    if (fileName) {
+        formatName = fileName.split('.')[1];
+
+        return formatName;
+    } else {
+        return formatName;
+    }
+};

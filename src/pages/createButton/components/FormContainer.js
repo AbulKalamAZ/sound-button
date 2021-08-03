@@ -37,6 +37,7 @@ function FormContainer(props) {
     const { uploadFile, control } = props;
     const {
         models,
+        animationFile,
         gifs,
         audios,
         images,
@@ -57,6 +58,7 @@ function FormContainer(props) {
             // Calling upload file method
             uploadFile({
                 model: models.fileValue,
+                animationFile: animationFile.fileValue,
                 gif: gifs.fileValue,
                 audio: audios.fileValue,
                 image: images.fileValue,

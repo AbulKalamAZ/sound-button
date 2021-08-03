@@ -2,6 +2,7 @@ import React from 'react';
 
 import OBJRenderer from './OBJRenderer';
 import GLBRenderer from './GLBRenderer';
+import FBXRenderer from './FBXRenderer';
 
 export default function ModelRenderer(props) {
     const { buttonDetails } = props;
@@ -12,8 +13,10 @@ export default function ModelRenderer(props) {
             {hasButtonDetails ? (
                 buttonDetails.modelFormat === 'glb' ? (
                     <GLBRenderer buttonInfo={buttonDetails} />
-                ) : (
+                ) : buttonDetails.modelFormat === 'obj' ? (
                     <OBJRenderer buttonInfo={buttonDetails} />
+                ) : (
+                    <FBXRenderer buttonInfo={buttonDetails} />
                 )
             ) : null}
         </div>

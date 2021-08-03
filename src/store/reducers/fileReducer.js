@@ -4,6 +4,10 @@ const initState = {
         defaultFileName: 'No 3D model choosen',
         fileValue: null,
     },
+    animationFile: {
+        defaultFileName: 'No Animation File Choosen',
+        fileValue: null,
+    },
     gifs: {
         defaultFileName: 'No gif choosen',
         fileValue: null,
@@ -55,6 +59,7 @@ const fileReducer = (state = initState, action) => {
             };
 
         case 'LOAD_FILE':
+            console.log(payload);
             return {
                 ...state,
                 [payload.name]: {
