@@ -28,11 +28,11 @@ class GLBRenderer extends Component {
 
   componentDidMount() {
     // Destructuring values from props
-    console.log(this.props.buttonInfo.noBackground);
     const {
       models,
       rotateModelByMouse,
       changeBackground,
+      noBackground,
       posX,
       posY,
       posZ,
@@ -186,22 +186,26 @@ class GLBRenderer extends Component {
       ]);
     }
 
-    scene.background = texture;
+    scene.background = !noBackground && texture;
 
     // Creating plane
 
-    plane = new THREE.Mesh(
-      new THREE.PlaneGeometry(500, 500, 10, 10),
-      new THREE.MeshStandardMaterial({
-        color: 0x202020,
-      })
-    );
+    plane =
+      !noBackground &&
+      new THREE.Mesh(
+        new THREE.PlaneGeometry(500, 500, 10, 10),
+        new THREE.MeshStandardMaterial({
+          color: 0x202020,
+        })
+      );
 
-    plane.castShadow = true;
-    plane.receiveShadow = true;
-    plane.rotation.x = -Math.PI / 2;
-    plane.position.set(0, 0, 0);
-    scene.add(plane);
+    if (!noBackground) {
+      plane.castShadow = true;
+      plane.receiveShadow = true;
+      plane.rotation.x = -Math.PI / 2;
+      plane.position.set(0, 0, 0);
+      scene.add(plane);
+    }
 
     //anmate method
     // let delta = 0;

@@ -71,7 +71,7 @@ function InputFormFour(props) {
                       <OrangeCheckbox
                         name='noBackground'
                         checked={noBackground}
-                        disabled={!models.fileValue}
+                        disabled={!models.fileValue || changeBackground}
                         onChange={handleInputChange}
                         inputProps={{
                           'aria-label': 'Input fields for no background',
@@ -81,14 +81,13 @@ function InputFormFour(props) {
                     label="I don't want any default background cubemap"
                   />
                 </Grid>
-
                 <Grid item xs={12} sm={6}>
                   <FormControlLabel
                     control={
                       <OrangeCheckbox
                         name='changeBackground'
                         checked={changeBackground}
-                        disabled={!models.fileValue}
+                        disabled={!models.fileValue || noBackground}
                         onChange={handleInputChange}
                         inputProps={{
                           'aria-label': 'Input fields for background cubemap',
