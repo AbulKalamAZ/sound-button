@@ -77,6 +77,7 @@ class GLBRenderer extends Component {
       renderer,
       light,
       light2,
+      light3,
       controls,
       backgroundLoader,
       texture,
@@ -94,6 +95,7 @@ class GLBRenderer extends Component {
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
 
     this.renderNodeGLB.current.appendChild(renderer.domElement);
 
@@ -122,10 +124,14 @@ class GLBRenderer extends Component {
     light.shadow.camera.right = -100;
     light.shadow.camera.top = 100;
     light.shadow.camera.bottom = -100;
-    scene.add(light);
 
-    light2 = new THREE.AmbientLight(0xffffff, 4.0);
+    if (!noBackground) scene.add(light);
+
+    light2 = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(light2);
+
+    light3 = new THREE.HemisphereLight(0x6b6b6b, 0x080820, 1);
+    scene.add(light3);
 
     // Configuring loader
 

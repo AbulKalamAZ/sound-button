@@ -78,6 +78,7 @@ class OBJRenderer extends Component {
       renderer,
       light,
       light2,
+      light3,
       controls,
       backgroundLoader,
       texture,
@@ -95,6 +96,7 @@ class OBJRenderer extends Component {
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
 
     this.renderNode.current.appendChild(renderer.domElement);
 
@@ -123,10 +125,14 @@ class OBJRenderer extends Component {
     light.shadow.camera.right = -100;
     light.shadow.camera.top = 100;
     light.shadow.camera.bottom = -100;
-    scene.add(light);
 
-    light2 = new THREE.AmbientLight(0xf4f4f4, 0.5);
+    if (!noBackground) scene.add(light);
+
+    light2 = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(light2);
+
+    light3 = new THREE.HemisphereLight(0x6b6b6b, 0x080820, 1);
+    scene.add(light3);
 
     // Configuring loader
 
