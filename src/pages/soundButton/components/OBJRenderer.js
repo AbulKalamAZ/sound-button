@@ -87,6 +87,7 @@ class OBJRenderer extends Component {
 
     renderer = new THREE.WebGLRenderer({
       antialias: true,
+      alpha: noBackground ? true : false,
     });
     // Configuring renderer
 
