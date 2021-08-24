@@ -33,6 +33,7 @@ class GLBRenderer extends Component {
       rotateModelByMouse,
       changeBackground,
       noBackground,
+      scale,
       posX,
       posY,
       posZ,
@@ -147,7 +148,10 @@ class GLBRenderer extends Component {
       models,
       function (gltf) {
         gltf.scene.traverse((node) => {
-          if (node.isMesh) node.castShadow = true;
+          if (node.isMesh) {
+            node.castShadow = true;
+            if (scale) node.scale.setScalar(scale);
+          }
         });
         head = gltf.scene;
       },

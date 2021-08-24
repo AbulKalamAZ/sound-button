@@ -6,6 +6,7 @@ const initState = {
     gifs: null,
     audios: null,
     images: null,
+    scale: null,
     playAudioOnClick: false,
     playAudioAutomatically: true,
     playAudioOnce: true,
@@ -195,6 +196,15 @@ const buttonReducer = (state = initState, action) => {
         button: {
           ...state.button,
           noBackground: payload,
+        },
+      };
+
+    case 'SET_SCALE_OF_MODEL':
+      return {
+        ...state,
+        button: {
+          ...state.button,
+          scale: payload,
         },
       };
 

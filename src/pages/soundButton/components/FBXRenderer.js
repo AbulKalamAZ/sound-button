@@ -55,6 +55,7 @@ class FBXRenderer extends Component {
       animationFile,
       changeBackground,
       noBackground,
+      scale,
       posX,
       posY,
       posZ,
@@ -163,15 +164,18 @@ class FBXRenderer extends Component {
 
     loader.load(models, function (fbx) {
       fbx.traverse((node) => {
-        fbx.scale.setScalar(0.5);
         node.castShadow = true;
+        if (scale) {
+          fbx.scale.setScalar(scale);
+        } else {
+          fbx.scale.setScalar(0.5);
+        }
       });
 
       // Loading animation
       const animation = new FBXLoader();
 
       animation.load(animationFile, (anim) => {
-        console.log(anim);
         try {
           animationMixers = new THREE.AnimationMixer(fbx);
 

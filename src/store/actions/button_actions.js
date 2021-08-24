@@ -161,3 +161,12 @@ export const setNoBackground = (payload) => {
     payload: payload,
   };
 };
+
+// set no background or not
+
+export const setModelScale = (payload) => {
+  return {
+    type: 'SET_SCALE_OF_MODEL',
+    payload: payload,
+  };
+};

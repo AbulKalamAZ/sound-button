@@ -33,6 +33,7 @@ class OBJRenderer extends Component {
       rotateModelByMouse,
       changeBackground,
       noBackground,
+      scale,
       posX,
       posY,
       posZ,
@@ -148,7 +149,11 @@ class OBJRenderer extends Component {
       models,
       function (obj) {
         obj.traverse((node) => {
-          if (node.isMesh) node.castShadow = true;
+          if (node.isMesh) {
+            node.castShadow = true;
+          }
+
+          if (scale) node.scale.setScalar(scale);
         });
         head = obj;
       },
