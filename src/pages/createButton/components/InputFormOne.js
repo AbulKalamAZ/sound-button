@@ -1,33 +1,33 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
 
-import FileUploader from '../../../components/fileUploader/FileUploader';
-import ScaleSlider from '../../../components/scaleSlider/ScaleSlider';
+import FileUploader from "../../../components/fileUploader/FileUploader";
+import ScaleSlider from "../../../components/scaleSlider/ScaleSlider";
 
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 
-import { getFileFormatName } from '../../../firebase/utility';
+import { getFileFormatName } from "../../../firebase/utility";
 
 const useStyle = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
   paper: {
-    background: '#032E34',
-    color: '#FEFEFC',
+    background: "#032E34",
+    color: "#FEFEFC",
     padding: theme.spacing(5),
   },
   button: {
-    color: '#ffffff',
-    background: '#f44336',
-    '&:hover': {
-      background: '#d32f2f',
+    color: "#ffffff",
+    background: "#f44336",
+    "&:hover": {
+      background: "#d32f2f",
     },
   },
   input: {
-    display: 'none',
+    display: "none",
   },
 }));
 
@@ -48,7 +48,6 @@ function InputFormOne(props) {
     setFileFormatName(getFileFormatName(models?.fileValue?.fileName));
   }, [models]);
 
-  console.log('model name', fileFormatName);
   return (
     <div className={classes.root}>
       <Grid container>
@@ -61,7 +60,7 @@ function InputFormOne(props) {
                 <FileUploader
                   componentLabel='Upload 3D Model'
                   name='models'
-                  fileType='.obj, .glb, .fbx'
+                  fileType='.obj, .glb, .fbx, .zip, .rar, .7zip'
                   isDisabled={!gifs.fileValue}
                 />
               </Grid>
@@ -79,7 +78,7 @@ function InputFormOne(props) {
 
               {/* Third input */}
 
-              {fileFormatName === 'fbx' ? (
+              {fileFormatName === "fbx" ? (
                 <Grid item xs={12} sm={6}>
                   <FileUploader
                     componentLabel='Upload Animation File'

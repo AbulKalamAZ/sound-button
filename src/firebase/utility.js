@@ -1,89 +1,107 @@
-import firebase from './config';
+/* eslint-disable no-unused-vars */
+import firebase from "./config";
 
 // File upload to storage method
 
 export const fileUploadToStorage = (data) => {
-    //Returning promise to handle later
-    return new Promise((resolve, reject) => {
-        //Get file
-        const file = data.value;
+  //Returning promise to handle later
+  return new Promise(async (resolve, reject) => {
+    //Get file
+    const file = data.value;
 
-        //Create refference
-        const storageRef = firebase
+    console.log("from fileUploadToStorage file", file);
+
+    //Create refference
+    if (file.name.endsWith("zip")) {
+      let name = file.name.split(".")[0];
+      const storageRef = firebase.storage().ref(`gltf/${name}`);
+
+      //Upload File
+      storageRef.put(file).then(() => {
+        setTimeout(() => {
+          firebase
             .storage()
-            .ref(`${data.name}/${data.fileName}`);
+            .ref(`gltf/${name}/scene.gltf`)
+            .getDownloadURL()
+            .then((url) => {
+              resolve({ name: data.name, value: url });
+              console.log("scene.gltf", url);
+            });
+        }, 5000);
+      });
+      //   let url = await storageRef.getDownloadURL();
 
-        //Upload File
-        storageRef.put(file).then((res) => {
-            storageRef
-                .getDownloadURL()
-                .then((url) => {
-                    resolve({ name: data.name, value: url });
-                })
-                .catch((error) => {
-                    throw new Error(error.message);
-                });
-        });
-    });
+      // Uploading file ends
+    } else {
+      const storageRef = firebase
+        .storage()
+        .ref(`${data.name}/${data.fileName}`);
+
+      //Upload File
+      await storageRef.put(file);
+      let url = await storageRef.getDownloadURL();
+      resolve({ name: data.name, value: url });
+    }
+  });
 };
 
 // Upload button data to the firestore
 export const uploadButtonInfoToDatabase = (data) => {
-    return new Promise((resolve, reject) => {
-        //Get the data
-        const buttonData = data;
+  return new Promise((resolve, reject) => {
+    //Get the data
+    const buttonData = data;
 
-        //Create a firestore refference
+    //Create a firestore refference
 
-        const firestore = firebase.firestore();
+    const firestore = firebase.firestore();
 
-        //Send request to database to store button data
+    //Send request to database to store button data
 
-        firestore
-            .collection('buttons')
-            .add(buttonData)
-            .then((res) => {
-                resolve(res);
-            });
-    });
+    firestore
+      .collection("buttons")
+      .add(buttonData)
+      .then((res) => {
+        resolve(res);
+      });
+  });
 };
 
 // Fetching button data from firestore
 
 export const fetchButtonData = (id) => {
-    return new Promise((resolve, reject) => {
-        // Get id
-        const buttonId = id;
+  return new Promise((resolve, reject) => {
+    // Get id
+    const buttonId = id;
 
-        // Creating firestore refference
-        const firestore = firebase.firestore();
+    // Creating firestore refference
+    const firestore = firebase.firestore();
 
-        // Send fetch request
-        firestore
-            .collection('buttons')
-            .doc(buttonId)
-            .get()
-            .then((res) => {
-                if (res.exists) {
-                    resolve(res.data());
-                }
-            })
-            .catch((error) => {
-                reject(error.message);
-            });
-    });
+    // Send fetch request
+    firestore
+      .collection("buttons")
+      .doc(buttonId)
+      .get()
+      .then((res) => {
+        if (res.exists) {
+          resolve(res.data());
+        }
+      })
+      .catch((error) => {
+        reject(error.message);
+      });
+  });
 };
 
 // Method that return file format name
 
 export const getFileFormatName = (fileName) => {
-    let formatName = '';
+  let formatName = "";
 
-    if (fileName) {
-        formatName = fileName.split('.')[1];
+  if (fileName) {
+    formatName = fileName.split(".")[1];
 
-        return formatName;
-    } else {
-        return formatName;
-    }
+    return formatName;
+  } else {
+    return formatName;
+  }
 };

@@ -15,12 +15,12 @@ import imgNegZ from "../../../assets/negz.jpg";
 
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
-class GLBRenderer extends Component {
+class GLTFRenderer extends Component {
   constructor(props) {
     super(props);
-    this.renderNodeGLB = createRef();
+    this.renderNode = createRef();
     this.state = {
       isModelLoaded: false,
     };
@@ -33,7 +33,6 @@ class GLBRenderer extends Component {
       rotateModelByMouse,
       changeBackground,
       noBackground,
-      scale,
       posX,
       posY,
       posZ,
@@ -41,6 +40,17 @@ class GLBRenderer extends Component {
       negY,
       negZ,
     } = this.props.buttonInfo;
+
+    console.log(models);
+
+    //load method
+    const loadModel = () => {
+      setTimeout(function () {
+        wrapper.add(head);
+        scene.add(wrapper);
+      }, 2000);
+    };
+
     // on progress methods
     const onProgress = (xhr) => {
       if (xhr.lengthComputable) {
@@ -56,14 +66,6 @@ class GLBRenderer extends Component {
     // on error methods
     const onError = (error) => {
       console.log(error);
-    };
-
-    //load method
-    const loadModel = () => {
-      setTimeout(function () {
-        wrapper.add(head);
-        scene.add(wrapper);
-      }, 10);
     };
 
     // on window resize
@@ -84,7 +86,6 @@ class GLBRenderer extends Component {
       texture,
       plane;
 
-    console.log(models);
     // Creating renderer
 
     renderer = new THREE.WebGLRenderer({
@@ -99,7 +100,7 @@ class GLBRenderer extends Component {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 0);
 
-    this.renderNodeGLB.current.appendChild(renderer.domElement);
+    this.renderNode.current.appendChild(renderer.domElement);
 
     // Creating a scene
     scene = new THREE.Scene();
@@ -139,23 +140,15 @@ class GLBRenderer extends Component {
 
     let head;
 
+    let wrapper = new THREE.Object3D();
+
     let manager = new THREE.LoadingManager(loadModel);
 
     let loader = new GLTFLoader(manager);
 
-    let wrapper = new THREE.Object3D();
-
     loader.load(
-      // "https://threejsfundamentals.org/threejs/resources/models/cartoon_lowpoly_small_city_free_pack/scene.gltf"
       models,
       function (gltf) {
-        gltf.scene.traverse((node) => {
-          if (node.isMesh) {
-            node.castShadow = true;
-            if (scale) node.scale.setScalar(scale);
-          }
-        });
-        console.log(gltf);
         head = gltf.scene;
       },
       onProgress,
@@ -165,11 +158,10 @@ class GLBRenderer extends Component {
     );
 
     wrapper.position.set(0, 0, 0);
-    // wrapper.rotation.x = (90 / 180) * Math.PI;
+    // wrapper.rotation.x = (25 / 180) * Math.PI;
 
     controls = new OrbitControls(camera, renderer.domElement);
     controls.target.set(0, 20, 0);
-
     controls.update();
 
     // Background loader
@@ -214,7 +206,7 @@ class GLBRenderer extends Component {
       );
 
     if (!noBackground) {
-      plane.castShadow = true;
+      plane.castShadow = false;
       plane.receiveShadow = true;
       plane.rotation.x = -Math.PI / 2;
       plane.position.set(0, 0, 0);
@@ -225,6 +217,7 @@ class GLBRenderer extends Component {
     // let delta = 0;
     function animate() {
       if (!rotateModelByMouse) wrapper.rotation.y += 0.01;
+
       renderer.render(scene, camera);
       controls.update();
 
@@ -272,9 +265,10 @@ class GLBRenderer extends Component {
   render() {
     // const { images } = this.props.buttonInfo;
     const { isModelLoaded } = this.state;
+
     return (
       <div
-        ref={this.renderNodeGLB}
+        ref={this.renderNode}
         className='model-renderer'
         onClick={this.handlePlayerControl}
         onDoubleClick={this.handleOpenModal}
@@ -310,4 +304,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GLBRenderer);
+export default connect(mapStateToProps, mapDispatchToProps)(GLTFRenderer);
