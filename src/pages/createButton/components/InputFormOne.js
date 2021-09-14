@@ -60,7 +60,7 @@ function InputFormOne(props) {
                 <FileUploader
                   componentLabel='Upload 3D Model'
                   name='models'
-                  fileType='.obj, .glb, .fbx, .zip, .rar, .7zip'
+                  fileType='.obj, .glb, .fbx, .gltf'
                   isDisabled={!gifs.fileValue}
                 />
               </Grid>
