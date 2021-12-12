@@ -1,21 +1,21 @@
-import React, { Component, createRef } from 'react';
-import { connect } from 'react-redux';
-import './OBJRenderer.css';
+import React, { Component, createRef } from "react";
+import { connect } from "react-redux";
+import "./OBJRenderer.css";
 
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-import * as controlActionCreator from '../../../store/actions/control_actions';
+import * as controlActionCreator from "../../../store/actions/control_actions";
 
-import imgPosX from '../../../assets/posx.jpg';
-import imgNegX from '../../../assets/negx.jpg';
-import imgPosY from '../../../assets/posy.jpg';
-import imgNegY from '../../../assets/negy.jpg';
-import imgPosZ from '../../../assets/posz.jpg';
-import imgNegZ from '../../../assets/negz.jpg';
+import imgPosX from "../../../assets/posx.jpg";
+import imgNegX from "../../../assets/negx.jpg";
+import imgPosY from "../../../assets/posy.jpg";
+import imgNegY from "../../../assets/negy.jpg";
+import imgPosZ from "../../../assets/posz.jpg";
+import imgNegZ from "../../../assets/negz.jpg";
 
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2.js';
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { OBJLoader2 } from "three/examples/jsm/loaders/OBJLoader2.js";
 
 class OBJRenderer extends Component {
   constructor(props) {
@@ -33,6 +33,7 @@ class OBJRenderer extends Component {
       rotateModelByMouse,
       changeBackground,
       noBackground,
+      lightColor,
       scale,
       posX,
       posY,
@@ -46,7 +47,7 @@ class OBJRenderer extends Component {
     const onProgress = (xhr) => {
       if (xhr.lengthComputable) {
         if (xhr.loaded === xhr.total) {
-          console.log('Model 100% downloaded');
+          console.log("Model 100% downloaded");
           this.setState({
             isModelLoaded: true,
           });
@@ -77,9 +78,11 @@ class OBJRenderer extends Component {
     let scene,
       camera,
       renderer,
+      directionalLight,
       light,
       light2,
       light3,
+      light4,
       controls,
       backgroundLoader,
       texture,
@@ -111,30 +114,29 @@ class OBJRenderer extends Component {
 
     // Creating light source
 
-    light = new THREE.DirectionalLight(0xffffff, 1.0);
-    light.position.set(20, 100, 10);
-    light.target.position.set(0, 0, 0);
-    light.castShadow = true;
-    light.shadow.bias = -0.001;
-    light.shadow.mapSize.width = 2048;
-    light.shadow.mapSize.height = 2048;
-    light.shadow.camera.near = 0.1;
-    light.shadow.camera.far = 500.0;
-    light.shadow.camera.near = 0.5;
-    light.shadow.camera.far = 500.0;
-    light.shadow.camera.left = 100;
-    light.shadow.camera.right = -100;
-    light.shadow.camera.top = 100;
-    light.shadow.camera.bottom = -100;
+    directionalLight = new THREE.DirectionalLight(0xffffff, 5);
+    directionalLight.position.set(0, 100, 0);
+    directionalLight.castShadow = true;
 
     if (!noBackground) scene.add(light);
 
-    light2 = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(light2);
+    if (lightColor) {
+      light = new THREE.PointLight(lightColor, 1);
+      light.position.set(0, 300, 500);
+      scene.add(light);
 
-    light3 = new THREE.HemisphereLight(0x6b6b6b, 0x080820, 1);
-    scene.add(light3);
+      light2 = new THREE.PointLight(lightColor, 1);
+      light2.position.set(500, 100, 0);
+      scene.add(light2);
 
+      light3 = new THREE.PointLight(lightColor, 1);
+      light3.position.set(0, 100, -500);
+      scene.add(light3);
+
+      light4 = new THREE.PointLight(lightColor, 1);
+      light4.position.set(-500, 300, 0);
+      scene.add(light4);
+    }
     // Configuring loader
 
     let head;
@@ -234,7 +236,7 @@ class OBJRenderer extends Component {
 
     // On window resize
     window.addEventListener(
-      'resize',
+      "resize",
       () => {
         onWindowResize();
       },

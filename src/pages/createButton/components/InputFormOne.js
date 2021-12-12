@@ -1,12 +1,22 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import FileUploader from "../../../components/fileUploader/FileUploader";
-import ScaleSlider from "../../../components/scaleSlider/ScaleSlider";
+import * as buttonActionCreator from "../../../store/actions/button_actions";
 
-import { makeStyles } from "@material-ui/core/styles";
+import FileUploader from "../../../components/fileUploader/FileUploader";
+import ScaleInput from "../../../components/scaleInput/ScaleInput";
+import ColorPickerTool from "../../../components/colorPicker/ColorPickerTool";
+
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+
+import { red } from "@material-ui/core/colors";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
+import ColorPicker from "@material-ui/icons/Colorize";
+import { Typography } from "@material-ui/core";
 
 import { getFileFormatName } from "../../../firebase/utility";
 
@@ -26,10 +36,25 @@ const useStyle = makeStyles((theme) => ({
       background: "#d32f2f",
     },
   },
-  input: {
-    display: "none",
-  },
 }));
+
+// Orange Input
+const OrangeTextField = withStyles({
+  root: {
+    "& fieldset": {
+      borderRadius: 5,
+      "&:hover": {
+        borderColor: red[500],
+      },
+    },
+  },
+  input: {
+    display: "block !important",
+    borderRadius: 0,
+    borderWidth: "1px",
+    borderColor: "yellow !important",
+  },
+})((props) => <OutlinedInput {...props} />);
 
 function InputFormOne(props) {
   // destructuing data from file props
@@ -47,6 +72,13 @@ function InputFormOne(props) {
   React.useEffect(() => {
     setFileFormatName(getFileFormatName(models?.fileValue?.fileName));
   }, [models]);
+
+  // Handle light Color
+
+  const handleLightColor = (event) => {
+    let value = event.target.value;
+    props.setLightColor(value.toLowerCase());
+  };
 
   return (
     <div className={classes.root}>
@@ -68,26 +100,25 @@ function InputFormOne(props) {
               {/* Second input */}
 
               <Grid item xs={12} sm={6}>
-                <FileUploader
-                  componentLabel='Upload GIF'
-                  name='gifs'
-                  fileType='.gif'
-                  isDisabled={!models.fileValue}
-                />
-              </Grid>
-
-              {/* Third input */}
-
-              {fileFormatName === "fbx" ? (
-                <Grid item xs={12} sm={6}>
+                {fileFormatName === "fbx" || fileFormatName === "gltf" ? (
                   <FileUploader
                     componentLabel='Upload Animation File'
                     name='animationFile'
                     fileType='.fbx'
                     isDisabled={audios.fileValue}
                   />
-                </Grid>
-              ) : null}
+                ) : (
+                  <FileUploader
+                    componentLabel='Upload GIF'
+                    name='gifs'
+                    fileType='.gif'
+                    isDisabled={!models.fileValue}
+                  />
+                )}
+              </Grid>
+
+              {/* Third input */}
+
               <Grid item xs={12} sm={6}>
                 <FileUploader
                   componentLabel='Upload Button Sound'
@@ -97,13 +128,52 @@ function InputFormOne(props) {
                 />
               </Grid>
 
-              {/* First input */}
+              {/* Fourth input */}
 
               <Grid item xs={12} sm={6}>
-                <ScaleSlider
+                <ScaleInput
                   componentLabel='Input the scale of model'
                   name='scale'
                 />
+              </Grid>
+
+              {/* Fifth input */}
+
+              <Grid item xs={12} sm={6}>
+                <ColorPickerTool />
+              </Grid>
+
+              {/* Sixth input */}
+
+              <Grid item xs={12} sm={5}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Typography variant='h6'>Put color</Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <OrangeTextField
+                      fullWidth
+                      type='text'
+                      className={classes.input}
+                      name='lightColor'
+                      style={{ color: "#ffffff" }}
+                      autoComplete='off'
+                      onChange={handleLightColor}
+                      startAdornment={
+                        <InputAdornment position='start'>
+                          <IconButton>
+                            <ColorPicker
+                              fontSize='default'
+                              style={{
+                                color: red[500],
+                              }}
+                            />
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
           </Paper>
@@ -122,4 +192,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(InputFormOne);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLightColor: (data) => dispatch(buttonActionCreator.setLightColor(data)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(InputFormOne);

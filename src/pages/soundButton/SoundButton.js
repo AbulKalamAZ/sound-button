@@ -1,59 +1,59 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-import { makeStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { IconButton } from '@material-ui/core';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { makeStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { IconButton } from "@material-ui/core";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 // import DefaultLayout from '../../layouts/DefaultLayout';
-import GIFRenderer from './components/GIFRenderer';
+import GIFRenderer from "./components/GIFRenderer";
 
-import { fetchButtonData } from '../../firebase/utility';
-import ModelRenderer from './components/ModelRenderer';
+import { fetchButtonData } from "../../firebase/utility";
+import ModelRenderer from "./components/ModelRenderer";
 
-import frameShell from '../../firebase/frameShell.js';
-import { saveAs } from 'file-saver';
+import frameShell from "../../firebase/frameShell.js";
+import { saveAs } from "file-saver";
 
 const useStyle = makeStyles((theme) => ({
   root: {
-    width: '100%',
-    minHeight: '100vh',
-    background: '#014E58',
+    width: "100%",
+    minHeight: "100vh",
+    background: "#014E58",
   },
   rootWithoutBG: {
-    width: '100%',
-    minHeight: '100vh',
-    background: 'transparent',
+    width: "100%",
+    minHeight: "100vh",
+    background: "transparent",
   },
   modelContainer: {
-    width: '100%',
-    minHeight: '90vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "100%",
+    minHeight: "90vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   iframeContainer: {
-    width: '100%',
-    height: '100vh',
-    position: 'relative',
+    width: "100%",
+    height: "100vh",
+    position: "relative",
   },
   backButton: {
-    position: 'absolute',
-    top: '30px',
-    left: '30px',
-    transform: 'rotateY(180deg)',
-    zIndex: '9999',
+    position: "absolute",
+    top: "30px",
+    left: "30px",
+    transform: "rotateY(180deg)",
+    zIndex: "9999",
   },
   downloadButton: {
-    position: 'absolute',
-    bottom: '60px',
-    right: '60px',
+    position: "absolute",
+    bottom: "60px",
+    right: "60px",
   },
   audioElement: {
-    display: 'none',
+    display: "none",
   },
 }));
 
@@ -76,8 +76,8 @@ function SoundButton(props) {
         setButtonInfo({ ...res });
       })
       .catch((err) => {
-        console.log('Error form SoundButton.js ', err);
-        history.push('/create-button');
+        console.log("Error form SoundButton.js ", err);
+        history.push("/create-button");
       });
   }, [id, history]);
 
@@ -127,11 +127,11 @@ function SoundButton(props) {
   useEffect(() => {
     const generateIframe = () => {
       let frame;
-      frame = document.createElement('iframe');
+      frame = document.createElement("iframe");
       frame.src = buttonInfo.redirectTo;
       frame.width = buttonInfo.frameWidth;
       frame.height = buttonInfo.frameHeight;
-      frame.style.position = 'absolute';
+      frame.style.position = "absolute";
       frame.style.top = `${buttonInfo.framePositionFromTop}px`;
       frame.style.left = `${buttonInfo.framePositionFromLeft}px`;
       frameContainer.current.appendChild(frame);
@@ -150,18 +150,17 @@ function SoundButton(props) {
   ]);
 
   const goToCreateButtonpage = () => {
-    history.push('/create-button');
+    history.push("/create-button");
   };
 
   const downloadFrame = () => {
-    let frameSTR = frameShell.replace('src', `src="${buttonInfo.redirectTo}"`);
+    let frameSTR = frameShell.replace("src", `src="${buttonInfo.redirectTo}"`);
 
-    let blob = new Blob([frameSTR], { type: 'text/html;charset=utf-8' });
+    let blob = new Blob([frameSTR], { type: "text/html;charset=utf-8" });
 
-    saveAs(blob, 'downloaded-frame.html');
+    saveAs(blob, "downloaded-frame.html");
   };
 
-  console.log('from SoundButton', buttonInfo.noBackground);
   return (
     <div
       className={buttonInfo.noBackground ? classes.rootWithoutBG : classes.root}
@@ -172,11 +171,11 @@ function SoundButton(props) {
         aria-label='navigate to previous page'
         onClick={goToCreateButtonpage}
       >
-        <ExitToAppIcon fontSize='large' style={{ color: '#ffffff' }} />
+        <ExitToAppIcon fontSize='large' style={{ color: "#ffffff" }} />
       </IconButton>
       <div className={classes.modelContainer}>
         {Object.keys(buttonInfo).length === 0 ? (
-          <CircularProgress size={80} style={{ color: '#ffffff' }} />
+          <CircularProgress size={80} style={{ color: "#ffffff" }} />
         ) : buttonInfo.models ? (
           <ModelRenderer buttonDetails={buttonInfo} />
         ) : (
@@ -196,7 +195,7 @@ function SoundButton(props) {
             aria-label='download iframe'
             onClick={downloadFrame}
           >
-            <GetAppIcon fontSize='large' style={{ color: '#ffffff' }} />
+            <GetAppIcon fontSize='large' style={{ color: "#ffffff" }} />
           </IconButton>
         ) : null}
       </div>

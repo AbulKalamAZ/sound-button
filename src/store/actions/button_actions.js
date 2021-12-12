@@ -1,11 +1,11 @@
-import { uploadButtonInfoToDatabase } from '../../firebase/utility';
-import * as controlActionCreator from '../actions/control_actions';
-import * as fileActionCreator from '../actions/file_actions';
+import { uploadButtonInfoToDatabase } from "../../firebase/utility";
+import * as controlActionCreator from "../actions/control_actions";
+import * as fileActionCreator from "../actions/file_actions";
 // creating update button data
 
 export const updateButtonData = (data) => {
   return {
-    type: 'UPDATE_BUTTON_DATA',
+    type: "UPDATE_BUTTON_DATA",
     payload: data,
   };
 };
@@ -15,9 +15,11 @@ export const uploadButtonData = () => {
   return (dispatch, getState) => {
     const buttonInfo = getState().button.button;
 
+    console.log("From button actions", buttonInfo);
+
     uploadButtonInfoToDatabase(buttonInfo)
       .then((res) => {
-        dispatch({ type: 'UPLOAD_BUTTON_DATA', payload: res.id });
+        dispatch({ type: "UPLOAD_BUTTON_DATA", payload: res.id });
       })
       .then(() => {
         dispatch(controlActionCreator.setButtonId());
@@ -32,7 +34,7 @@ export const uploadButtonData = () => {
 
 export const setPlayAudioOnClick = (payload) => {
   return {
-    type: 'SET_PLAY_AUDIO_ON_CLICK',
+    type: "SET_PLAY_AUDIO_ON_CLICK",
     payload: payload,
   };
 };
@@ -41,7 +43,7 @@ export const setPlayAudioOnClick = (payload) => {
 
 export const setPlayAudioAutomatically = (payload) => {
   return {
-    type: 'SET_PLAY_AUDIO_AUTOMATICALLY',
+    type: "SET_PLAY_AUDIO_AUTOMATICALLY",
     payload: payload,
   };
 };
@@ -50,7 +52,7 @@ export const setPlayAudioAutomatically = (payload) => {
 
 export const setPlayAudioOnce = (payload) => {
   return {
-    type: 'SET_PLAY_AUDIO_ONCE',
+    type: "SET_PLAY_AUDIO_ONCE",
     payload: payload,
   };
 };
@@ -59,7 +61,7 @@ export const setPlayAudioOnce = (payload) => {
 
 export const setPlayAudioInLoop = (payload) => {
   return {
-    type: 'SET_PLAY_AUDIO_IN_LOOP',
+    type: "SET_PLAY_AUDIO_IN_LOOP",
     payload: payload,
   };
 };
@@ -67,7 +69,7 @@ export const setPlayAudioInLoop = (payload) => {
 
 export const setRotateModelByMouse = (payload) => {
   return {
-    type: 'SET_ROTATE_MODEL_BY_MOSUE',
+    type: "SET_ROTATE_MODEL_BY_MOSUE",
     payload: payload,
   };
 };
@@ -76,7 +78,7 @@ export const setRotateModelByMouse = (payload) => {
 
 export const setRotateModelAutomatically = (payload) => {
   return {
-    type: 'SET_ROTATE_MODEL_AUTOMATICALLY',
+    type: "SET_ROTATE_MODEL_AUTOMATICALLY",
     payload: payload,
   };
 };
@@ -85,7 +87,7 @@ export const setRotateModelAutomatically = (payload) => {
 
 export const setRedirectTo = (payload) => {
   return {
-    type: 'REDIRECT_TO',
+    type: "REDIRECT_TO",
     payload: payload,
   };
 };
@@ -93,9 +95,9 @@ export const setRedirectTo = (payload) => {
 // open link in an iframe
 
 export const setOpenLinkInAniFrame = (payload) => {
-  console.log('from button action creator');
+  console.log("from button action creator");
   return {
-    type: 'OPEN_LINK_IN_AN_IFRAME',
+    type: "OPEN_LINK_IN_AN_IFRAME",
     payload: payload,
   };
 };
@@ -104,7 +106,7 @@ export const setOpenLinkInAniFrame = (payload) => {
 
 export const setFrameWidth = (payload) => {
   return {
-    type: 'SET_FRAME_WIDTH',
+    type: "SET_FRAME_WIDTH",
     payload: +payload,
   };
 };
@@ -113,7 +115,7 @@ export const setFrameWidth = (payload) => {
 
 export const setFrameHeight = (payload) => {
   return {
-    type: 'SET_FRAME_HEIGHT',
+    type: "SET_FRAME_HEIGHT",
     payload: +payload,
   };
 };
@@ -122,7 +124,7 @@ export const setFrameHeight = (payload) => {
 
 export const setFramePositionLeft = (payload) => {
   return {
-    type: 'SET_FRAME_POSITION_LEFT',
+    type: "SET_FRAME_POSITION_LEFT",
     payload: +payload,
   };
 };
@@ -130,7 +132,7 @@ export const setFramePositionLeft = (payload) => {
 // set frame position from right
 export const setFramePositionTop = (payload) => {
   return {
-    type: 'SET_FRAME_POSITION_TOP',
+    type: "SET_FRAME_POSITION_TOP",
     payload: +payload,
   };
 };
@@ -139,7 +141,7 @@ export const setFramePositionTop = (payload) => {
 
 export const setAudioPlayingDelay = (payload) => {
   return {
-    type: 'AUDIO_PLAYING_DELAY',
+    type: "AUDIO_PLAYING_DELAY",
     payload: payload,
   };
 };
@@ -148,7 +150,7 @@ export const setAudioPlayingDelay = (payload) => {
 
 export const setChangeBackground = (payload) => {
   return {
-    type: 'SET_CHANGE_BACKGROUND',
+    type: "SET_CHANGE_BACKGROUND",
     payload: payload,
   };
 };
@@ -157,16 +159,52 @@ export const setChangeBackground = (payload) => {
 
 export const setNoBackground = (payload) => {
   return {
-    type: 'SET_NO_BACKGROUND',
+    type: "SET_NO_BACKGROUND",
     payload: payload,
   };
 };
 
-// set no background or not
+// set MODEL SCALE or not
 
 export const setModelScale = (payload) => {
   return {
-    type: 'SET_SCALE_OF_MODEL',
+    type: "SET_SCALE_OF_MODEL",
+    payload: payload,
+  };
+};
+
+// set light color or not
+
+export const setLightColor = (payload) => {
+  return {
+    type: "SET_LIGHT_COLOR",
+    payload: payload,
+  };
+};
+
+// set play animation on click
+
+export const setPlayAnimationInLoop = (payload) => {
+  return {
+    type: "SET_PLAY_ANIMATION_IN_LOOP",
+    payload: payload,
+  };
+};
+
+// set position from left
+
+export const setPositionLeft = (payload) => {
+  return {
+    type: "SET_POSITION_LEFT",
+    payload: payload,
+  };
+};
+
+// set position from bottom
+
+export const setPositionBottom = (payload) => {
+  return {
+    type: "SET_POSITION_BOTTOM",
     payload: payload,
   };
 };

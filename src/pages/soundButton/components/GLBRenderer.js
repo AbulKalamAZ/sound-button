@@ -2,6 +2,10 @@ import React, { Component, createRef } from "react";
 import { connect } from "react-redux";
 import "./OBJRenderer.css";
 
+import Button from "@material-ui/core/Button";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import PauseIcon from "@material-ui/icons/Pause";
+
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import * as controlActionCreator from "../../../store/actions/control_actions";
@@ -22,18 +26,26 @@ class GLBRenderer extends Component {
     super(props);
     this.renderNodeGLB = createRef();
     this.state = {
+      globalSoundInstance: null,
       isModelLoaded: false,
+      shouldAnimationPlay: false,
+      animatedModel: null,
     };
   }
 
   componentDidMount() {
     // Destructuring values from props
     const {
+      audios,
       models,
       rotateModelByMouse,
       changeBackground,
       noBackground,
       scale,
+      lightColor,
+      playAnimationInLoop,
+      positionLeft,
+      positionBottom,
       posX,
       posY,
       posZ,
@@ -41,15 +53,20 @@ class GLBRenderer extends Component {
       negY,
       negZ,
     } = this.props.buttonInfo;
+
     // on progress methods
     const onProgress = (xhr) => {
-      if (xhr.lengthComputable) {
-        if (xhr.loaded === xhr.total) {
-          console.log("Model 100% downloaded");
-          this.setState({
-            isModelLoaded: true,
-          });
+      try {
+        if (xhr.lengthComputable) {
+          if (xhr.loaded === xhr.total) {
+            console.log("Model 100% downloaded");
+            this.setState({
+              isModelLoaded: true,
+            });
+          }
         }
+      } catch (err) {
+        console.log("Loading error", err);
       }
     };
 
@@ -63,7 +80,11 @@ class GLBRenderer extends Component {
       setTimeout(function () {
         wrapper.add(head);
         scene.add(wrapper);
-      }, 10);
+      }, 100);
+    };
+
+    const getParentContex = () => {
+      return this;
     };
 
     // on window resize
@@ -76,15 +97,21 @@ class GLBRenderer extends Component {
     let scene,
       camera,
       renderer,
+      directionalLight,
       light,
       light2,
       light3,
+      light4,
       controls,
       backgroundLoader,
       texture,
-      plane;
+      plane,
+      mixer,
+      lastframe = Date.now(),
+      listener,
+      sound,
+      audioLoader;
 
-    console.log(models);
     // Creating renderer
 
     renderer = new THREE.WebGLRenderer({
@@ -111,29 +138,57 @@ class GLBRenderer extends Component {
 
     // Creating light source
 
-    light = new THREE.DirectionalLight(0xffffff, 1.0);
-    light.position.set(20, 100, 10);
-    light.target.position.set(0, 0, 0);
-    light.castShadow = true;
-    light.shadow.bias = -0.001;
-    light.shadow.mapSize.width = 2048;
-    light.shadow.mapSize.height = 2048;
-    light.shadow.camera.near = 0.1;
-    light.shadow.camera.far = 500.0;
-    light.shadow.camera.near = 0.5;
-    light.shadow.camera.far = 500.0;
-    light.shadow.camera.left = 100;
-    light.shadow.camera.right = -100;
-    light.shadow.camera.top = 100;
-    light.shadow.camera.bottom = -100;
+    directionalLight = new THREE.DirectionalLight(0xffffff, 5);
+    directionalLight.position.set(0, 100, 0);
+    directionalLight.castShadow = true;
 
-    if (!noBackground) scene.add(light);
+    if (!noBackground) scene.add(directionalLight);
 
-    light2 = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(light2);
+    if (lightColor) {
+      light = new THREE.PointLight(lightColor, 1);
+      light.position.set(0, 300, 500);
+      scene.add(light);
 
-    light3 = new THREE.HemisphereLight(0x6b6b6b, 0x080820, 1);
-    scene.add(light3);
+      light2 = new THREE.PointLight(lightColor, 1);
+      light2.position.set(500, 100, 0);
+      scene.add(light2);
+
+      light3 = new THREE.PointLight(lightColor, 1);
+      light3.position.set(0, 100, -500);
+      scene.add(light3);
+
+      light4 = new THREE.PointLight(lightColor, 1);
+      light4.position.set(-500, 300, 0);
+      scene.add(light4);
+    }
+
+    // Creating a Audio Listener and adding it to the camera
+
+    if (audios) {
+      listener = new THREE.AudioListener();
+      camera.add(listener);
+
+      // Create a global audio source
+
+      sound = new THREE.Audio(listener);
+
+      // Loading the sound and set it as audio object's buffer
+
+      audioLoader = new THREE.AudioLoader();
+
+      audioLoader.load(audios, (buffer) => {
+        sound.setBuffer(buffer);
+        sound.setVolume(0.5);
+        sound.setLoop(!playAnimationInLoop);
+
+        // Getting parent context and updating the state
+        const parentContex = getParentContex();
+
+        parentContex.setState({
+          globalSoundInstance: sound,
+        });
+      });
+    }
 
     // Configuring loader
 
@@ -146,16 +201,27 @@ class GLBRenderer extends Component {
     let wrapper = new THREE.Object3D();
 
     loader.load(
-      // "https://threejsfundamentals.org/threejs/resources/models/cartoon_lowpoly_small_city_free_pack/scene.gltf"
       models,
       function (gltf) {
         gltf.scene.traverse((node) => {
           if (node.isMesh) {
             node.castShadow = true;
-            if (scale) node.scale.setScalar(scale);
           }
         });
-        console.log(gltf);
+
+        // checking if model has animation or not
+        if (gltf.animations.length) {
+          mixer = new THREE.AnimationMixer(gltf.scene);
+          var action = mixer.clipAction(gltf.animations[0]);
+
+          // Getting parent constex
+          const THIS = getParentContex();
+
+          THIS.setState({
+            animatedModel: action,
+          });
+        }
+
         head = gltf.scene;
       },
       onProgress,
@@ -164,7 +230,15 @@ class GLBRenderer extends Component {
       false
     );
 
-    wrapper.position.set(0, 0, 0);
+    // if has position
+
+    if (positionLeft && positionBottom) {
+      wrapper.position.set(positionBottom, positionLeft, 0);
+    } else {
+      wrapper.position.set(0, 0, 0);
+    }
+
+    if (scale) wrapper.scale.setScalar(scale);
     // wrapper.rotation.x = (90 / 180) * Math.PI;
 
     controls = new OrbitControls(camera, renderer.domElement);
@@ -224,8 +298,16 @@ class GLBRenderer extends Component {
     //anmate method
     // let delta = 0;
     function animate() {
+      let dt = (Date.now() - lastframe) / 1000;
+
+      if (mixer) {
+        mixer.update(dt);
+      }
       if (!rotateModelByMouse) wrapper.rotation.y += 0.01;
       renderer.render(scene, camera);
+
+      lastframe = Date.now();
+
       controls.update();
 
       requestAnimationFrame(animate);
@@ -244,19 +326,19 @@ class GLBRenderer extends Component {
   }
 
   // Handle audio player control
-  handlePlayerControl = () => {
-    const { playAudio, pauseAudio, control } = this.props;
-    const { playAudioAutomatically } = this.props.buttonInfo;
+  // handlePlayerControl = () => {
+  //   const { playAudio, pauseAudio, control } = this.props;
+  //   const { playAudioAutomatically } = this.props.buttonInfo;
 
-    if (playAudioAutomatically) {
-    } else {
-      if (control.playAudio) {
-        pauseAudio();
-      } else {
-        playAudio();
-      }
-    }
-  };
+  //   if (playAudioAutomatically) {
+  //   } else {
+  //     if (control.playAudio) {
+  //       pauseAudio();
+  //     } else {
+  //       playAudio();
+  //     }
+  //   }
+  // };
 
   // handle open modal method
 
@@ -267,6 +349,31 @@ class GLBRenderer extends Component {
       } else {
         window.open(this.props.buttonInfo.redirectTo);
       }
+    }
+  };
+
+  // plays animation and sound
+
+  controlAnimation = () => {
+    // Destructuring state
+
+    const { shouldAnimationPlay, animatedModel, globalSoundInstance } =
+      this.state;
+
+    if (shouldAnimationPlay) {
+      if (animatedModel) animatedModel.stop();
+      if (globalSoundInstance) globalSoundInstance.stop();
+
+      this.setState((prevState) => ({
+        shouldAnimationPlay: !prevState.shouldAnimationPlay,
+      }));
+    } else {
+      if (animatedModel) animatedModel.play();
+      if (globalSoundInstance) globalSoundInstance.play();
+
+      this.setState((prevState) => ({
+        shouldAnimationPlay: !prevState.shouldAnimationPlay,
+      }));
     }
   };
   render() {
@@ -286,11 +393,18 @@ class GLBRenderer extends Component {
             color='primary'
           />
         ) : null}
-        {/* <img
-                    src={images ?? modelBackground}
-                    className="model-bg-img"
-                    alt="default background media"
-                /> */}
+
+        {/* controll button */}
+        <div className='control-button'>
+          <Button
+            variant='contained'
+            size='large'
+            onClick={this.controlAnimation}
+            disabled={!this.state.isModelLoaded}
+          >
+            {this.state.shouldAnimationPlay ? <PauseIcon /> : <PlayArrowIcon />}
+          </Button>
+        </div>
       </div>
     );
   }

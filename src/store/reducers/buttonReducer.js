@@ -1,5 +1,5 @@
 const initState = {
-  buttonId: '',
+  buttonId: "",
   button: {
     models: null,
     modelFormat: null,
@@ -7,9 +7,11 @@ const initState = {
     audios: null,
     images: null,
     scale: null,
+    lightColor: null,
     playAudioOnClick: false,
     playAudioAutomatically: true,
     playAudioOnce: true,
+    playAnimationInLoop: false,
     playAudioInLoop: false,
     rotateModelByMouse: false,
     rotateModelAutomatically: true,
@@ -22,6 +24,8 @@ const initState = {
     audioPlayingDelay: null,
     changeBackground: false,
     noBackground: false,
+    positionLeft: 0,
+    positionBottom: 0,
     posX: null,
     posY: null,
     posZ: null,
@@ -35,7 +39,7 @@ const buttonReducer = (state = initState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case 'UPDATE_BUTTON_DATA':
+    case "UPDATE_BUTTON_DATA":
       if (payload.name && payload.value) {
         return {
           ...state,
@@ -48,7 +52,7 @@ const buttonReducer = (state = initState, action) => {
         return { ...state };
       }
 
-    case 'UPLOAD_BUTTON_DATA':
+    case "UPLOAD_BUTTON_DATA":
       if (payload) {
         return {
           ...state,
@@ -58,7 +62,7 @@ const buttonReducer = (state = initState, action) => {
 
       return { ...state };
 
-    case 'SET_PLAY_AUDIO_ON_CLICK':
+    case "SET_PLAY_AUDIO_ON_CLICK":
       return {
         ...state,
         button: {
@@ -68,7 +72,7 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'SET_PLAY_AUDIO_AUTOMATICALLY':
+    case "SET_PLAY_AUDIO_AUTOMATICALLY":
       return {
         ...state,
         button: {
@@ -78,7 +82,7 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'SET_ROTATE_MODEL_BY_MOSUE':
+    case "SET_ROTATE_MODEL_BY_MOSUE":
       return {
         ...state,
         button: {
@@ -88,7 +92,7 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'SET_ROTATE_MODEL_AUTOMATICALLY':
+    case "SET_ROTATE_MODEL_AUTOMATICALLY":
       return {
         ...state,
         button: {
@@ -98,7 +102,7 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'SET_PLAY_AUDIO_ONCE':
+    case "SET_PLAY_AUDIO_ONCE":
       return {
         ...state,
         button: {
@@ -108,7 +112,7 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'SET_PLAY_AUDIO_IN_LOOP':
+    case "SET_PLAY_AUDIO_IN_LOOP":
       return {
         ...state,
         button: {
@@ -118,7 +122,7 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'REDIRECT_TO':
+    case "REDIRECT_TO":
       return {
         ...state,
         button: {
@@ -127,7 +131,7 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'OPEN_LINK_IN_AN_IFRAME':
+    case "OPEN_LINK_IN_AN_IFRAME":
       return {
         ...state,
         button: {
@@ -136,7 +140,7 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'SET_FRAME_WIDTH':
+    case "SET_FRAME_WIDTH":
       return {
         ...state,
         button: {
@@ -145,7 +149,7 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'SET_FRAME_HEIGHT':
+    case "SET_FRAME_HEIGHT":
       return {
         ...state,
         button: {
@@ -154,7 +158,7 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'SET_FRAME_POSITION_LEFT':
+    case "SET_FRAME_POSITION_LEFT":
       return {
         ...state,
         button: {
@@ -163,7 +167,7 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'SET_FRAME_POSITION_TOP':
+    case "SET_FRAME_POSITION_TOP":
       return {
         ...state,
         button: {
@@ -172,7 +176,7 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'AUDIO_PLAYING_DELAY':
+    case "AUDIO_PLAYING_DELAY":
       return {
         ...state,
         button: {
@@ -181,7 +185,7 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'SET_CHANGE_BACKGROUND':
+    case "SET_CHANGE_BACKGROUND":
       return {
         ...state,
         button: {
@@ -190,7 +194,7 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'SET_NO_BACKGROUND':
+    case "SET_NO_BACKGROUND":
       return {
         ...state,
         button: {
@@ -199,12 +203,48 @@ const buttonReducer = (state = initState, action) => {
         },
       };
 
-    case 'SET_SCALE_OF_MODEL':
+    case "SET_SCALE_OF_MODEL":
       return {
         ...state,
         button: {
           ...state.button,
           scale: payload,
+        },
+      };
+
+    case "SET_LIGHT_COLOR":
+      return {
+        ...state,
+        button: {
+          ...state.button,
+          lightColor: payload,
+        },
+      };
+
+    case "SET_PLAY_ANIMATION_IN_LOOP":
+      return {
+        ...state,
+        button: {
+          ...state.button,
+          playAnimationInLoop: payload,
+        },
+      };
+
+    case "SET_POSITION_LEFT":
+      return {
+        ...state,
+        button: {
+          ...state.button,
+          positionLeft: payload,
+        },
+      };
+
+    case "SET_POSITION_BOTTOM":
+      return {
+        ...state,
+        button: {
+          ...state.button,
+          positionBottom: payload,
         },
       };
 

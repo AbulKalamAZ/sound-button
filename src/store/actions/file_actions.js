@@ -49,6 +49,15 @@ export const fileUploadError = () => {
   };
 };
 
+// set light color
+
+export const setLightColor = (payload) => {
+  return {
+    type: "SET_LIGHT_COLOR",
+    payload: payload,
+  };
+};
+
 // Upload file to server
 
 export const uploadFile = (data) => {

@@ -1,22 +1,22 @@
-import React, { Component, createRef } from 'react';
-import { connect } from 'react-redux';
-import './OBJRenderer.css';
-import Button from '@material-ui/core/Button';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
+import React, { Component, createRef } from "react";
+import { connect } from "react-redux";
+import "./OBJRenderer.css";
+import Button from "@material-ui/core/Button";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import PauseIcon from "@material-ui/icons/Pause";
 
-import * as controlActionCreator from '../../../store/actions/control_actions';
+import * as controlActionCreator from "../../../store/actions/control_actions";
 
-import imgPosX from '../../../assets/posx.jpg';
-import imgNegX from '../../../assets/negx.jpg';
-import imgPosY from '../../../assets/posy.jpg';
-import imgNegY from '../../../assets/negy.jpg';
-import imgPosZ from '../../../assets/posz.jpg';
-import imgNegZ from '../../../assets/negz.jpg';
+import imgPosX from "../../../assets/posx.jpg";
+import imgNegX from "../../../assets/negx.jpg";
+import imgPosY from "../../../assets/posy.jpg";
+import imgNegY from "../../../assets/negy.jpg";
+import imgPosZ from "../../../assets/posz.jpg";
+import imgNegZ from "../../../assets/negz.jpg";
 
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
 class FBXRenderer extends Component {
   constructor(props) {
@@ -55,6 +55,10 @@ class FBXRenderer extends Component {
       animationFile,
       changeBackground,
       noBackground,
+      lightColor,
+      playAnimationInLoop,
+      positionLeft,
+      positionBottom,
       scale,
       posX,
       posY,
@@ -67,9 +71,11 @@ class FBXRenderer extends Component {
     let scene,
       camera,
       renderer,
+      directionalLight,
       light,
       light2,
       light3,
+      light4,
       controls,
       backgroundLoader,
       texture,
@@ -106,48 +112,48 @@ class FBXRenderer extends Component {
 
     // Creating light source
 
-    light = new THREE.DirectionalLight(0xffffff, 1.0);
-    light.position.set(50, 100, 100);
-    light.target.position.set(0, 0, 0);
-    light.castShadow = true;
-    light.shadow.bias = -0.001;
-    light.shadow.mapSize.width = 2048;
-    light.shadow.mapSize.height = 2048;
-    light.shadow.camera.near = 0.1;
-    light.shadow.camera.far = 500.0;
-    light.shadow.camera.near = 0.5;
-    light.shadow.camera.far = 500.0;
-    light.shadow.camera.left = 100;
-    light.shadow.camera.right = -100;
-    light.shadow.camera.top = 100;
-    light.shadow.camera.bottom = -100;
+    directionalLight = new THREE.DirectionalLight(0xffffff, 5);
+    directionalLight.position.set(0, 100, 0);
+    directionalLight.castShadow = true;
 
     if (!noBackground) scene.add(light);
 
-    light2 = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(light2);
+    if (lightColor) {
+      light = new THREE.PointLight(lightColor, 1);
+      light.position.set(0, 300, 500);
+      scene.add(light);
 
-    light3 = new THREE.HemisphereLight(0x6b6b6b, 0x080820, 1);
-    scene.add(light3);
+      light2 = new THREE.PointLight(lightColor, 1);
+      light2.position.set(500, 100, 0);
+      scene.add(light2);
+
+      light3 = new THREE.PointLight(lightColor, 1);
+      light3.position.set(0, 100, -500);
+      scene.add(light3);
+
+      light4 = new THREE.PointLight(lightColor, 1);
+      light4.position.set(-500, 300, 0);
+      scene.add(light4);
+    }
 
     // Creating a Audio Listener and adding it to the camera
 
-    listener = new THREE.AudioListener();
-    camera.add(listener);
-
-    // Create a global audio source
-
-    sound = new THREE.Audio(listener);
-
-    // Loading the sound and set it as audio object's buffer
-
-    audioLoader = new THREE.AudioLoader();
-
     if (audios) {
+      listener = new THREE.AudioListener();
+      camera.add(listener);
+
+      // Create a global audio source
+
+      sound = new THREE.Audio(listener);
+
+      // Loading the sound and set it as audio object's buffer
+
+      audioLoader = new THREE.AudioLoader();
+
       audioLoader.load(audios, (buffer) => {
         sound.setBuffer(buffer);
-        sound.setLoop(true);
         sound.setVolume(0.5);
+        sound.setLoop(!playAnimationInLoop);
 
         // Getting parent context and updating the state
         const parentContex = getParentContex();
@@ -163,6 +169,16 @@ class FBXRenderer extends Component {
     let loader = new FBXLoader();
 
     loader.load(models, function (fbx) {
+      // if has position
+
+      if (positionLeft && positionBottom) {
+        fbx.position.set(positionBottom, positionLeft, 0);
+      } else {
+        fbx.position.set(0, 0, 0);
+      }
+
+      // Scaling the model
+
       fbx.traverse((node) => {
         node.castShadow = true;
         if (scale) {
@@ -172,23 +188,53 @@ class FBXRenderer extends Component {
         }
       });
 
-      // Loading animation
-      const animation = new FBXLoader();
+      if (animationFile) {
+        // Loading external animation
+        const animation = new FBXLoader();
 
-      animation.load(animationFile, (anim) => {
-        try {
-          animationMixers = new THREE.AnimationMixer(fbx);
+        animation.load(animationFile, (anim) => {
+          try {
+            animationMixers = new THREE.AnimationMixer(fbx);
 
-          const animatedModel = animationMixers.clipAction(anim.animations[0]);
-          const parentContex = getParentContex();
+            const animatedModel = animationMixers.clipAction(
+              anim.animations[0]
+            );
+            // For not looping around
+            if (playAnimationInLoop) {
+              animatedModel.setLoop(THREE.LoopOnce);
+              animatedModel.clampWhenFinished = true;
+              animatedModel.enable = true;
+            }
 
-          parentContex.setState({
-            animatedModel: animatedModel,
-          });
-        } catch (err) {
-          console.log('error from animation loader at FBXRenderer.js', err);
+            const parentContex = getParentContex();
+
+            parentContex.setState({
+              animatedModel: animatedModel,
+            });
+          } catch (err) {
+            console.log("error from animation loader at FBXRenderer.js", err);
+          }
+        });
+      } else {
+        // if no external animation
+        animationMixers = new THREE.AnimationMixer(fbx);
+        const animatedModelBUILTIN = animationMixers.clipAction(
+          fbx.animations[0]
+        );
+
+        // For not looping around
+        if (playAnimationInLoop) {
+          animatedModelBUILTIN.setLoop(THREE.LoopOnce);
+          animatedModelBUILTIN.clampWhenFinished = true;
+          animatedModelBUILTIN.enable = true;
         }
-      });
+
+        const parentContex = getParentContex();
+
+        parentContex.setState({
+          animatedModel: animatedModelBUILTIN,
+        });
+      }
 
       activateControlButton();
       scene.add(fbx);
@@ -271,28 +317,13 @@ class FBXRenderer extends Component {
 
     // On window resize
     window.addEventListener(
-      'resize',
+      "resize",
       () => {
         onWindowResize();
       },
       false
     );
   }
-
-  // Handle audio player control
-  handlePlayerControl = () => {
-    const { playAudio, pauseAudio, control } = this.props;
-    const { playAudioAutomatically } = this.props.buttonInfo;
-
-    if (playAudioAutomatically) {
-    } else {
-      if (control.playAudio) {
-        pauseAudio();
-      } else {
-        playAudio();
-      }
-    }
-  };
 
   // handle open modal method
 
@@ -309,16 +340,21 @@ class FBXRenderer extends Component {
   // plays animation and sound
 
   controlAnimation = () => {
-    if (this.state.shouldAnimationPlay) {
-      if (this.state.animatedModel) this.state.animatedModel.stop();
-      if (this.state.globalSoundInstance) this.state.globalSoundInstance.stop();
+    // Destructuring state
+
+    const { shouldAnimationPlay, animatedModel, globalSoundInstance } =
+      this.state;
+
+    if (shouldAnimationPlay) {
+      if (animatedModel) animatedModel.stop();
+      if (globalSoundInstance) globalSoundInstance.stop();
 
       this.setState((prevState) => ({
         shouldAnimationPlay: !prevState.shouldAnimationPlay,
       }));
     } else {
-      if (this.state.animatedModel) this.state.animatedModel.play();
-      if (this.state.globalSoundInstance) this.state.globalSoundInstance.play();
+      if (animatedModel) animatedModel.play();
+      if (globalSoundInstance) globalSoundInstance.play();
 
       this.setState((prevState) => ({
         shouldAnimationPlay: !prevState.shouldAnimationPlay,
