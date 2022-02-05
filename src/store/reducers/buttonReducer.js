@@ -8,6 +8,8 @@ const initState = {
     images: null,
     scale: null,
     lightColor: null,
+    luminosityLight: 1.0,
+    backgroundColor: null,
     playAudioOnClick: false,
     playAudioAutomatically: true,
     playAudioOnce: true,
@@ -218,6 +220,24 @@ const buttonReducer = (state = initState, action) => {
         button: {
           ...state.button,
           lightColor: payload,
+        },
+      };
+
+    case "SET_LUMINOSOTY_LIGHT":
+      return {
+        ...state,
+        button: {
+          ...state.button,
+          luminosityLight: payload,
+        },
+      };
+
+    case "SET_BACKGROUND_COLOR":
+      return {
+        ...state,
+        button: {
+          ...state.button,
+          backgroundColor: payload,
         },
       };
 

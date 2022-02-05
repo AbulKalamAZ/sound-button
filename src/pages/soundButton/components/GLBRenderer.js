@@ -41,8 +41,11 @@ class GLBRenderer extends Component {
       rotateModelByMouse,
       changeBackground,
       noBackground,
+      backgroundColor,
+      backgroundImageForScene,
       scale,
       lightColor,
+      luminosityLight,
       playAnimationInLoop,
       positionLeft,
       positionBottom,
@@ -112,6 +115,21 @@ class GLBRenderer extends Component {
       sound,
       audioLoader;
 
+    // Explixitly setting body backgrundColor property
+
+    if (backgroundImageForScene) {
+      document.querySelector(
+        "body"
+      ).style.background = `url(${backgroundImageForScene})`;
+      document.querySelector("body").style.backgroundaAttachment = "fixed";
+
+      document.querySelector("body").style.backgroundRepeat = "no-repeat";
+      document.querySelector("body").style.backgroundSize = "cover";
+      document.querySelector("body").style.backgroundPosition = "center center";
+    } else {
+      document.querySelector("body").style.backgroundColor = backgroundColor;
+    }
+
     // Creating renderer
 
     renderer = new THREE.WebGLRenderer({
@@ -145,19 +163,19 @@ class GLBRenderer extends Component {
     if (!noBackground) scene.add(directionalLight);
 
     if (lightColor) {
-      light = new THREE.PointLight(lightColor, 1);
+      light = new THREE.PointLight(lightColor, luminosityLight);
       light.position.set(0, 300, 500);
       scene.add(light);
 
-      light2 = new THREE.PointLight(lightColor, 1);
+      light2 = new THREE.PointLight(lightColor, luminosityLight);
       light2.position.set(500, 100, 0);
       scene.add(light2);
 
-      light3 = new THREE.PointLight(lightColor, 1);
+      light3 = new THREE.PointLight(lightColor, luminosityLight);
       light3.position.set(0, 100, -500);
       scene.add(light3);
 
-      light4 = new THREE.PointLight(lightColor, 1);
+      light4 = new THREE.PointLight(lightColor, luminosityLight);
       light4.position.set(-500, 300, 0);
       scene.add(light4);
     }
@@ -213,6 +231,13 @@ class GLBRenderer extends Component {
         if (gltf.animations.length) {
           mixer = new THREE.AnimationMixer(gltf.scene);
           var action = mixer.clipAction(gltf.animations[0]);
+
+          // For not looping around
+          if (playAnimationInLoop) {
+            action.setLoop(THREE.LoopOnce);
+            action.clampWhenFinished = true;
+            action.enable = true;
+          }
 
           // Getting parent constex
           const THIS = getParentContex();

@@ -173,11 +173,29 @@ export const setModelScale = (payload) => {
   };
 };
 
-// set light color or not
+// set light color
 
 export const setLightColor = (payload) => {
   return {
     type: "SET_LIGHT_COLOR",
+    payload: payload,
+  };
+};
+
+// set luminosity of light
+
+export const setLuminosityLight = (payload) => {
+  return {
+    type: "SET_LUMINOSOTY_LIGHT",
+    payload: payload,
+  };
+};
+
+// set background color
+
+export const setBackgroundColor = (payload) => {
+  return {
+    type: "SET_BACKGROUND_COLOR",
     payload: payload,
   };
 };

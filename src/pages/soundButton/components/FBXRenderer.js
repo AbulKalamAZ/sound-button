@@ -55,7 +55,10 @@ class FBXRenderer extends Component {
       animationFile,
       changeBackground,
       noBackground,
+      backgroundColor,
+      backgroundImageForScene,
       lightColor,
+      luminosityLight,
       playAnimationInLoop,
       positionLeft,
       positionBottom,
@@ -84,6 +87,21 @@ class FBXRenderer extends Component {
       listener,
       sound,
       audioLoader;
+
+    // Explixitly setting body backgrundColor property
+
+    if (backgroundImageForScene) {
+      document.querySelector(
+        "body"
+      ).style.background = `url(${backgroundImageForScene})`;
+      document.querySelector("body").style.backgroundaAttachment = "fixed";
+
+      document.querySelector("body").style.backgroundRepeat = "no-repeat";
+      document.querySelector("body").style.backgroundSize = "cover";
+      document.querySelector("body").style.backgroundPosition = "center center";
+    } else {
+      document.querySelector("body").style.backgroundColor = backgroundColor;
+    }
 
     // Creating renderer
 
@@ -119,19 +137,19 @@ class FBXRenderer extends Component {
     if (!noBackground) scene.add(light);
 
     if (lightColor) {
-      light = new THREE.PointLight(lightColor, 1);
+      light = new THREE.PointLight(lightColor, luminosityLight);
       light.position.set(0, 300, 500);
       scene.add(light);
 
-      light2 = new THREE.PointLight(lightColor, 1);
+      light2 = new THREE.PointLight(lightColor, luminosityLight);
       light2.position.set(500, 100, 0);
       scene.add(light2);
 
-      light3 = new THREE.PointLight(lightColor, 1);
+      light3 = new THREE.PointLight(lightColor, luminosityLight);
       light3.position.set(0, 100, -500);
       scene.add(light3);
 
-      light4 = new THREE.PointLight(lightColor, 1);
+      light4 = new THREE.PointLight(lightColor, luminosityLight);
       light4.position.set(-500, 300, 0);
       scene.add(light4);
     }

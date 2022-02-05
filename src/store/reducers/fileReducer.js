@@ -20,6 +20,10 @@ const initState = {
     defaultFileName: "No image choosen",
     fileValue: {},
   },
+  backgroundImageForScene: {
+    defaultFileName: "No image choosen for background",
+    fileValue: {},
+  },
   posX: {
     defaultFileName: "No image choosen",
     fileValue: {},
@@ -89,6 +93,11 @@ const fileReducer = (state = initState, action) => {
         },
         images: {
           ...state.images,
+          defaultFileName: "No File Choosen",
+          fileValue: {},
+        },
+        backgroundImageForScene: {
+          ...state.backgroundImageForScene,
           defaultFileName: "No File Choosen",
           fileValue: {},
         },

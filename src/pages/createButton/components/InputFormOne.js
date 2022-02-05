@@ -16,6 +16,7 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import ColorPicker from "@material-ui/icons/Colorize";
+import LightBulb from "@material-ui/icons/WbIncandescent";
 import { Typography } from "@material-ui/core";
 
 import { getFileFormatName } from "../../../firebase/utility";
@@ -78,6 +79,13 @@ function InputFormOne(props) {
   const handleLightColor = (event) => {
     let value = event.target.value;
     props.setLightColor(value.toLowerCase());
+  };
+
+  // Handle luminosity of light
+
+  const handleLuminosityLight = (event) => {
+    let value = event.target.value;
+    props.setLuminosityLight(parseFloat(value));
   };
 
   return (
@@ -175,6 +183,39 @@ function InputFormOne(props) {
                   </Grid>
                 </Grid>
               </Grid>
+
+              {/* Seventh input */}
+
+              <Grid item xs={12} sm={5}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Typography variant='h6'>Luminosity of light</Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <OrangeTextField
+                      fullWidth
+                      type='text'
+                      className={classes.input}
+                      style={{ color: "#ffffff" }}
+                      name='luminosityLight'
+                      autoComplete='off'
+                      onChange={handleLuminosityLight}
+                      startAdornment={
+                        <InputAdornment position='start'>
+                          <IconButton>
+                            <LightBulb
+                              fontSize='default'
+                              style={{
+                                color: red[500],
+                              }}
+                            />
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
             </Grid>
           </Paper>
         </Grid>
@@ -195,6 +236,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setLightColor: (data) => dispatch(buttonActionCreator.setLightColor(data)),
+    setLuminosityLight: (data) =>
+      dispatch(buttonActionCreator.setLuminosityLight(data)),
   };
 };
 
