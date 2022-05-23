@@ -1,22 +1,22 @@
+import Button from "@material-ui/core/Button";
+import PauseIcon from "@material-ui/icons/Pause";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import React, { Component, createRef } from "react";
 import { connect } from "react-redux";
-import "./OBJRenderer.css";
-import Button from "@material-ui/core/Button";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import PauseIcon from "@material-ui/icons/Pause";
-
-import * as controlActionCreator from "../../../store/actions/control_actions";
-
-import imgPosX from "../../../assets/posx.jpg";
-import imgNegX from "../../../assets/negx.jpg";
-import imgPosY from "../../../assets/posy.jpg";
-import imgNegY from "../../../assets/negy.jpg";
-import imgPosZ from "../../../assets/posz.jpg";
-import imgNegZ from "../../../assets/negz.jpg";
-
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
+import imgNegX from "../../../assets/negx.jpg";
+import imgNegY from "../../../assets/negy.jpg";
+import imgNegZ from "../../../assets/negz.jpg";
+import imgPosX from "../../../assets/posx.jpg";
+import imgPosY from "../../../assets/posy.jpg";
+import imgPosZ from "../../../assets/posz.jpg";
+import * as controlActionCreator from "../../../store/actions/control_actions";
+import "./OBJRenderer.css";
+
+
+
 
 class FBXRenderer extends Component {
   constructor(props) {
@@ -62,6 +62,7 @@ class FBXRenderer extends Component {
       playAnimationInLoop,
       positionLeft,
       positionBottom,
+      hidePlatform,
       scale,
       posX,
       posY,
@@ -298,7 +299,9 @@ class FBXRenderer extends Component {
 
     // Creating plane
 
-    plane =
+    if(!hidePlatform) {
+      
+      plane =
       !noBackground &&
       new THREE.Mesh(
         new THREE.PlaneGeometry(500, 500, 10, 10),
@@ -307,12 +310,13 @@ class FBXRenderer extends Component {
         })
       );
 
-    if (!noBackground) {
-      plane.castShadow = true;
-      plane.receiveShadow = true;
-      plane.rotation.x = -Math.PI / 2;
-      plane.position.set(0, 0, 0);
-      scene.add(plane);
+      if (!noBackground) {
+        plane.castShadow = true;
+        plane.receiveShadow = true;
+        plane.rotation.x = -Math.PI / 2;
+        plane.position.set(0, 0, 0);
+        scene.add(plane);
+      }
     }
 
     //animate method

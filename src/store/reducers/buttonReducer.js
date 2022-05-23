@@ -15,6 +15,7 @@ const initState = {
     playAudioOnce: true,
     playAnimationInLoop: false,
     playAudioInLoop: false,
+    hidePlatform: false,
     rotateModelByMouse: false,
     rotateModelAutomatically: true,
     openLinkInAniFrame: false,
@@ -247,6 +248,15 @@ const buttonReducer = (state = initState, action) => {
         button: {
           ...state.button,
           playAnimationInLoop: payload,
+        },
+      };
+
+    case "SET_HIDE_PLATFORM":
+      return {
+        ...state,
+        button: {
+          ...state.button,
+          hidePlatform: payload,
         },
       };
 

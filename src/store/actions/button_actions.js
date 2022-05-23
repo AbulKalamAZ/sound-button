@@ -226,3 +226,10 @@ export const setPositionBottom = (payload) => {
     payload: payload,
   };
 };
+
+export const setHidePlatform = (payload) => {
+  return {
+    type: "SET_HIDE_PLATFORM",
+    payload: payload,
+  };
+};

@@ -1,14 +1,14 @@
-import React from "react";
-import { connect } from "react-redux";
-
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Switch from "@material-ui/core/Switch";
 import { Typography } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
-
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import Switch from "@material-ui/core/Switch";
+import React from "react";
+import { connect } from "react-redux";
 import * as buttonActionCreator from "../../../store/actions/button_actions";
+
+
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -52,6 +52,7 @@ function InputFormTwo(props) {
   const { audios, models } = props.file;
   const {
     playAnimationInLoop,
+    hidePlatform,
     playAudioOnClick,
     playAudioAutomatically,
     playAudioOnce,
@@ -68,6 +69,7 @@ function InputFormTwo(props) {
     setAudioPlayingDelay,
     setRotateModelByMouse,
     setRotateModelAutomatically,
+    setHidePlatform,
   } = props;
   const classes = useStyle();
 
@@ -99,6 +101,10 @@ function InputFormTwo(props) {
 
       case "rotateModelAutomatically":
         setRotateModelAutomatically(event.target.checked);
+        break;
+
+      case "hidePlatform":
+        setHidePlatform(event.target.checked);
         break;
 
       default:
@@ -238,6 +244,23 @@ function InputFormTwo(props) {
                   </Grid>
                 </Grid>
               </Grid>
+
+              {/* Eighth input */}
+              <Grid item xs={12} sm={6}>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <Typography variant='h6'>Hide platform</Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <OrangeSwitch
+                      checked={hidePlatform}
+                      onChange={handleSwitchChange}
+                      name='hidePlatform'
+                      disabled={!models.fileValue}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
             </Grid>
           </Paper>
         </Grid>
@@ -286,6 +309,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(buttonActionCreator.setFramePositionLeft(payload)),
     setFramePositionTop: (payload) =>
       dispatch(buttonActionCreator.setFramePositionTop(payload)),
+    setHidePlatform: (payload) =>
+      dispatch(buttonActionCreator.setHidePlatform(payload)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(InputFormTwo);

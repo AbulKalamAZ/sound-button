@@ -1,21 +1,21 @@
+import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { Component, createRef } from "react";
 import { connect } from "react-redux";
-import "./OBJRenderer.css";
-
-import CircularProgress from "@material-ui/core/CircularProgress";
-
-import * as controlActionCreator from "../../../store/actions/control_actions";
-
-import imgPosX from "../../../assets/posx.jpg";
-import imgNegX from "../../../assets/negx.jpg";
-import imgPosY from "../../../assets/posy.jpg";
-import imgNegY from "../../../assets/negy.jpg";
-import imgPosZ from "../../../assets/posz.jpg";
-import imgNegZ from "../../../assets/negz.jpg";
-
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { OBJLoader2 } from "three/examples/jsm/loaders/OBJLoader2.js";
+import imgNegX from "../../../assets/negx.jpg";
+import imgNegY from "../../../assets/negy.jpg";
+import imgNegZ from "../../../assets/negz.jpg";
+import imgPosX from "../../../assets/posx.jpg";
+import imgPosY from "../../../assets/posy.jpg";
+import imgPosZ from "../../../assets/posz.jpg";
+import * as controlActionCreator from "../../../store/actions/control_actions";
+import "./OBJRenderer.css";
+
+
+
+
 
 class OBJRenderer extends Component {
   constructor(props) {
@@ -37,6 +37,7 @@ class OBJRenderer extends Component {
       backgroundImageForScene,
       lightColor,
       luminosityLight,
+      hidePlatform,
       scale,
       posX,
       posY,
@@ -222,7 +223,9 @@ class OBJRenderer extends Component {
 
     // Creating plane
 
-    plane =
+    if(!hidePlatform) {
+      
+      plane =
       !noBackground &&
       new THREE.Mesh(
         new THREE.PlaneGeometry(500, 500, 10, 10),
@@ -231,12 +234,13 @@ class OBJRenderer extends Component {
         })
       );
 
-    if (!noBackground) {
-      plane.castShadow = false;
-      plane.receiveShadow = true;
-      plane.rotation.x = -Math.PI / 2;
-      plane.position.set(0, 0, 0);
-      scene.add(plane);
+      if (!noBackground) {
+        plane.castShadow = true;
+        plane.receiveShadow = true;
+        plane.rotation.x = -Math.PI / 2;
+        plane.position.set(0, 0, 0);
+        scene.add(plane);
+      }
     }
 
     //anmate method

@@ -1,25 +1,25 @@
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import PauseIcon from "@material-ui/icons/Pause";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import React, { Component, createRef } from "react";
 import { connect } from "react-redux";
-import "./OBJRenderer.css";
-
-import Button from "@material-ui/core/Button";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import PauseIcon from "@material-ui/icons/Pause";
-
-import CircularProgress from "@material-ui/core/CircularProgress";
-
-import * as controlActionCreator from "../../../store/actions/control_actions";
-
-import imgPosX from "../../../assets/posx.jpg";
-import imgNegX from "../../../assets/negx.jpg";
-import imgPosY from "../../../assets/posy.jpg";
-import imgNegY from "../../../assets/negy.jpg";
-import imgPosZ from "../../../assets/posz.jpg";
-import imgNegZ from "../../../assets/negz.jpg";
-
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import imgNegX from "../../../assets/negx.jpg";
+import imgNegY from "../../../assets/negy.jpg";
+import imgNegZ from "../../../assets/negz.jpg";
+import imgPosX from "../../../assets/posx.jpg";
+import imgPosY from "../../../assets/posy.jpg";
+import imgPosZ from "../../../assets/posz.jpg";
+import * as controlActionCreator from "../../../store/actions/control_actions";
+import "./OBJRenderer.css";
+
+
+
+
+
 
 class GLBRenderer extends Component {
   constructor(props) {
@@ -49,6 +49,7 @@ class GLBRenderer extends Component {
       playAnimationInLoop,
       positionLeft,
       positionBottom,
+      hidePlatform,
       posX,
       posY,
       posZ,
@@ -303,7 +304,9 @@ class GLBRenderer extends Component {
 
     // Creating plane
 
-    plane =
+    if(!hidePlatform) {
+      
+      plane =
       !noBackground &&
       new THREE.Mesh(
         new THREE.PlaneGeometry(500, 500, 10, 10),
@@ -312,12 +315,13 @@ class GLBRenderer extends Component {
         })
       );
 
-    if (!noBackground) {
-      plane.castShadow = true;
-      plane.receiveShadow = true;
-      plane.rotation.x = -Math.PI / 2;
-      plane.position.set(0, 0, 0);
-      scene.add(plane);
+      if (!noBackground) {
+        plane.castShadow = true;
+        plane.receiveShadow = true;
+        plane.rotation.x = -Math.PI / 2;
+        plane.position.set(0, 0, 0);
+        scene.add(plane);
+      }
     }
 
     //anmate method
